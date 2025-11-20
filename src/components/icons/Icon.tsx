@@ -16,7 +16,7 @@ const Icon = ({ icon, className }: IconProps) => {
   return (
     <svg
       className={cn(className, shouldFill ? "fill-current" : "")}
-      fill="none"
+      fill="#000"
       xmlns="http://www.w3.org/2000/svg"
       {...svgOptions} // 먼저 spread
       viewBox={svgOptions.viewBox || "0 0 20 20"}

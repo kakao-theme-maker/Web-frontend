@@ -1,3 +1,5 @@
+import LeftFrame from "./components/outer-frames/LeftFrame";
+import RightFrame from "./components/outer-frames/RightFrame";
 import "./index.css";
 import { cn } from "./utils/clsx/cs";
 
@@ -5,12 +7,12 @@ function App() {
   return (
     <div
       className={cn(
-        "w-full h-[100vh] bg-blue-500",
-        "flex items-center justify-center",
-        "text-[24px] text-white font-bold"
+        "w-full h-screen flex justify-center items-center gap-12",
+        "screen-wrapper"
       )}
     >
-      Initial Page
+      <LeftFrame />
+      <RightFrame />
     </div>
   );
 }
