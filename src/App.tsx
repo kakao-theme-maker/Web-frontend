@@ -1,5 +1,4 @@
-import LeftFrame from "./components/outer-frames/LeftFrame";
-import RightFrame from "./components/outer-frames/RightFrame";
+import PhoneFrame from "./components/phone-frame/PhoneFrame";
 import "./index.css";
 import { cn } from "./utils/clsx/cs";
 
@@ -7,12 +6,14 @@ function App() {
   return (
     <div
       className={cn(
-        "w-full h-screen flex justify-center items-center gap-12",
+        "w-full h-screen flex flex-col justify-center items-center gap-12",
         "screen-wrapper"
       )}
     >
-      <LeftFrame />
-      <RightFrame />
+      <PhoneFrame />
+      <span className={"pretendard-700 text-[26px]"}>
+        <b className={"pretendard-200"}>DESIGN BY</b> KOMEMTUM
+      </span>
     </div>
   );
 }
