@@ -1,4 +1,4 @@
-import { cn } from "../../utils/clsx/cs";
+import { cn } from "../../utils/clsx/cn";
 
 const PhoneFrame = () => {
   return (

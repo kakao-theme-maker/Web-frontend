@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import { cn } from "../utils/clsx/cs";
+import { cn } from "../utils/clsx/cn";
 
 const AppRoutes = () => {
   return (
