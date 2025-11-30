@@ -1,4 +1,7 @@
+import App from "../../App";
+import AppRoutes from "../../routes/AppRoutes";
 import { cn } from "../../utils/clsx/cn";
+import CommonHeader from "../common/header/CommonHeader";
 
 const PhoneFrame = () => {
   return (
@@ -29,8 +32,13 @@ const PhoneFrame = () => {
           ></div>
         </div>
         <div
-          className={cn("screen-area", "bg-white h-full rounded-[1.5rem]")}
-        ></div>
+          className={cn(
+            "screen-area",
+            "bg-white h-full rounded-[1.5rem] overflow-hidden pt-[40px]"
+          )}
+        >
+          <AppRoutes />
+        </div>
       </div>
     </div>
   );
