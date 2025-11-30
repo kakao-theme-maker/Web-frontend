@@ -1,4 +1,4 @@
-import { cn } from "../../utils/clsx/cs";
+import { cn } from "../../utils/clsx/cn";
 import ICONS from "./constants";
 import type { IconList } from "./constants";
 
@@ -18,7 +18,7 @@ const Icon = ({ icon, className }: IconProps) => {
       className={cn(className, shouldFill ? "fill-current" : "")}
       fill="#000"
       xmlns="http://www.w3.org/2000/svg"
-      {...svgOptions} // 먼저 spread
+      {...svgOptions}
       viewBox={svgOptions.viewBox || "0 0 20 20"}
     >
       {iconData.icon}

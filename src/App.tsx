@@ -1,6 +1,6 @@
 import PhoneFrame from "./components/phone-frame/PhoneFrame";
 import "./index.css";
-import { cn } from "./utils/clsx/cs";
+import { cn } from "./utils/clsx/cn";
 
 function App() {
   return (
