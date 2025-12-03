@@ -1,0 +1,10 @@
+.custom-scrollbar-container::-webkit-scrollbar {
+  width: 10px;
+  background-color: transparent;
+}
+
+.custom-scrollbar-container::-webkit-scrollbar-thumb {
+  /* 실제 스크롤 이동 막대(Thumb) 색상 설정 */
+  background-color: #888;
+  border-radius: 5px;
+}

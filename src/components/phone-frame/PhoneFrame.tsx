@@ -15,7 +15,7 @@ const PhoneFrame = () => {
       <div
         className={cn(
           "safe-area",
-          "h-full h-full p-[0.5rem] rounded-[2.1rem] bg-[#333] relative"
+          "h-full h-full p-[0.5rem] rounded-[2.1rem] bg-[#333] relative overflow-hidden"
         )}
       >
         <div
@@ -34,7 +34,8 @@ const PhoneFrame = () => {
         <div
           className={cn(
             "screen-area",
-            "bg-white h-full rounded-[1.5rem] overflow-hidden pt-[40px]"
+            "bg-white h-full rounded-[1.5rem] overflow-x-hidden overflow-y-auto pt-[40px]",
+            "custom-scrollbar-container"
           )}
         >
           <AppRoutes />
