@@ -3,6 +3,7 @@
 import { useState } from "react";
 import CommonHeader from "../components/common/header/CommonHeader";
 import CommonTabs from "../components/common/tabs/CommonTabs";
+import CommonFooter from "../components/common/header/CommonFooter";
 import { cn } from "../utils/clsx/cn";
 import SearchBox from "../components/search-box/SearchBox";
 import LoadingSkeleton from "../components/common/loading-skeleton/LoadingSkeleton";
@@ -12,7 +13,7 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
 
   return (
-    <div className={cn("w-full h-full pt-[40px] flex flex-col")}>
+    <div className={cn("w-full h-full pt-[40px] flex flex-col min-h-screen")}>
       <CommonHeader title={"테마 커뮤니티"} />
       <div className="tabs__part flex border-b border-solid border-[#cacaca]">
         <CommonTabs
@@ -36,6 +37,9 @@ const Home = () => {
           {loading ? <LoadingSkeleton /> : <></>}
         </div>
       )}
+      <div className={cn("w-full absolute bottom-0")}>
+        <CommonFooter />
+      </div>
     </div>
   );
 };
