@@ -1,7 +1,5 @@
-import App from "../../App";
 import AppRoutes from "../../routes/AppRoutes";
 import { cn } from "../../utils/clsx/cn";
-import CommonHeader from "../common/header/CommonHeader";
 
 const PhoneFrame = () => {
   return (
