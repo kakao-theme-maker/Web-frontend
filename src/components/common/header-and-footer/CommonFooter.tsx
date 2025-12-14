@@ -37,24 +37,23 @@ const FOOTER_MENUS: {
 const CommonFooter = () => {
   const navigate = useNavigate();
   return (
-    <>
-      <div
-        className={cn(
-          "common__footer w-full h-[89px] pt-[15px] pb-[27px] pr-[34px] pl-[34px] flex items-center justify-between box-border"
-        )}
-      >
-        {FOOTER_MENUS.map((item) => (
-          <div
-            key={item.key}
-            className=" flex flex-col items-center gap-[9px]  text-[12px]"
-            onClick={() => navigate(item.path)}
-          >
-            <Icon icon={item.icon} className="w-[24px] h-[24px]  " />
-            <p>{item.label}</p>
-          </div>
-        ))}
-      </div>
-    </>
+    <div
+      className={cn(
+        "common__footer w-full h-[89px] pt-[15px] pb-[27px] pr-[34px] pl-[34px] flex items-center justify-between box-border",
+        "bg-white"
+      )}
+    >
+      {FOOTER_MENUS.map((item) => (
+        <button
+          key={item.key}
+          className=" flex flex-col items-center gap-[9px] text-[12px] cursor-pointer"
+          onClick={() => navigate(item.path)}
+        >
+          <Icon icon={item.icon} className="w-[24px] h-[24px]  " />
+          <p>{item.label}</p>
+        </button>
+      ))}
+    </div>
   );
 };
 

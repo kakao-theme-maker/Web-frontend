@@ -249,20 +249,6 @@ const ICONS = {
       />
     ),
   },
-  // FOOTER_NOTICE: {
-  //   fill: false,
-  //   svgOptions: {
-  //     viewBox: "0 0 11 18",
-  //   },
-  //   icon: (
-  //     <path
-  //       d="M9.41418 17L1.41418 9L9.41419 1"
-  //       stroke="black"
-  //       stroke-width="2"
-  //       stroke-linecap="round"
-  //     />
-  //   ),
-  // },
   FOOTER_NOTICE: {
     fill: false, // 이건 네 시스템 규칙에 맞춰서 그대로 두면 됨
     svgOptions: {
@@ -346,6 +332,44 @@ const ICONS = {
           stroke-width="1.5"
         />
       </>
+    ),
+  },
+  PLUS: {
+    fill: false,
+    svgOptions: {
+      viewBox: "0 0 16 16",
+    },
+    icon: (
+      <>
+        <path
+          d="M1 8H15"
+          stroke="white"
+          strokeWidth="2"
+          strokeLinecap="round"
+        />
+        <path
+          d="M8 1L8 15"
+          stroke="white"
+          strokeWidth="2"
+          strokeLinecap="round"
+        />
+      </>
+    ),
+  },
+  CHECK: {
+    fill: false,
+    svgOptions: {
+      viewBox: "0 0 16 16",
+      fill: "none",
+    },
+    icon: (
+      <path
+        d="M13.3337 4L6.00033 11.3333L2.66699 8"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     ),
   },
 } as const;

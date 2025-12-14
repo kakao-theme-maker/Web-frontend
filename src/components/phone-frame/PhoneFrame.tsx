@@ -19,7 +19,7 @@ const PhoneFrame = () => {
         <div
           className={cn(
             "notch",
-            "w-[120px] h-[26px] bg-[#333] absolute left-[0] right-[0] mx-auto rounded-[0.85rem] box-border p-[8px]"
+            "w-[120px] h-[26px] bg-[#333] absolute left-[0] right-[0] mx-auto rounded-[0.85rem] box-border p-[8px] z-10"
           )}
         >
           <div
