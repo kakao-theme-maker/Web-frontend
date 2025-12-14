@@ -34,7 +34,7 @@ const MOCK_THEMES = [
 
 const ThemeWrite = () => {
   const [selectedThemeId, setSelectedThemeId] = useState<string | null>(null);
-  const [selected, setSelected] = useState<boolean>(false);
+  const [isSelectionComplete, setSelectionComplete] = useState<boolean>(false);
 
   const handleThemeSelect = (id: string) => {
     setSelectedThemeId(id);
