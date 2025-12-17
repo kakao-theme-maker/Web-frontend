@@ -1,7 +1,8 @@
 import { useState } from "react";
+import { cn } from "../../utils/clsx/cn";
+
 import CommonHeader from "../../components/common/header-and-footer/CommonHeader";
 import ThemeSelectCard from "../../components/common/theme-card/ThemeSelectCard";
-import { cn } from "../../utils/clsx/cn";
 import CommonFooter from "../../components/common/header-and-footer/CommonFooter";
 
 // 임시 데이터
@@ -43,7 +44,7 @@ const ThemeWrite = () => {
   const handleComplete = () => {
     if (selectedThemeId) {
       // 선택 완료 후 처리 로직
-      setSelected(true);
+      setSelectionComplete(true);
     }
   };
 
@@ -51,8 +52,14 @@ const ThemeWrite = () => {
     <div className={cn("w-full h-full flex flex-col")}>
       <div className={cn("flex-1 overflow-y-auto flex flex-col")}>
         <CommonHeader title={"글 작성"} hasBackIcon />
-        {selectedThemeId && selected ? (
-          <></>
+        {selectedThemeId && isSelectionComplete ? (
+          <div className={cn("theme__write__completed")}>
+            <div
+              className={cn(
+                "w-[90%] aspect-square mx-auto rounded-[8px] bg-[#f8f8f8] mb-[20px] flex justify-center items-center"
+              )}
+            ></div>
+          </div>
         ) : (
           <div className="theme__write__contents px-[20px] flex-1">
             <h1 className="mt-[20px] text-[18px] font-semibold mb-[30px]">
