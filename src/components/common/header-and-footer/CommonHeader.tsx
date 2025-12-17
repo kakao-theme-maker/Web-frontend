@@ -1,27 +1,32 @@
+import { useNavigate } from "react-router-dom";
 import { cn } from "../../../utils/clsx/cn";
 import Icon from "../../icons";
 
 const CommonHeader = ({
   hasBackIcon,
   title,
-  func,
 }: {
   hasBackIcon?: boolean;
   title: string;
-  func?: () => void;
 }) => {
+  const navigate = useNavigate();
+
   return (
     <div
       className={cn(
         "common__header w-full h-[40px] flex items-center justify-center gap-[16px] mb-[20px] relative"
       )}
-      onClick={() => func?.()}
     >
       {hasBackIcon ? (
-        <Icon
-          icon={"HEADER_BACK_ICON"}
-          className="back__icon w-[8px] h-[16px] absolute top-1/2 -translate-y-1/2 left-[22px]"
-        />
+        <button
+          className={cn("absolute top-1/2 -translate-y-1/2 left-[22px]")}
+          onClick={() => navigate(-1)}
+        >
+          <Icon
+            icon={"HEADER_BACK_ICON"}
+            className="back__icon w-[8px] h-[16px] fill-none"
+          />
+        </button>
       ) : (
         ""
       )}
