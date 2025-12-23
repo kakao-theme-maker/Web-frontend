@@ -81,27 +81,20 @@ const MyPage = () => {
 
       <CommonBtn btnName="프로필 수정" />
       <div className="flex pr-[38px] pl-[38px] mt-[20px]">
-        <CommonTabs
-          content="활동"
-          target="action"
-          className="flex-1 text-center"
-          setTarget={setCurrentTab}
-          currentTab={currentTab}
-        />
-        <CommonTabs
-          content="저장된"
-          target="save"
-          className="flex-1 text-center"
-          setTarget={setCurrentTab}
-          currentTab={currentTab}
-        />
-        <CommonTabs
-          content="좋아요"
-          target="like"
-          className="flex-1 text-center"
-          setTarget={setCurrentTab}
-          currentTab={currentTab}
-        />
+        {[ 
+          { content: "활동", target: "action" },
+          { content: "저장된", target: "save" },
+          { content: "좋아요", target: "like" },
+        ].map((tab) => (
+          <CommonTabs
+            key={tab.target}
+            content={tab.content}
+            target={tab.target}
+            className="flex-1 text-center"
+            setTarget={setCurrentTab}
+            currentTab={currentTab}
+          />
+        ))}
       </div>
       <div>
         {currentTab === "action" &&
