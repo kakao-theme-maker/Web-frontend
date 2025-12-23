@@ -372,6 +372,20 @@ const ICONS = {
       />
     ),
   },
+  MYPAGE_GROUP: {
+    fill: false,
+    svgOptions: {
+      viewBox: "0 0 5 21",
+      fill: "none",
+    },
+    icon: (
+      <>
+        <circle cx="2.5" cy="2.5" r="2.5" fill="currentColor" />
+        <circle cx="2.5" cy="10.5" r="2.5" fill="currentColor" />
+        <circle cx="2.5" cy="18.5" r="2.5" fill="currentColor" />
+      </>
+    ),
+  },
 } as const;
 
 export type IconList = keyof typeof ICONS;
