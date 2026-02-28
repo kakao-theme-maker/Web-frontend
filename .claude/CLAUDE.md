@@ -49,3 +49,4 @@ tailwindCSS 사용하여 스타일링 할 것. 커스텀 스타일 X
 - interface는 types.ts로 묶어서 관리하기
 - main에는 기본 셋팅 및 icons constant 변수만 설정해두기
 
+
