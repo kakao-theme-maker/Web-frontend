@@ -1,12 +1,15 @@
 import { Route, Routes } from "react-router-dom";
-import App from "../App";
-import Community from "../pages/community/Community"
+import App from "../App.tsx";
+import Community from "../pages/community/Community.tsx";
+import MobileLayout from "../layouts/MobileLayout.tsx";
 
 export default function AppRoutes() {
   return (
     <Routes>
-      <Route path="/" element={<App />} />
-      <Route path="/community" element={<Community />} />
+      <Route element={<MobileLayout />}>
+        <Route path="/" element={<App />} />
+        <Route path="/community" element={<Community />} />
+      </Route>
     </Routes>
   );
 }
