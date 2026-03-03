@@ -1,4 +1,7 @@
-const postPlaceholders = Array.from({ length: 12 })
+import CommunityPostGridItem from "../../components/community/CommunityPostGridItem";
+import type { ICommunityPostItme } from "../../types/community/post";
+
+const postPlaceholders = Array.from({ length: 12 }) as ICommunityPostItme[];
 
 export default function Community() {
   return (
@@ -21,11 +24,11 @@ export default function Community() {
             검색
           </div>
 
-          <div className="grid grid-cols-2 gap-2">
+          <section className="grid grid-cols-2 gap-2">
             {postPlaceholders.map((_, index) => (
-              <div key={index} className="h-[120px] rounded-[2px] bg-secondary-100" />
+              <CommunityPostGridItem key={index} item={postPlaceholders[index]} />
             ))}
-          </div>
+          </section>
         </main>
 
         <button className="absolute bottom-16 right-4 flex h-9 items-center rounded-full bg-primary px-4 text-[11px] font-medium text-white shadow-sm">
