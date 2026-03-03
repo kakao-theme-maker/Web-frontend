@@ -2,7 +2,15 @@ import CommunityPostGridItem from "../../components/community/CommunityPostGridI
 import type { ICommunityPostItme } from "../../types/community/post";
 import Text from "../../components/common/Text";
 
-const postPlaceholders = Array.from({ length: 12 }) as ICommunityPostItme[];
+const postPlaceholders: ICommunityPostItme[] = Array.from({ length: 12 }, (_, index) => ({
+  boardId: index + 1,
+  themeComponentId: 1000 + index,
+  title: `테마 미리보기 ${index + 1}`,
+  previewImageUrl: "",
+  userEmail: "test@theme.com",
+  createdAt: "2026-03-04",
+  prefers: 0,
+}));
 
 export default function Community() {
   return (
