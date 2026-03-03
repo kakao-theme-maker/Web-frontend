@@ -1,6 +1,6 @@
 function App() {
   return (
-    <div className="min-h-screen flex items-center justify-center">
+    <div className="flex h-full items-center justify-center">
       <h1 className="text-2xl font-bold">Kakao Theme Maker</h1>
     </div>
   );
