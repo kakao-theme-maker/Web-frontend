@@ -10,9 +10,10 @@ export default function MobileLayout() {
 
   return (
     <div className="flex min-h-screen items-start justify-center bg-white py-4">
-      <div className="relative h-[700px] w-[340px] overflow-hidden border border-secondary-200">
-        <div className="scrollbar-hidden h-full overflow-y-auto pb-16">
-          {hasHeader && <MobileHeader title="고정 헤더" />}
+      <div className="relative flex h-[700px] w-[340px] flex-col overflow-hidden border border-secondary-200">
+        {hasHeader && <MobileHeader title="고정 헤더" />}
+
+        <div className="scrollbar-hidden flex-1 overflow-y-auto pb-16">
           <Outlet />
         </div>
 

@@ -7,6 +7,7 @@ import HomeActiveIcon from "../components/icons/bottom-tab-menu/bottom-home-acti
 import CommunityActiveIcon from "../components/icons/bottom-tab-menu/bottom-community-active.png";
 import NotificationActiveIcon from "../components/icons/bottom-tab-menu/bottom-notify-active.png";
 import ProfileActiveIcon from "../components/icons/bottom-tab-menu/bottom-profile-active.png";
+import Text from "../components/common/Text";
 
 /**
  * 바텀 탭 메뉴 컴포넌트 인터페이스
@@ -43,13 +44,12 @@ interface IBottomTabItem {
  * @returns 탭 메뉴 아이템
  */
 function BottomTabBarItem({ iconSrc, iconSrcActive, text, href, isActive = false }: IBottomTabItem) {
-  const textClassName = `text-[12px]`
   const iconClassName = `h-5 w-5 ${isActive ? "opacity-100" : "opacity-90"}`
 
   const content = (
     <>
       <img src={isActive ? iconSrcActive : iconSrc} alt={text} className={iconClassName} />
-      <span className={textClassName}>{text}</span>
+      <Text variant="REGULAR_12">{text}</Text>
     </>
   )
 
