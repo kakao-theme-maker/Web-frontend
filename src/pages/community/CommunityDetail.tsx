@@ -1,10 +1,16 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import Text from "../../components/common/Text";
+import { useOutsideClick } from "../../services/hooks/useOutsideClick";
 
 export default function CommunityDetail() {
   const { boardId } = useParams();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+
+  // 메뉴 감싸는 컨테이너를 가리키는 ref
+  const menuRef = useRef<HTMLButtonElement | null>(null);
+  // 커스텀 훅(useOutsideClick) 호출: 외부 클릭 시 콜백함수 실행
+  useOutsideClick(menuRef, () => setIsMenuOpen(false));
 
   return (
     <main className="px-5 pt-8">
@@ -24,6 +30,7 @@ export default function CommunityDetail() {
             <Text variant="MEDIUM_12">팔로우</Text>
           </button> 
           <button
+            ref={menuRef}
             className="flex h-8 w-8 items-center justify-center rounded-full"
             onClick={() => setIsMenuOpen((prev) => !prev)}
             aria-label="더보기 메뉴"
