@@ -12,3 +12,11 @@ export interface ICommunityPostItem {
   createdAt: string;
   prefers: number;
 }
+
+export interface IComment {
+  id: number;
+  author: string;
+  text: string;
+  date: string;
+  isLiked: boolean;
+}

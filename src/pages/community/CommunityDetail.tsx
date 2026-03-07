@@ -2,6 +2,7 @@ import { useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import Text from "../../components/common/Text";
 import { useOutsideClick } from "../../services/hooks/useOutsideClick";
+import CommentModal from "../../components/community/CommentModal";
 
 // icons
 import BookmarkIcon from '../../components/icons/community-detail/bookmark.svg?react';
@@ -10,7 +11,10 @@ import CommentIcon from '../../components/icons/community-detail/comment.svg?rea
 
 export default function CommunityDetail() {
   const { boardId } = useParams();
+  // 더보기 메뉴 상태값
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+  // 댓글 모달창 상태값
+  const [isCommentOpen, setIsCommentOpen] = useState(false);
 
   // 메뉴 감싸는 컨테이너를 가리키는 ref
   const menuRef = useRef<HTMLButtonElement | null>(null);
@@ -76,7 +80,9 @@ export default function CommunityDetail() {
               <Text variant="REGULAR_15">110</Text>
             </div>
             <div className="flex items-center gap-1.5">
-              <CommentIcon width={24} height={24} aria-label="댓글" />
+              <button onClick={() => setIsCommentOpen(true)}>
+                <CommentIcon width={24} height={24} aria-label="댓글" />
+              </button>
               <Text variant="REGULAR_15">190</Text>
             </div>
           </div>
@@ -93,6 +99,21 @@ export default function CommunityDetail() {
           4일 전
         </Text>
       </section>
+
+      {/* 댓글 모달 (바텀 시트 스타일) */}
+      {isCommentOpen && (
+        <>
+          {/* 어두운 배경 (클릭 시 닫힘) */}
+          <div 
+            className="absolute inset-0 z-40 bg-black/70" 
+            onClick={() => setIsCommentOpen(false)} 
+          />
+          {/* 모달: 하단에 고정 */}
+          <div className="absolute bottom-0 left-0 right-0 z-50">
+            <CommentModal />
+          </div>
+        </>
+      )}
     </main>
   );
 }
