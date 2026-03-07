@@ -25,8 +25,8 @@ export default function CommunityDetail() {
   const menuClass: string = `flex h-8 w-8 items-center justify-center rounded-full` + (isMenuOpen ? ` text-white bg-primary` : ``);
 
   return (
-    <main className="px-5 pt-8">
-      <section className="flex items-center justify-between">
+    <main className="pt-8">
+      <section className="flex items-center justify-between px-5">
         <div className="flex items-center gap-2.5">
           <div className="h-10 w-10 rounded-full bg-secondary-300" />
           <div className="flex flex-col">
@@ -47,7 +47,7 @@ export default function CommunityDetail() {
             onClick={() => setIsMenuOpen((prev) => !prev)}
             aria-label="더보기 메뉴"
           >
-            <span className="text-2xl leading-none">⋮</span>
+            <span className="text-3xl leading-none">⋮</span>
           </button>
 
           {isMenuOpen && (
@@ -64,15 +64,16 @@ export default function CommunityDetail() {
       </section>
 
       <section className="mt-3">
-        <div className="h-[330px] w-full rounded-[2px] bg-secondary-200" />
-        <div className="mt-3 flex items-center justify-center gap-1">
-          <span className="h-1.5 w-1.5 rounded-full bg-black" />
-          <span className="h-1.5 w-1.5 rounded-full bg-secondary-300" />
-          <span className="h-1.5 w-1.5 rounded-full bg-secondary-300" />
+        <div className="relative h-[330px] w-full overflow-hidden rounded-[2px] bg-secondary-200">
+          <div className="absolute bottom-3 left-0 right-0 flex items-center justify-center gap-1">
+            <span className="h-1.5 w-1.5 rounded-full bg-black" />
+            <span className="h-1.5 w-1.5 rounded-full bg-white" />
+            <span className="h-1.5 w-1.5 rounded-full bg-white" />
+          </div>
         </div>
       </section>
 
-      <section className="mt-5">
+      <section className="mt-5 px-5">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-5">
             <div className="flex items-center gap-1.5">
