@@ -38,8 +38,8 @@ export default function Community() {
           </div>
 
           <section className="grid grid-cols-2 gap-2">
-            {postPlaceholders.map((_, index) => (
-              <CommunityPostGridItem key={index} item={postPlaceholders[index]} />
+            {postPlaceholders.map((item) => (
+              <CommunityPostGridItem key={item.boardId} item={item} />
             ))}
           </section>
         </main>
