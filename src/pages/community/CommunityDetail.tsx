@@ -17,6 +17,9 @@ export default function CommunityDetail() {
   // 커스텀 훅(useOutsideClick) 호출: 외부 클릭 시 콜백함수 실행
   useOutsideClick(menuRef, () => setIsMenuOpen(false));
 
+  // 더보기 메뉴 클래스명
+  const menuClass: string = `flex h-8 w-8 items-center justify-center rounded-full` + (isMenuOpen ? ` text-white bg-primary` : ``);
+
   return (
     <main className="px-5 pt-8">
       <section className="flex items-center justify-between">
@@ -36,7 +39,7 @@ export default function CommunityDetail() {
           </button> 
           <button
             ref={menuRef}
-            className="flex h-8 w-8 items-center justify-center rounded-full"
+            className={menuClass}
             onClick={() => setIsMenuOpen((prev) => !prev)}
             aria-label="더보기 메뉴"
           >
