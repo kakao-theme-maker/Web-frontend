@@ -3,6 +3,11 @@ import { useParams } from "react-router-dom";
 import Text from "../../components/common/Text";
 import { useOutsideClick } from "../../services/hooks/useOutsideClick";
 
+// icons
+import BookmarkIcon from '../../components/icons/community-detail/bookmark.svg?react';
+import HeartIcon from '../../components/icons/community-detail/heart.svg?react';
+import CommentIcon from '../../components/icons/community-detail/comment.svg?react';
+
 export default function CommunityDetail() {
   const { boardId } = useParams();
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
@@ -26,7 +31,7 @@ export default function CommunityDetail() {
         </div>
 
         <div className="relative flex items-center gap-2">
-          <button className="rounded-[5px] bg-primary px-4 py-1 text-white">
+          <button className="rounded-[5px] bg-primary px-4 py-[3px] text-white">
             <Text variant="MEDIUM_12">팔로우</Text>
           </button> 
           <button
@@ -40,10 +45,10 @@ export default function CommunityDetail() {
 
           {isMenuOpen && (
             <div className="absolute right-0 top-10 z-20 w-[112px] overflow-hidden rounded-md border border-secondary-200 bg-white shadow-md">
-              <button className="w-full px-3 py-2 text-left hover:bg-secondary-50">
+              <button className="w-full px-3 py-1 text-left hover:bg-secondary-50 text-center">
                 <Text variant="MEDIUM_12">테마 다운로드</Text>
               </button>
-              <button className="w-full border-t border-secondary-100 px-3 py-2 text-left hover:bg-secondary-50">
+              <button className="w-full border-t border-secondary-100 px-3 py-1 text-left hover:bg-secondary-50 text-center">
                 <Text variant="MEDIUM_12">공유하기</Text>
               </button>
             </div>
@@ -64,15 +69,15 @@ export default function CommunityDetail() {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-5">
             <div className="flex items-center gap-1.5">
-              <span className="text-[18px] leading-none text-red-500">❤</span>
+              <HeartIcon width={24} height={24} aria-label="좋아요" />
               <Text variant="REGULAR_15">110</Text>
             </div>
             <div className="flex items-center gap-1.5">
-              <span className="text-[17px] leading-none">💬</span>
+              <CommentIcon width={24} height={24} aria-label="댓글" />
               <Text variant="REGULAR_15">190</Text>
             </div>
           </div>
-          <span className="text-[18px] leading-none text-primary">🔖</span>
+          <BookmarkIcon width={12} height={17} aria-label="북마크" />
         </div>
 
         <div className="mt-2">
