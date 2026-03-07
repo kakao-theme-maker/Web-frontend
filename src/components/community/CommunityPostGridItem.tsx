@@ -2,11 +2,11 @@
  * 커뮤니티 게시글 목록 아이템 컴포넌트
  * @param item 게시글 아이템
  */
-import type { ICommunityPostItme } from "../../types/community/post";
+import type { ICommunityPostItem } from "../../types/community/post";
 import { Link } from "react-router-dom";
 
 interface ICommunityPostGridItemProps {
-  item: ICommunityPostItme;
+  item: ICommunityPostItem;
 }
 
 export default function CommunityPostGridItem({ item }: ICommunityPostGridItemProps) {

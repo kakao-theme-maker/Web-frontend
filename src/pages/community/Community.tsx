@@ -1,8 +1,8 @@
 import CommunityPostGridItem from "../../components/community/CommunityPostGridItem";
-import type { ICommunityPostItme } from "../../types/community/post";
+import type { ICommunityPostItem } from "../../types/community/post";
 import Text from "../../components/common/Text";
 
-const postPlaceholders: ICommunityPostItme[] = Array.from({ length: 12 }, (_, index) => ({
+const postPlaceholders: ICommunityPostItem[] = Array.from({ length: 12 }, (_, index) => ({
   boardId: index + 1,
   themeComponentId: 1000 + index,
   title: `테마 미리보기 ${index + 1}`,
@@ -44,9 +44,9 @@ export default function Community() {
           </section>
         </main>
 
-        <button className="absolute bottom-16 right-4 flex h-9 items-center rounded-full bg-primary px-4 text-[11px] font-medium text-white shadow-sm">
+        <button className="absolute bottom-16 right-4 flex h-9 items-center rounded-full bg-primary px-4 text-white shadow-sm">
           <span className="mr-1 text-base leading-none">+</span>
-          글쓰기
+          <Text variant="REGULAR_14">글쓰기</Text>
         </button>
     </>
   )
