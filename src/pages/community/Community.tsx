@@ -1,8 +1,10 @@
+import { useState } from 'react';
 import CommunityPostGridItem from "../../components/community/CommunityPostGridItem";
-import type { ICommunityPostItme } from "../../types/community/post";
+import type { ICommunityPostItem } from "../../types/community/post";
 import Text from "../../components/common/Text";
+import SearchIcon from "../../components/icons/community/search.svg?react";
 
-const postPlaceholders: ICommunityPostItme[] = Array.from({ length: 12 }, (_, index) => ({
+const postPlaceholders: ICommunityPostItem[] = Array.from({ length: 12 }, (_, index) => ({
   boardId: index + 1,
   themeComponentId: 1000 + index,
   title: `테마 미리보기 ${index + 1}`,
@@ -11,6 +13,36 @@ const postPlaceholders: ICommunityPostItme[] = Array.from({ length: 12 }, (_, in
   createdAt: "2026-03-04",
   prefers: 0,
 }));
+
+function SearchBar() {
+  const [keyword, setKeyword] = useState("");
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if(!keyword.trim()) return; // 빈 값일 경우
+  }
+
+  return (
+    <form 
+      onSubmit={handleSearch}
+      className="flex w-full items-center gap-2 rounded-lg bg-gray-100 mt-1 mb-3 px-4 py-1.5 focus-within:ring-2 focus-within:ring-primary"
+    >
+      <SearchIcon className="h-5 w-5" />
+      
+      <input
+        type="text"
+        value={keyword}
+        onChange={(e) => setKeyword(e.target.value)}
+        placeholder="검색"
+        className="w-full bg-transparent text-sm outline-none placeholder:text-gray-400"
+      />
+      
+      {/* 화면에는 보이지 않지만 엔터 키 제출을 가능하게 하는 숨겨진 버튼 */}
+      <button type="submit" className="hidden">검색</button>
+    </form>
+  );
+}
 
 export default function Community() {
   return (
@@ -25,28 +57,18 @@ export default function Community() {
         </div>
 
         <main className="px-3 pb-24 pt-2">
-          <div className="mb-3 flex h-7 items-center rounded-sm bg-secondary-100/30 px-2">
-            <svg
-              viewBox="0 0 24 24"
-              className="mr-1.5 h-3.5 w-3.5 fill-none stroke-current stroke-2"
-              aria-hidden
-            >
-              <circle cx="11" cy="11" r="7" />
-              <path d="m20 20-3.5-3.5" />
-            </svg>
-            <Text variant="LIGHT_14">검색</Text>
-          </div>
+          <SearchBar />
 
           <section className="grid grid-cols-2 gap-2">
-            {postPlaceholders.map((_, index) => (
-              <CommunityPostGridItem key={index} item={postPlaceholders[index]} />
+            {postPlaceholders.map((item) => (
+              <CommunityPostGridItem key={item.boardId} item={item} />
             ))}
           </section>
         </main>
 
-        <button className="absolute bottom-16 right-4 flex h-9 items-center rounded-full bg-primary px-4 text-[11px] font-medium text-white shadow-sm">
+        <button className="absolute bottom-16 right-4 flex h-9 items-center rounded-full bg-primary px-4 text-white shadow-sm">
           <span className="mr-1 text-base leading-none">+</span>
-          글쓰기
+          <Text variant="REGULAR_14">글쓰기</Text>
         </button>
     </>
   )
