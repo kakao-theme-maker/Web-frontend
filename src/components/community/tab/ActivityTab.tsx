@@ -2,23 +2,23 @@ import { CommunityPostGridItem, SearchBar } from "../../community";
 import Text from "../../common/Text";
 import type { ICommunityPostItem } from "../../../types/community/post";
 
-export default function ActivityTab() {
-  const postPlaceholders: ICommunityPostItem[] = Array.from({ length: 12 }, (_, index) => ({
-    boardId: index + 1,
-    themeComponentId: 1000 + index,
-    title: `테마 미리보기 ${index + 1}`,
-    previewImageUrl: "",
-    userEmail: "test@theme.com",
-    createdAt: "2026-03-04",
-    prefers: 0,
-  }));
+const POST_PLACE_HOLDERS: ICommunityPostItem[] = Array.from({ length: 12 }, (_, index) => ({
+  boardId: index + 1,
+  themeComponentId: 1000 + index,
+  title: `테마 미리보기 ${index + 1}`,
+  previewImageUrl: "",
+  userEmail: "test@theme.com",
+  createdAt: "2026-03-04",
+  prefers: 0,
+}));
 
+export default function ActivityTab() {
   return (
     <>
       <main className="px-3 pb-24 pt-2">
         <SearchBar />
         <section className="grid grid-cols-2 gap-2">
-          {postPlaceholders.map((item) => (
+          {POST_PLACE_HOLDERS.map((item) => (
             <CommunityPostGridItem key={item.boardId} item={item} />
           ))}
         </section>

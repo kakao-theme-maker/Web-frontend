@@ -7,16 +7,15 @@ const tabs: ITab[] = [
   { id: 'activity', label: '활동' },
   { id: 'keyword', label: '키워드' },
 ];
-
-export default function Community() {
-  // 탭 메뉴 상태값, 초기값은 activity: 활동
-  const [activeTab, setActiveTab] = useState<TabId>('activity');
-
-  // 확장 가능성을 염두에 두어 객체 매핑 구조로 설계
+// 확장 가능성을 염두에 두어 객체 매핑 구조로 설계
   const TAB_COMPONENTS: Record<TabId, React.ReactNode> = {
     activity: <ActivityTab />,
     keyword: <KeywordTab />,
   }
+
+export default function Community() {
+  // 탭 메뉴 상태값, 초기값은 activity: 활동
+  const [activeTab, setActiveTab] = useState<TabId>('activity');
 
   return (
     <div>
