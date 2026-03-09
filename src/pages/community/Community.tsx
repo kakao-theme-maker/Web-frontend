@@ -104,14 +104,16 @@ function KeywordTab() {
   );
 }
 
+// 컴포넌트 외부로 이동 (불필요한 재생성 방지)
+const tabs: ITab[] = [
+  { id: 'activity', label: '활동' },
+  { id: 'keyword', label: '키워드' },
+];
+
 export default function Community() {
   // 탭 메뉴 상태값, 초기값은 activity: 활동
   const [activeTab, setActiveTab] = useState<TabId>('activity');
   // 탭 메뉴 데이터 (확장 가능성을 염두에 두어 배열로 관리)
-  const tabs: ITab[] = [
-    { id: 'activity', label: '활동' },
-    { id: 'keyword', label: '키워드' },
-  ];
 
   const TAB_COMPONENTS: Record<TabId, React.ReactNode> = {
     activity: <ActivityTab />,
