@@ -4,15 +4,16 @@ import type { ICommunityPostItem } from "../../types/community/post";
 import Text from "../../components/common/Text";
 import SearchIcon from "../../components/icons/community/search.svg?react";
 
-const postPlaceholders: ICommunityPostItem[] = Array.from({ length: 12 }, (_, index) => ({
-  boardId: index + 1,
-  themeComponentId: 1000 + index,
-  title: `테마 미리보기 ${index + 1}`,
-  previewImageUrl: "",
-  userEmail: "test@theme.com",
-  createdAt: "2026-03-04",
-  prefers: 0,
-}));
+type TabId = 'activity' | 'keyword';
+interface ITab {
+  id: TabId
+  label: string;
+}
+interface ITabMenuProps {
+  tabs: ITab[];
+  activeTab: TabId;
+  onTabChange: (id: TabId) => void;
+}
 
 function SearchBar() {
   const [keyword, setKeyword] = useState("");
@@ -44,32 +45,82 @@ function SearchBar() {
   );
 }
 
-export default function Community() {
+function TabMenu({ tabs, activeTab, onTabChange }: ITabMenuProps) {
+  return(
+    <div className="sticky top-0 z-10 grid grid-cols-2 bg-white text-center">
+      {tabs.map((tab) => {
+        const isActive = activeTab === tab.id;
+
+        return (
+          <button 
+            key={tab.id} onClick={() => onTabChange(tab.id)}
+            className={`pt-4 pb-1 transition-colors ${isActive ? 'text-primary' : 'text-secondary-300'}`}
+          >
+            <span 
+              className={`border-b-2 pb-1 px-1 transition-all ${isActive ? 'border-primary' : 'border-transparent'}`}
+            >
+              <Text variant="BOLD_15">{tab.label}</Text>
+            </span>
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+function ActivityTab() {
+  const postPlaceholders: ICommunityPostItem[] = Array.from({ length: 12 }, (_, index) => ({
+    boardId: index + 1,
+    themeComponentId: 1000 + index,
+    title: `테마 미리보기 ${index + 1}`,
+    previewImageUrl: "",
+    userEmail: "test@theme.com",
+    createdAt: "2026-03-04",
+    prefers: 0,
+  }));
+
   return (
     <>
-        <div className="sticky top-0 z-10 grid grid-cols-2 bg-white text-center text-[14px] font-bold">
-          <button className="border-b-2 border-primary py-2 text-primary">
-            <Text variant="BOLD_16">활동</Text>
-          </button>
-          <button className="border-b-2 border-secondary-300 py-2 text-secondary-300">
-            <Text variant="BOLD_16">키워드</Text>
-          </button>
-        </div>
+      <main className="px-3 pb-24 pt-2">
+        <SearchBar />
+        <section className="grid grid-cols-2 gap-2">
+          {postPlaceholders.map((item) => (
+            <CommunityPostGridItem key={item.boardId} item={item} />
+          ))}
+        </section>
+      </main>
+      <button className="absolute bottom-16 right-4 flex h-9 items-center rounded-full bg-primary px-4 text-white shadow-sm">
+        <span className="mr-1 text-base leading-none">+</span>
+        <Text variant="REGULAR_14">글쓰기</Text>
+      </button>
+    </>
+  );
+}
 
-        <main className="px-3 pb-24 pt-2">
-          <SearchBar />
+function KeywordTab() {
+  return (
+    <>
+    </>
+  );
+}
 
-          <section className="grid grid-cols-2 gap-2">
-            {postPlaceholders.map((item) => (
-              <CommunityPostGridItem key={item.boardId} item={item} />
-            ))}
-          </section>
-        </main>
+export default function Community() {
+  // 탭 메뉴 상태값, 초기값은 activity: 활동
+  const [activeTab, setActiveTab] = useState<TabId>('activity');
+  // 탭 메뉴 데이터 (확장 가능성을 염두에 두어 배열로 관리)
+  const tabs: ITab[] = [
+    { id: 'activity', label: '활동' },
+    { id: 'keyword', label: '키워드' },
+  ];
 
-        <button className="absolute bottom-16 right-4 flex h-9 items-center rounded-full bg-primary px-4 text-white shadow-sm">
-          <span className="mr-1 text-base leading-none">+</span>
-          <Text variant="REGULAR_14">글쓰기</Text>
-        </button>
+  return (
+    <>
+      <TabMenu tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab} />
+      {activeTab === 'activity' ? (
+          <ActivityTab /> // 활동 컴포넌트
+        ) : (
+          <KeywordTab />  // 키워드 컴포넌트
+      )}
     </>
   )
 }
