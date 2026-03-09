@@ -113,14 +113,15 @@ export default function Community() {
     { id: 'keyword', label: '키워드' },
   ];
 
+  const TAB_COMPONENTS: Record<TabId, React.ReactNode> = {
+    activity: <ActivityTab />,
+    keyword: <KeywordTab />,
+  }
+
   return (
     <>
       <TabMenu tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab} />
-      {activeTab === 'activity' ? (
-          <ActivityTab /> // 활동 컴포넌트
-        ) : (
-          <KeywordTab />  // 키워드 컴포넌트
-      )}
+      {TAB_COMPONENTS[activeTab]}
     </>
   )
 }
