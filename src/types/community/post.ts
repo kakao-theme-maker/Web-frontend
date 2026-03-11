@@ -20,3 +20,9 @@ export interface IComment {
   date: string;
   isLiked: boolean;
 }
+
+export type TabId = 'activity' | 'keyword';
+export interface ITab {
+  id: TabId
+  label: string;
+}
