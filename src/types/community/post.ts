@@ -2,8 +2,19 @@
  * 커뮤니티 관련 타입 정의 파일
  */
 
-// 테마 커뮤니티 게시글 항목
-export interface ICommunityPostItem {
+// GET /api/theme-boards 응답 항목 - 서버 원본 형식 (snake_case)
+export interface IThemeBoardRaw {
+  post_id: number;
+  theme_component_id: number;
+  title: string;
+  prefers: number;
+  preview_image_url: string;
+  user_email: string;
+  created_at: string;
+}
+
+// 테마 게시글 UI 모델 (camelCase)
+export interface IThemeBoard {
   boardId: number;
   themeComponentId: number;
   title: string;
