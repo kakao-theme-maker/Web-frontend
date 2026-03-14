@@ -4,7 +4,7 @@ import type { IComment } from "../../types/community/post";
 import Text from "../common/Text";
 
 export default function CommentModal() {
-  const [comments, setComments] = useState<IComment[]>([
+  const [comments] = useState<IComment[]>([
     { id: 1, author: "강은성", text: "감사합니다", date: "3월 25일", isLiked: true },
     { id: 2, author: "강은성", text: "감사합니다", date: "3월 25일", isLiked: true },
     { id: 3, author: "강은성", text: "감사합니다", date: "3월 25일", isLiked: true },
