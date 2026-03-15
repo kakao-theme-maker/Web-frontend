@@ -4,6 +4,8 @@ import Text from "../../components/common/Text";
 import { useOutsideClick } from "../../services/hooks/useOutsideClick";
 import { useCommunityPostDetail } from "../../services/hooks/useCommunityPostDetail";
 import CommentModal from "../../components/community/CommentModal";
+import Confirm from "../../components/common/Confirm";
+import Alert from "../../components/common/Alert";
 
 // icons
 import BookmarkIcon from '../../components/icons/community-detail/bookmark.svg?react';
@@ -18,9 +20,13 @@ export default function CommunityDetail() {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   // 댓글 모달창 상태값
   const [isCommentOpen, setIsCommentOpen] = useState(false);
+  // 다운로드 확인 모달 상태값
+  const [isDownloadConfirmOpen, setIsDownloadConfirmOpen] = useState(false);
+  // 다운로드 완료 알림 상태값
+  const [isDownloadAlertOpen, setIsDownloadAlertOpen] = useState(false);
 
   // 메뉴 감싸는 컨테이너를 가리키는 ref
-  const menuRef = useRef<HTMLButtonElement | null>(null);
+  const menuRef = useRef<HTMLDivElement | null>(null);
   // 커스텀 훅(useOutsideClick) 호출: 외부 클릭 시 콜백함수 실행
   useOutsideClick(menuRef, () => setIsMenuOpen(false));
 
@@ -50,9 +56,9 @@ export default function CommunityDetail() {
         <div className="relative flex items-center gap-2">
           <button className="rounded-[5px] bg-primary px-4 py-[3px] text-white">
             <Text variant="MEDIUM_12">팔로우</Text>
-          </button> 
+          </button>
+          <div ref={menuRef} className="relative">
           <button
-            ref={menuRef}
             className={menuClass}
             onClick={() => setIsMenuOpen((prev) => !prev)}
             aria-label="더보기 메뉴"
@@ -62,7 +68,10 @@ export default function CommunityDetail() {
 
           {isMenuOpen && (
             <div className="absolute right-0 top-10 z-20 w-[112px] overflow-hidden rounded-md border border-secondary-200 bg-white shadow-md">
-              <button className="w-full px-3 py-1 text-left hover:bg-secondary-50 text-center">
+              <button
+                className="w-full px-3 py-1 text-left hover:bg-secondary-50 text-center"
+                onClick={() => { setIsMenuOpen(false); setIsDownloadConfirmOpen(true); }}
+              >
                 <Text variant="MEDIUM_12">테마 다운로드</Text>
               </button>
               <button className="w-full border-t border-secondary-100 px-3 py-1 text-left hover:bg-secondary-50 text-center">
@@ -70,6 +79,7 @@ export default function CommunityDetail() {
               </button>
             </div>
           )}
+          </div>
         </div>
       </section>
 
@@ -113,6 +123,26 @@ export default function CommunityDetail() {
           {post.createdAt}
         </Text>
       </section>
+
+      {/* 다운로드 버전 선택 */}
+      {isDownloadConfirmOpen && (
+        <Confirm
+          message={<>어떤 버전으로<br />다운받으시겠습니까?</>}
+          confirmText="IOS"
+          cancelText="안드로이드"
+          onConfirm={() => { setIsDownloadConfirmOpen(false); setIsDownloadAlertOpen(true); }}
+          onCancel={() => { setIsDownloadConfirmOpen(false); setIsDownloadAlertOpen(true); }}
+          onClose={() => setIsDownloadConfirmOpen(false)}
+        />
+      )}
+
+      {/* 다운로드 완료 알림 */}
+      {isDownloadAlertOpen && (
+        <Alert
+          message="저장 완료!"
+          onConfirm={() => setIsDownloadAlertOpen(false)}
+        />
+      )}
 
       {/* 댓글 모달 (바텀 시트 스타일) */}
       {isCommentOpen && (
