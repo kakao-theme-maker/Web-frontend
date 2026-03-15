@@ -48,12 +48,11 @@ export interface IThemeBoard {
   prefers: number;
 }
 
-export interface IComment {
-  id: number;
-  author: string;
-  text: string;
-  date: string;
-  isLiked: boolean;
+export interface ICommentRaw {
+  commentId: number;
+  userEmail: string;
+  content: string;
+  createdAt: string;
 }
 
 export type TabId = 'activity' | 'keyword';

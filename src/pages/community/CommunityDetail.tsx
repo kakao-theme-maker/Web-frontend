@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import Text from "../../components/common/Text";
 import { useOutsideClick } from "../../services/hooks/useOutsideClick";
 import { useCommunityPostDetail } from "../../services/hooks/useCommunityPostDetail";
+import { useComments } from "../../services/hooks/useComments";
+import { useCommentActions } from "../../services/hooks/useCommentActions";
 import CommentModal from "../../components/community/CommentModal";
 import Confirm from "../../components/common/Confirm";
 import Alert from "../../components/common/Alert";
@@ -14,7 +16,26 @@ import CommentIcon from '../../components/icons/community-detail/comment.svg?rea
 
 export default function CommunityDetail() {
   const { boardId } = useParams();
-  const { post, isLoading, isError } = useCommunityPostDetail(Number(boardId));
+  const postId = Number(boardId);
+
+  const { post, isLoading, isError } = useCommunityPostDetail(postId);
+  const { comments } = useComments(postId);
+  const {
+    deleteTargetId,
+    editTarget,
+    isDeleteConfirmOpen,
+    isEditConfirmOpen,
+    isDeleteAlertOpen,
+    isEditAlertOpen,
+    setIsDeleteConfirmOpen,
+    setIsEditConfirmOpen,
+    setIsDeleteAlertOpen,
+    setIsEditAlertOpen,
+    deleteComment,
+    updateComment,
+    requestDelete,
+    requestEdit,
+  } = useCommentActions(postId);
 
   // 더보기 메뉴 상태값
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
@@ -58,27 +79,27 @@ export default function CommunityDetail() {
             <Text variant="MEDIUM_12">팔로우</Text>
           </button>
           <div ref={menuRef} className="relative">
-          <button
-            className={menuClass}
-            onClick={() => setIsMenuOpen((prev) => !prev)}
-            aria-label="더보기 메뉴"
-          >
-            <span className="text-3xl leading-none">⋮</span>
-          </button>
+            <button
+              className={menuClass}
+              onClick={() => setIsMenuOpen((prev) => !prev)}
+              aria-label="더보기 메뉴"
+            >
+              <span className="text-3xl leading-none">⋮</span>
+            </button>
 
-          {isMenuOpen && (
-            <div className="absolute right-0 top-10 z-20 w-[112px] overflow-hidden rounded-md border border-secondary-200 bg-white shadow-md">
-              <button
-                className="w-full px-3 py-1 text-left hover:bg-secondary-50 text-center"
-                onClick={() => { setIsMenuOpen(false); setIsDownloadConfirmOpen(true); }}
-              >
-                <Text variant="MEDIUM_12">테마 다운로드</Text>
-              </button>
-              <button className="w-full border-t border-secondary-100 px-3 py-1 text-left hover:bg-secondary-50 text-center">
-                <Text variant="MEDIUM_12">공유하기</Text>
-              </button>
-            </div>
-          )}
+            {isMenuOpen && (
+              <div className="absolute right-0 top-10 z-20 w-[112px] overflow-hidden rounded-md border border-secondary-200 bg-white shadow-md">
+                <button
+                  className="w-full px-3 py-1 text-left hover:bg-secondary-50 text-center"
+                  onClick={() => { setIsMenuOpen(false); setIsDownloadConfirmOpen(true); }}
+                >
+                  <Text variant="MEDIUM_12">테마 다운로드</Text>
+                </button>
+                <button className="w-full border-t border-secondary-100 px-3 py-1 text-left hover:bg-secondary-50 text-center">
+                  <Text variant="MEDIUM_12">공유하기</Text>
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -107,7 +128,7 @@ export default function CommunityDetail() {
               <button onClick={() => setIsCommentOpen(true)}>
                 <CommentIcon width={24} height={24} aria-label="댓글" />
               </button>
-              <Text variant="REGULAR_15">190</Text>
+              <Text variant="REGULAR_15">{comments.length}</Text>
             </div>
           </div>
           <BookmarkIcon width={12} height={17} aria-label="북마크" />
@@ -148,14 +169,59 @@ export default function CommunityDetail() {
       {isCommentOpen && (
         <>
           {/* 어두운 배경 (클릭 시 닫힘) */}
-          <div 
-            className="absolute inset-0 z-40 bg-black/70" 
-            onClick={() => setIsCommentOpen(false)} 
+          <div
+            className="absolute inset-0 z-40 bg-black/70"
+            onClick={() => setIsCommentOpen(false)}
           />
           {/* 모달: 하단에 고정 */}
           <div className="absolute bottom-0 left-0 right-0 z-50">
-            <CommentModal />
+            <CommentModal
+              postId={postId}
+              comments={comments}
+              onRequestDelete={requestDelete}
+              onRequestEdit={requestEdit}
+            />
           </div>
+
+          {/* 댓글 삭제 confirm */}
+          {isDeleteConfirmOpen && (
+            <Confirm
+              message="댓글을 삭제하시겠습니까?"
+              confirmText="삭제할게요"
+              cancelText="아니요"
+              onConfirm={() => deleteTargetId !== null && deleteComment(deleteTargetId)}
+              onCancel={() => setIsDeleteConfirmOpen(false)}
+              onClose={() => setIsDeleteConfirmOpen(false)}
+            />
+          )}
+
+          {/* 댓글 삭제 완료 알림 */}
+          {isDeleteAlertOpen && (
+            <Alert
+              message="댓글이 삭제되었습니다."
+              onConfirm={() => setIsDeleteAlertOpen(false)}
+            />
+          )}
+
+          {/* 댓글 수정 confirm */}
+          {isEditConfirmOpen && (
+            <Confirm
+              message="댓글을 수정하시겠습니까?"
+              confirmText="수정할게요"
+              cancelText="아니요"
+              onConfirm={() => editTarget !== null && updateComment(editTarget)}
+              onCancel={() => setIsEditConfirmOpen(false)}
+              onClose={() => setIsEditConfirmOpen(false)}
+            />
+          )}
+
+          {/* 댓글 수정 완료 알림 */}
+          {isEditAlertOpen && (
+            <Alert
+              message="댓글이 수정되었습니다."
+              onConfirm={() => setIsEditAlertOpen(false)}
+            />
+          )}
         </>
       )}
     </main>

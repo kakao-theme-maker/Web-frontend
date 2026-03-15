@@ -19,8 +19,8 @@ export function useLogin() {
   const { mutate: loginMutate } = usePostMutation<IAuthTokens, ILoginFormData>(
     ({ email, password }) => AuthService.login(email, password),
     {
-      onSuccess: (data) => {
-        setAccessToken(data.accessToken, data.refreshToken);
+      onSuccess: (data, variables) => {
+        setAccessToken(data.accessToken, data.refreshToken, variables.email);
         navigate("/");
       },
       onError: () => {
