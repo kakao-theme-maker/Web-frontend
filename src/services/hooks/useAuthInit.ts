@@ -19,7 +19,7 @@ export function useAuthInit() {
 
       if (refreshToken) {
         try {
-          const { data } = await AuthService.refresh(refreshToken);
+          const data = await AuthService.refresh(refreshToken);
           setAccessToken(data.accessToken, data.refreshToken);
         } catch {
           // refreshToken이 만료되었거나 유효하지 않으면 비인증 상태 유지

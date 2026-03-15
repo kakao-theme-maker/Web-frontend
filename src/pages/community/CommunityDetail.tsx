@@ -2,6 +2,7 @@ import { useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import Text from "../../components/common/Text";
 import { useOutsideClick } from "../../services/hooks/useOutsideClick";
+import { useCommunityPostDetail } from "../../services/hooks/useCommunityPostDetail";
 import CommentModal from "../../components/community/CommentModal";
 
 // icons
@@ -11,6 +12,8 @@ import CommentIcon from '../../components/icons/community-detail/comment.svg?rea
 
 export default function CommunityDetail() {
   const { boardId } = useParams();
+  const { post, isLoading, isError } = useCommunityPostDetail(Number(boardId));
+
   // 더보기 메뉴 상태값
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   // 댓글 모달창 상태값
@@ -24,15 +27,22 @@ export default function CommunityDetail() {
   // 더보기 메뉴 클래스명
   const menuClass: string = `flex h-8 w-8 items-center justify-center rounded-full` + (isMenuOpen ? ` text-white bg-primary` : ``);
 
+  if (isLoading) return <main className="flex h-full items-center justify-center"><Text variant="REGULAR_14">로딩 중...</Text></main>;
+  if (isError || !post) return <main className="flex h-full items-center justify-center"><Text variant="REGULAR_14">게시글을 불러올 수 없습니다.</Text></main>;
+
   return (
     <main className="pt-8">
       <section className="flex items-center justify-between px-5">
-        <div className="flex items-center gap-2.5">
-          <div className="h-10 w-10 rounded-full bg-secondary-300" />
-          <div className="flex flex-col">
-            <Text variant="BOLD_15">강은성</Text>
+        <div className="flex min-w-0 max-w-[55%] items-center gap-2.5">
+          <img
+            src="https://placehold.co/40x40"
+            alt="프로필"
+            className="h-10 w-10 shrink-0 rounded-full object-cover"
+          />
+          <div className="flex min-w-0 flex-col">
+            <Text variant="BOLD_15" className="truncate">{post.userEmail}</Text>
             <Text variant="REGULAR_10" className="text-secondary-400">
-              3월 25일
+              {post.createdAt}
             </Text>
           </div>
         </div>
@@ -65,6 +75,9 @@ export default function CommunityDetail() {
 
       <section className="mt-3">
         <div className="relative h-[330px] w-full overflow-hidden rounded-[2px] bg-secondary-200">
+          {post.previewImageUrl && (
+            <img src={post.previewImageUrl} alt="테마 미리보기" className="h-full w-full object-cover" />
+          )}
           <div className="absolute bottom-3 left-0 right-0 flex items-center justify-center gap-1">
             <span className="h-1.5 w-1.5 rounded-full bg-black" />
             <span className="h-1.5 w-1.5 rounded-full bg-white" />
@@ -78,7 +91,7 @@ export default function CommunityDetail() {
           <div className="flex items-center gap-5">
             <div className="flex items-center gap-1.5">
               <HeartIcon width={24} height={24} aria-label="좋아요" />
-              <Text variant="REGULAR_15">110</Text>
+              <Text variant="REGULAR_15">{post.prefers}</Text>
             </div>
             <div className="flex items-center gap-1.5">
               <button onClick={() => setIsCommentOpen(true)}>
@@ -91,13 +104,13 @@ export default function CommunityDetail() {
         </div>
 
         <div className="mt-2">
-          <Text variant="MEDIUM_14" className="mr-2">
-            강은성
+          <Text variant="MEDIUM_14" className="mr-2 inline-block max-w-[40%] truncate align-bottom">
+            {post.userEmail}
           </Text>
-          <Text variant="REGULAR_14">좋아요 댓글 후 저장해주세요 ^^ #{boardId}</Text>
+          <Text variant="REGULAR_14">{post.content}</Text>
         </div>
         <Text variant="REGULAR_14" className="mt-1 text-secondary-400">
-          4일 전
+          {post.createdAt}
         </Text>
       </section>
 

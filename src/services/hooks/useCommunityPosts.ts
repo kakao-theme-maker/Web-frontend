@@ -1,14 +1,14 @@
 import { useGetQuery } from '../api/useApi';
-import type { IThemeBoardRaw, IThemeBoard } from '../../types/community/post';
+import { CommunityService } from '../api/CommunityService';
+import type { IThemeBoard } from '../../types/community/post';
 
 const PAGE_NUMBER = 0;
 const PAGE_SIZE = 200;
 
 export function useCommunityPosts() {
-  const { data, isLoading, isError } = useGetQuery<IThemeBoardRaw[]>(
+  const { data, isLoading, isError } = useGetQuery(
     ['theme-boards'],
-    '/api/theme-boards',
-    { params: { pageNumber: PAGE_NUMBER, pageSize: PAGE_SIZE } },
+    () => CommunityService.getThemeBoards(PAGE_NUMBER, PAGE_SIZE),
   );
 
   const posts: IThemeBoard[] = (data ?? []).map((item) => ({
