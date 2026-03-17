@@ -57,10 +57,10 @@ export default function SignUp() {
               placeholder="이메일"
               {...register("email", { required: true, pattern: EMAIL_PATTERN })}
               className={`w-full rounded-lg border px-4 py-2 text-[14px] outline-none focus:border-primary ${
-                errors.email ? "border-red-400" : "border-secondary-300"
+                errors.email && watch("email") ? "border-red-400" : "border-secondary-300"
               }`}
             />
-            <p className={`mt-1 text-[12px] ${errors.email ? "text-red-500" : "text-gray-400"}`}>
+            <p className={`mt-1 text-[12px] ${errors.email && watch("email") ? "text-red-500" : "text-gray-400"}`}>
               올바른 이메일 형식으로 입력해 주세요
             </p>
           </div>
@@ -71,7 +71,7 @@ export default function SignUp() {
             placeholder="비밀번호"
             {...register("password", { required: true, pattern: PW_PATTERN })}
             className={`w-full rounded-lg border px-4 py-2 text-[14px] outline-none focus:border-primary ${
-              errors.password ? "border-red-400" : "border-secondary-300"
+              errors.password && watch("password") ? "border-red-400" : "border-secondary-300"
             }`}
           />
 
@@ -85,15 +85,17 @@ export default function SignUp() {
                 validate: (value) => value === watch("password"),
               })}
               className={`w-full rounded-lg border px-4 py-2 text-[14px] outline-none focus:border-primary ${
-                errors.passwordConfirm ? "border-red-400" : "border-secondary-300"
+                errors.passwordConfirm && watch("passwordConfirm") ? "border-red-400" : "border-secondary-300"
               }`}
             />
             <p
               className={`mt-1 text-[12px] ${
-                errors.password || errors.passwordConfirm ? "text-red-500" : "text-gray-400"
+                (errors.password && watch("password")) || (errors.passwordConfirm && watch("passwordConfirm")) ? "text-red-500" : "text-gray-400"
               }`}
             >
-              비밀번호는 영문 대소문자, 숫자, 특수문자를 조합하여 8-20자로 입력해 주세요
+              {errors.passwordConfirm && watch("passwordConfirm") && !errors.password
+                ? "비밀번호가 일치하지 않습니다"
+                : "비밀번호는 영문 대소문자, 숫자, 특수문자를 조합하여 8-20자로 입력해 주세요"}
             </p>
           </div>
 

@@ -8,12 +8,12 @@ export default defineConfig({
     react(),
     svgr()
   ],
-  server: {
-    proxy: {
-      '/api': {
-        target: 'http://localhost:28080',
-        changeOrigin: true,
-      },
-    },
-  },
+  // server: {
+  //   proxy: {
+  //     '/api': {
+  //       target: 'http://localhost:28080',
+  //       changeOrigin: true,
+  //     },
+  //   },
+  // },
 })
