@@ -15,6 +15,7 @@ import ProfileIcon from  '../components/icons/bottom-tab-menu/bottom-profile.svg
 interface IBottomTabBarProps {
   isHome: boolean
   isCommunity: boolean
+  isMyPage: boolean
 }
 
 /**
@@ -57,12 +58,12 @@ function BottomTabBarItem({ icon, text, href, isActive = false }: IBottomTabItem
   );
 }
 
-export default function BottomTabBar({ isHome, isCommunity }: IBottomTabBarProps) {
+export default function BottomTabBar({ isHome, isCommunity, isMyPage }: IBottomTabBarProps) {
   const bottomTabBarItems: IBottomTabItem[] = [
     { icon: HomeIcon, text: "홈", href: "/", isActive: isHome },
     { icon: CommunityIcon, text: "게시글", href: "/community", isActive: isCommunity },
     { icon: NotifyIcon, text: "알림" },
-    { icon: ProfileIcon, text: "마이" },
+    { icon: ProfileIcon, text: "마이", href: "/mypage", isActive: isMyPage },
   ]
 
   return (

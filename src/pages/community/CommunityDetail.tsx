@@ -1,7 +1,8 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 import Text from "../../components/common/Text";
-import { useOutsideClick } from "../../services/hooks/useOutsideClick";
+import MoreMenu from "../../components/common/MoreMenu";
+import Button from "../../components/common/Button";
 import CommentModal from "../../components/community/CommentModal";
 
 // icons
@@ -9,20 +10,15 @@ import BookmarkIcon from '../../components/icons/community-detail/bookmark.svg?r
 import HeartIcon from '../../components/icons/community-detail/heart.svg?react';
 import CommentIcon from '../../components/icons/community-detail/comment.svg?react';
 
+const MORE_MENU_ITEMS = [
+  { label: "테마 다운로드", onClick: () => {} },
+  { label: "공유하기", onClick: () => {} },
+];
+
 export default function CommunityDetail() {
   const { boardId } = useParams();
-  // 더보기 메뉴 상태값
-  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   // 댓글 모달창 상태값
   const [isCommentOpen, setIsCommentOpen] = useState(false);
-
-  // 메뉴 감싸는 컨테이너를 가리키는 ref
-  const menuRef = useRef<HTMLButtonElement | null>(null);
-  // 커스텀 훅(useOutsideClick) 호출: 외부 클릭 시 콜백함수 실행
-  useOutsideClick(menuRef, () => setIsMenuOpen(false));
-
-  // 더보기 메뉴 클래스명
-  const menuClass: string = `flex h-8 w-8 items-center justify-center rounded-full` + (isMenuOpen ? ` text-white bg-primary` : ``);
 
   return (
     <main className="pt-8">
@@ -37,29 +33,9 @@ export default function CommunityDetail() {
           </div>
         </div>
 
-        <div className="relative flex items-center gap-2">
-          <button className="rounded-[5px] bg-primary px-4 py-[3px] text-white">
-            <Text variant="MEDIUM_12">팔로우</Text>
-          </button> 
-          <button
-            ref={menuRef}
-            className={menuClass}
-            onClick={() => setIsMenuOpen((prev) => !prev)}
-            aria-label="더보기 메뉴"
-          >
-            <span className="text-3xl leading-none">⋮</span>
-          </button>
-
-          {isMenuOpen && (
-            <div className="absolute right-0 top-10 z-20 w-[112px] overflow-hidden rounded-md border border-secondary-200 bg-white shadow-md">
-              <button className="w-full px-3 py-1 text-left hover:bg-secondary-50 text-center">
-                <Text variant="MEDIUM_12">테마 다운로드</Text>
-              </button>
-              <button className="w-full border-t border-secondary-100 px-3 py-1 text-left hover:bg-secondary-50 text-center">
-                <Text variant="MEDIUM_12">공유하기</Text>
-              </button>
-            </div>
-          )}
+        <div className="flex items-center gap-2">
+          <Button size="sm">팔로우</Button>
+          <MoreMenu items={MORE_MENU_ITEMS} />
         </div>
       </section>
 

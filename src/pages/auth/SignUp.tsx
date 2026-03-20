@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import BackArrowIcon from "../../components/icons/header/back-arrow.svg?react";
 import type { ISignUpFormData } from "../../types/auth/types";
 import Text from "../../components/common/Text";
+import Button from "../../components/common/Button";
 
 const ID_PATTERN = /^[a-zA-Z0-9]{6,12}$/;
 const PW_PATTERN =
@@ -124,15 +125,9 @@ export default function SignUp() {
           </div>
 
           {/* 제출 버튼 */}
-          <button
-            type="submit"
-            disabled={!isSubmittable}
-            className={`mt-4 w-full rounded-lg py-3 text-[15px] font-semibold text-white transition-colors ${
-              isSubmittable ? "bg-primary" : "cursor-not-allowed bg-secondary-300"
-            }`}
-          >
+          <Button type="submit" fullWidth disabled={!isSubmittable} className="mt-4">
             다음
-          </button>
+          </Button>
         </form>
       </div>
     </div>
