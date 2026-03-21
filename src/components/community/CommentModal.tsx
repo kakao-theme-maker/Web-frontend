@@ -1,57 +1,116 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import HeartIcon from "../icons/community-detail/heart.svg?react";
-import type { IComment } from "../../types/community/post";
+import type { ICommentRaw } from "../../types/community/post";
 import Text from "../common/Text";
+import { useAuthStore } from "../../stores/authStore";
+import { useOutsideClick } from "../../services/hooks/useOutsideClick";
+import { usePostMutation } from "../../services/api/useApi";
+import { CommunityService } from "../../services/api/CommunityService";
+import { useQueryClient } from "@tanstack/react-query";
 
-export default function CommentModal() {
-  const [comments] = useState<IComment[]>([
-    { id: 1, author: "강은성", text: "감사합니다", date: "3월 25일", isLiked: true },
-    { id: 2, author: "강은성", text: "감사합니다", date: "3월 25일", isLiked: true },
-    { id: 3, author: "강은성", text: "감사합니다", date: "3월 25일", isLiked: true },
-  ]);
+interface ICommentModalProps {
+  postId: number;
+  comments: ICommentRaw[];
+  onRequestDelete: (commentId: number) => void;
+  onRequestEdit: (commentId: number, content: string) => void;
+}
+
+export default function CommentModal({ postId, comments, onRequestDelete, onRequestEdit }: ICommentModalProps) {
+  const queryClient = useQueryClient();
+  const userEmail = useAuthStore((state) => state.userEmail);
+
   const [newComment, setNewComment] = useState("");
+  const [editingId, setEditingId] = useState<number | null>(null);
+  const [editText, setEditText] = useState("");
+
+  const editInputRef = useRef<HTMLDivElement | null>(null);
+  useOutsideClick(editInputRef, () => {
+    if (editingId !== null) setEditingId(null);
+  });
+
+  const { mutate: createComment } = usePostMutation<ICommentRaw, string>(
+    (content) => CommunityService.createComment(postId, content),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['comments', postId] });
+        setNewComment("");
+      },
+    },
+  );
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newComment.trim()) return;
-    setNewComment("");
+    createComment(newComment);
+  };
+
+  const handleEditKeyDown = (e: React.KeyboardEvent, comment: ICommentRaw) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      const content = editText.trim();
+      if (!content) return;
+      setEditingId(null);
+      onRequestEdit(comment.commentId, content);
+    }
   };
 
   return (
     <div className="flex h-[500px] w-full flex-col rounded-t-2xl bg-white shadow-xl">
-      {/* 헤더 영역 */}
+      {/* 헤더 */}
       <div className="flex items-center justify-center py-4">
         <Text variant="BOLD_16">댓글</Text>
       </div>
 
-      {/* 댓글 리스트 영역 */}
+      {/* 댓글 리스트 */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {comments.map((comment) => (
-          <div key={comment.id} className="flex items-start justify-between">
+          <div key={comment.commentId} className="flex items-start justify-between">
             <div className="flex gap-3">
               <div className="h-10 w-10 rounded-full bg-gray-300 flex-shrink-0" />
               <div>
-                <div className="flex items-center gap-2">
-                  <Text variant="BOLD_12">{comment.author}</Text>
-                </div>
+                <Text variant="BOLD_12">{comment.userEmail}</Text>
                 <div className="mt-[-5px]">
-                  <Text variant="MEDIUM_12">{comment.text}</Text>
+                  {editingId === comment.commentId ? (
+                    <div ref={editInputRef}>
+                      <input
+                        autoFocus
+                        type="text"
+                        value={editText}
+                        onChange={(e) => setEditText(e.target.value)}
+                        onKeyDown={(e) => handleEditKeyDown(e, comment)}
+                        className="rounded border border-gray-300 px-2 py-1 text-xs outline-none focus:border-blue-400"
+                      />
+                    </div>
+                  ) : (
+                    <Text variant="MEDIUM_12">{comment.content}</Text>
+                  )}
                 </div>
-                <div className="flex gap-2 text-xs text-gray-400">
-                  <button className="hover:underline text-secondary-300">삭제</button>
-                  <button className="hover:underline text-secondary-300">수정</button>
-                </div>
+                {userEmail === comment.userEmail && (
+                  <div className="flex gap-2">
+                    <button
+                      className="text-xs text-secondary-300 hover:underline"
+                      onClick={() => onRequestDelete(comment.commentId)}
+                    >
+                      삭제
+                    </button>
+                    <button
+                      className="text-xs text-secondary-300 hover:underline"
+                      onClick={() => { setEditingId(comment.commentId); setEditText(comment.content); }}
+                    >
+                      수정
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
-            {/* 하트 아이콘 (isActive에 따른 색상 변경 적용) */}
-            <button className={`${comment.isLiked ? "text-red-500" : "text-gray-300"}`}>
+            <button className="text-gray-300">
               <HeartIcon className="h-5 w-5 fill-currentColor" />
             </button>
           </div>
         ))}
       </div>
 
-      {/* 댓글 입력 영역 (하단 고정) */}
+      {/* 댓글 입력 */}
       <div className="p-4 pb-4">
         <form onSubmit={handleSubmit} className="flex items-center gap-3">
           <div className="h-10 w-10 rounded-full bg-gray-300 flex-shrink-0" />

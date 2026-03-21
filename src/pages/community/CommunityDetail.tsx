@@ -1,120 +1,100 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useMemo, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
+import CommunityDetailCard from "../../components/community/CommunityDetailCard";
+import { MOCK_POSTS } from "../../services/mock/communityMock";
+import { useCommunityPostDetail } from "../../services/hooks/useCommunityPostDetail";
 import Text from "../../components/common/Text";
-import { useOutsideClick } from "../../services/hooks/useOutsideClick";
-import CommentModal from "../../components/community/CommentModal";
 
-// icons
-import BookmarkIcon from '../../components/icons/community-detail/bookmark.svg?react';
-import HeartIcon from '../../components/icons/community-detail/heart.svg?react';
-import CommentIcon from '../../components/icons/community-detail/comment.svg?react';
+const TRANSITION_DURATION = 700;
 
 export default function CommunityDetail() {
   const { boardId } = useParams();
-  // 더보기 메뉴 상태값
-  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
-  // 댓글 모달창 상태값
-  const [isCommentOpen, setIsCommentOpen] = useState(false);
+  const postId = Number(boardId);
 
-  // 메뉴 감싸는 컨테이너를 가리키는 ref
-  const menuRef = useRef<HTMLButtonElement | null>(null);
-  // 커스텀 훅(useOutsideClick) 호출: 외부 클릭 시 콜백함수 실행
-  useOutsideClick(menuRef, () => setIsMenuOpen(false));
+  const { post, isLoading, isError } = useCommunityPostDetail(postId);
 
-  // 더보기 메뉴 클래스명
-  const menuClass: string = `flex h-8 w-8 items-center justify-center rounded-full` + (isMenuOpen ? ` text-white bg-primary` : ``);
+  const posts = useMemo(() => {
+    if (!post) return MOCK_POSTS;
+    return [post, ...MOCK_POSTS];
+  }, [post]);
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const stateRef = useRef({ currentIndex: 0, isAnimating: false, postsLength: posts.length });
+  const touchStartY = useRef(0);
+
+  useEffect(() => {
+    stateRef.current.postsLength = posts.length;
+  }, [posts.length]);
+
+  const goTo = useCallback((idx: number) => {
+    if (stateRef.current.isAnimating) return;
+    const next = Math.max(0, Math.min(idx, stateRef.current.postsLength - 1));
+    if (next === stateRef.current.currentIndex) return;
+
+    stateRef.current.isAnimating = true;
+    stateRef.current.currentIndex = next;
+    setCurrentIndex(next);
+
+    setTimeout(() => { stateRef.current.isAnimating = false; }, TRANSITION_DURATION);
+  }, []);
+
+  // 네이티브 wheel 이벤트로 등록 (passive: false 로 preventDefault 가능)
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const handler = (e: WheelEvent) => {
+      e.preventDefault();
+      if (e.deltaY > 0) goTo(stateRef.current.currentIndex + 1);
+      else goTo(stateRef.current.currentIndex - 1);
+    };
+
+    el.addEventListener("wheel", handler, { passive: false });
+    return () => el.removeEventListener("wheel", handler);
+  }, [goTo]);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartY.current = e.touches[0].clientY;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    const delta = touchStartY.current - e.changedTouches[0].clientY;
+    if (Math.abs(delta) > 50) {
+      if (delta > 0) goTo(stateRef.current.currentIndex + 1);
+      else goTo(stateRef.current.currentIndex - 1);
+    }
+  };
 
   return (
-    <main className="pt-8">
-      <section className="flex items-center justify-between px-5">
-        <div className="flex items-center gap-2.5">
-          <div className="h-10 w-10 rounded-full bg-secondary-300" />
-          <div className="flex flex-col">
-            <Text variant="BOLD_15">강은성</Text>
-            <Text variant="REGULAR_10" className="text-secondary-400">
-              3월 25일
-            </Text>
-          </div>
+    <div
+      ref={containerRef}
+      className="relative h-full overflow-hidden"
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+    >
+      {isLoading && (
+        <div className="flex h-full items-center justify-center">
+          <Text variant="REGULAR_14">로딩 중...</Text>
         </div>
-
-        <div className="relative flex items-center gap-2">
-          <button className="rounded-[5px] bg-primary px-4 py-[3px] text-white">
-            <Text variant="MEDIUM_12">팔로우</Text>
-          </button> 
-          <button
-            ref={menuRef}
-            className={menuClass}
-            onClick={() => setIsMenuOpen((prev) => !prev)}
-            aria-label="더보기 메뉴"
-          >
-            <span className="text-3xl leading-none">⋮</span>
-          </button>
-
-          {isMenuOpen && (
-            <div className="absolute right-0 top-10 z-20 w-[112px] overflow-hidden rounded-md border border-secondary-200 bg-white shadow-md">
-              <button className="w-full px-3 py-1 text-left hover:bg-secondary-50 text-center">
-                <Text variant="MEDIUM_12">테마 다운로드</Text>
-              </button>
-              <button className="w-full border-t border-secondary-100 px-3 py-1 text-left hover:bg-secondary-50 text-center">
-                <Text variant="MEDIUM_12">공유하기</Text>
-              </button>
-            </div>
-          )}
-        </div>
-      </section>
-
-      <section className="mt-3">
-        <div className="relative h-[330px] w-full overflow-hidden rounded-[2px] bg-secondary-200">
-          <div className="absolute bottom-3 left-0 right-0 flex items-center justify-center gap-1">
-            <span className="h-1.5 w-1.5 rounded-full bg-black" />
-            <span className="h-1.5 w-1.5 rounded-full bg-white" />
-            <span className="h-1.5 w-1.5 rounded-full bg-white" />
-          </div>
-        </div>
-      </section>
-
-      <section className="mt-5 px-5">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-5">
-            <div className="flex items-center gap-1.5">
-              <HeartIcon width={24} height={24} aria-label="좋아요" />
-              <Text variant="REGULAR_15">110</Text>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <button onClick={() => setIsCommentOpen(true)}>
-                <CommentIcon width={24} height={24} aria-label="댓글" />
-              </button>
-              <Text variant="REGULAR_15">190</Text>
-            </div>
-          </div>
-          <BookmarkIcon width={12} height={17} aria-label="북마크" />
-        </div>
-
-        <div className="mt-2">
-          <Text variant="MEDIUM_14" className="mr-2">
-            강은성
-          </Text>
-          <Text variant="REGULAR_14">좋아요 댓글 후 저장해주세요 ^^ #{boardId}</Text>
-        </div>
-        <Text variant="REGULAR_14" className="mt-1 text-secondary-400">
-          4일 전
-        </Text>
-      </section>
-
-      {/* 댓글 모달 (바텀 시트 스타일) */}
-      {isCommentOpen && (
-        <>
-          {/* 어두운 배경 (클릭 시 닫힘) */}
-          <div 
-            className="absolute inset-0 z-40 bg-black/70" 
-            onClick={() => setIsCommentOpen(false)} 
-          />
-          {/* 모달: 하단에 고정 */}
-          <div className="absolute bottom-0 left-0 right-0 z-50">
-            <CommentModal />
-          </div>
-        </>
       )}
-    </main>
+      {isError && (
+        <div className="flex h-full items-center justify-center">
+          <Text variant="REGULAR_14">게시글을 불러올 수 없습니다.</Text>
+        </div>
+      )}
+      {!isLoading && !isError && posts.map((p, idx) => (
+        <div
+          key={p.boardId}
+          className="absolute inset-0 transition-transform ease-in-out"
+          style={{
+            transform: `translateY(${(idx - currentIndex) * 100}%)`,
+            transitionDuration: `${TRANSITION_DURATION}ms`,
+          }}
+        >
+          <CommunityDetailCard post={p} />
+        </div>
+      ))}
+    </div>
   );
 }

@@ -1,11 +1,16 @@
 export interface ILoginFormData {
-  userId: string;
+  email: string;
   password: string;
 }
 
 export interface ISignUpFormData {
   name: string;
-  userId: string;
+  email: string;
   password: string;
   passwordConfirm: string;
+}
+
+export interface IAuthTokens {
+  accessToken: string;
+  refreshToken: string;
 }
