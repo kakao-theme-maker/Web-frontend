@@ -8,6 +8,7 @@ export default function MobileLayout() {
   const isCommunity: boolean = pathname.startsWith("/community")
   const isMyPage: boolean = pathname.startsWith("/mypage")
   const isProfileEdit: boolean = pathname === "/mypage/profile-edit"
+  const isCommunityDetail: boolean = pathname.split('/').filter(Boolean).length >= 2 && isCommunity
   const hasHeader: boolean = isHome || isCommunity || isMyPage
   const headerTitle: string = isCommunity ? "테마 커뮤니티" : isProfileEdit ? "프로필 수정" : isMyPage ? "마이페이지" : "고정 헤더"
 
@@ -21,7 +22,7 @@ export default function MobileLayout() {
       <div className="relative flex h-[700px] w-[340px] flex-col overflow-hidden border border-secondary-200">
         {hasHeader && <MobileHeader title={headerTitle} showBackArrow={showBackArrow} className={isProfileEdit ? "!bg-[#f1f1f1]" : ""} />}
 
-        <div className="scrollbar-hidden flex-1 overflow-y-auto pb-16">
+        <div className={`scrollbar-hidden flex-1 overflow-y-auto ${isCommunityDetail ? "" : "pb-16"}`}>
           <Outlet />
         </div>
 

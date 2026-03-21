@@ -3,8 +3,11 @@ import LoginLogoIcon from "../../components/icons/login/login-logo.svg?react";
 import LoginBottomIcon from "../../components/icons/login/login-bottom.svg?react";
 import Text from "../../components/common/Text";
 import Button from "../../components/common/Button";
+import { useLogin } from "../../services/hooks/useLogin";
 
 export default function Login() {
+  const { register, handleSubmit, onSubmit, errors, isSubmitting } = useLogin();
+
   return (
     <div className="relative flex h-full flex-col overflow-hidden bg-gradient-to-b from-white via-[#f0f5ff] to-[#dce8ff]">
       {/* 로고 영역 - 상단 중앙 */}
@@ -22,19 +25,24 @@ export default function Login() {
       </div>
 
       {/* 폼 영역 */}
-      <div className="flex flex-col gap-3 px-8 pb-44">
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3 px-8 pb-44">
         <input
           type="text"
-          placeholder="아이디"
+          placeholder="이메일"
+          {...register("email", { required: true })}
           className="w-full rounded-xl border border-secondary-300 bg-white px-4 py-3 text-[14px] shadow-sm outline-none focus:border-primary"
         />
         <input
           type="password"
           placeholder="비밀번호"
+          {...register("password", { required: true })}
           className="w-full rounded-xl border border-secondary-300 bg-white px-4 py-3 text-[14px] shadow-sm outline-none focus:border-primary"
         />
-        <Button type="button" fullWidth className="mt-1 shadow-sm">
-          로그인
+        {errors.root && (
+          <p className="text-center text-[12px] text-red-500">{errors.root.message}</p>
+        )}
+        <Button type="submit" fullWidth disabled={isSubmitting} className="mt-1 shadow-sm">
+          {isSubmitting ? "로그인 중..." : "로그인"}
         </Button>
         <p className="text-center text-[13px] text-gray-400">
           계정이 없으신가요?{" "}
@@ -42,7 +50,7 @@ export default function Login() {
             회원가입
           </Link>
         </p>
-      </div>
+      </form>
 
       {/* 하단 우측 일러스트 */}
       <div className="absolute bottom-0 right-0">

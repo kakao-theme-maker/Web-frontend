@@ -1,14 +1,8 @@
-import { useState } from "react";
-import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import BackArrowIcon from "../../components/icons/header/back-arrow.svg?react";
-import type { ISignUpFormData } from "../../types/auth/types";
 import Text from "../../components/common/Text";
 import Button from "../../components/common/Button";
-
-const ID_PATTERN = /^[a-zA-Z0-9]{6,12}$/;
-const PW_PATTERN =
-  /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+\[\]{};':"\\|,.<>/?])[a-zA-Z\d!@#$%^&*()\-_=+\[\]{};':"\\|,.<>/?]{8,20}$/;
+import { useSignUp } from "../../services/hooks/useSignUp";
 
 const CHECKBOXES = [
   { key: "age" as const, label: "만 14세 이상입니다." },
@@ -18,24 +12,19 @@ const CHECKBOXES = [
 
 export default function SignUp() {
   const navigate = useNavigate();
-  const [checks, setChecks] = useState({ age: false, terms: false, privacy: false });
-
   const {
     register,
     handleSubmit,
     watch,
-    formState: { errors, isValid },
-  } = useForm<ISignUpFormData>({ mode: "onChange" });
-
-  const allChecked = CHECKBOXES.every(({ key }) => checks[key]);
-  const isSubmittable = isValid && allChecked;
-
-  const toggleCheck = (key: keyof typeof checks) =>
-    setChecks((prev) => ({ ...prev, [key]: !prev[key] }));
-
-  const onSubmit = (_data: ISignUpFormData) => {
-    // UI only
-  };
+    onSubmit,
+    errors,
+    isSubmitting,
+    isSubmittable,
+    checks,
+    toggleCheck,
+    EMAIL_PATTERN,
+    PW_PATTERN,
+  } = useSignUp();
 
   return (
     <div className="flex h-full flex-col bg-white">
@@ -62,18 +51,18 @@ export default function SignUp() {
             className="w-full rounded-lg border border-secondary-300 px-4 py-2 text-[14px] outline-none focus:border-primary"
           />
 
-          {/* 아이디 */}
+          {/* 이메일 */}
           <div>
             <input
               type="text"
-              placeholder="아이디"
-              {...register("userId", { required: true, pattern: ID_PATTERN })}
+              placeholder="이메일"
+              {...register("email", { required: true, pattern: EMAIL_PATTERN })}
               className={`w-full rounded-lg border px-4 py-2 text-[14px] outline-none focus:border-primary ${
-                errors.userId ? "border-red-400" : "border-secondary-300"
+                errors.email && watch("email") ? "border-red-400" : "border-secondary-300"
               }`}
             />
-            <p className={`mt-1 text-[12px] ${errors.userId ? "text-red-500" : "text-gray-400"}`}>
-              6-12자 영문, 숫자로 입력해 주세요
+            <p className={`mt-1 text-[12px] ${errors.email && watch("email") ? "text-red-500" : "text-gray-400"}`}>
+              올바른 이메일 형식으로 입력해 주세요
             </p>
           </div>
 
@@ -83,7 +72,7 @@ export default function SignUp() {
             placeholder="비밀번호"
             {...register("password", { required: true, pattern: PW_PATTERN })}
             className={`w-full rounded-lg border px-4 py-2 text-[14px] outline-none focus:border-primary ${
-              errors.password ? "border-red-400" : "border-secondary-300"
+              errors.password && watch("password") ? "border-red-400" : "border-secondary-300"
             }`}
           />
 
@@ -97,15 +86,17 @@ export default function SignUp() {
                 validate: (value) => value === watch("password"),
               })}
               className={`w-full rounded-lg border px-4 py-2 text-[14px] outline-none focus:border-primary ${
-                errors.passwordConfirm ? "border-red-400" : "border-secondary-300"
+                errors.passwordConfirm && watch("passwordConfirm") ? "border-red-400" : "border-secondary-300"
               }`}
             />
             <p
               className={`mt-1 text-[12px] ${
-                errors.password || errors.passwordConfirm ? "text-red-500" : "text-gray-400"
+                (errors.password && watch("password")) || (errors.passwordConfirm && watch("passwordConfirm")) ? "text-red-500" : "text-gray-400"
               }`}
             >
-              비밀번호는 영문 대소문자, 숫자, 특수문자를 조합하여 8-20자로 입력해 주세요
+              {errors.passwordConfirm && watch("passwordConfirm") && !errors.password
+                ? "비밀번호가 일치하지 않습니다"
+                : "비밀번호는 영문 대소문자, 숫자, 특수문자를 조합하여 8-20자로 입력해 주세요"}
             </p>
           </div>
 
@@ -124,9 +115,13 @@ export default function SignUp() {
             ))}
           </div>
 
+          {errors.root && (
+            <p className="text-center text-[12px] text-red-500">{errors.root.message}</p>
+          )}
+
           {/* 제출 버튼 */}
-          <Button type="submit" fullWidth disabled={!isSubmittable} className="mt-4">
-            다음
+          <Button type="submit" fullWidth disabled={!isSubmittable || isSubmitting} className="mt-4">
+            {isSubmitting ? "처리 중..." : "다음"}
           </Button>
         </form>
       </div>
