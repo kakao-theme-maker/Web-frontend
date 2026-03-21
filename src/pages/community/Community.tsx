@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { ActivityTab, KeywordTab, TabMenu } from "../../components/community";
-import type { ITab, TabId } from "../../types/community/post";
+import { ActivityTab, KeywordTab } from "../../components/community";
+import TabMenu from "../../components/common/TabMenu";
+import type { TabId } from "../../types/community/post";
 import { useCommunityPosts } from "../../services/hooks/useCommunityPosts";
 
-const tabs: ITab[] = [
+const tabs = [
   { id: 'activity', label: '활동' },
   { id: 'keyword', label: '키워드' },
 ];
@@ -14,7 +15,7 @@ export default function Community() {
 
   return (
     <div>
-      <TabMenu tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab} />
+      <TabMenu tabs={tabs} activeTab={activeTab} onTabChange={(id) => setActiveTab(id as TabId)} />
       <div className="flex-1">
         {activeTab === 'activity' && (
           <ActivityTab posts={posts} isLoading={isLoading} isError={isError} />

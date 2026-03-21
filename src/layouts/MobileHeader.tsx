@@ -6,12 +6,13 @@ import { useNavigate } from "react-router-dom";
 interface IMobileHeaderProps {
   title: string;
   showBackArrow?: boolean;
+  className?: string;
 }
 
-export default function MobileHeader({ title, showBackArrow }: IMobileHeaderProps) {
+export default function MobileHeader({ title, showBackArrow, className }: IMobileHeaderProps) {
   const navigate = useNavigate();
   return (
-    <header className="relative flex shrink-0 items-center justify-center bg-white px-4 pt-10">
+    <header className={`relative flex shrink-0 items-center justify-center bg-white px-4 pt-10 ${className ?? ""}`}>
       {/* 왼쪽 영역: 뒤로가기 버튼 */}
       <div className="absolute left-4">
         {showBackArrow && (

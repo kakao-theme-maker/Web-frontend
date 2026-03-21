@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import LoginLogoIcon from "../../components/icons/login/login-logo.svg?react";
 import LoginBottomIcon from "../../components/icons/login/login-bottom.svg?react";
 import Text from "../../components/common/Text";
+import Button from "../../components/common/Button";
 import { useLogin } from "../../services/hooks/useLogin";
 
 export default function Login() {
@@ -40,13 +41,9 @@ export default function Login() {
         {errors.root && (
           <p className="text-center text-[12px] text-red-500">{errors.root.message}</p>
         )}
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className="mt-1 w-full rounded-xl bg-primary py-3 text-[15px] font-semibold text-white shadow-sm disabled:opacity-60"
-        >
+        <Button type="submit" fullWidth disabled={isSubmitting} className="mt-1 shadow-sm">
           {isSubmitting ? "로그인 중..." : "로그인"}
-        </button>
+        </Button>
         <p className="text-center text-[13px] text-gray-400">
           계정이 없으신가요?{" "}
           <Link to="/signup" className="font-semibold text-primary">

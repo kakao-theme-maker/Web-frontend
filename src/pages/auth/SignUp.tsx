@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import BackArrowIcon from "../../components/icons/header/back-arrow.svg?react";
 import Text from "../../components/common/Text";
+import Button from "../../components/common/Button";
 import { useSignUp } from "../../services/hooks/useSignUp";
 
 const CHECKBOXES = [
@@ -119,15 +120,9 @@ export default function SignUp() {
           )}
 
           {/* 제출 버튼 */}
-          <button
-            type="submit"
-            disabled={!isSubmittable || isSubmitting}
-            className={`mt-4 w-full rounded-lg py-3 text-[15px] font-semibold text-white transition-colors ${
-              isSubmittable && !isSubmitting ? "bg-primary" : "cursor-not-allowed bg-secondary-300"
-            }`}
-          >
+          <Button type="submit" fullWidth disabled={!isSubmittable || isSubmitting} className="mt-4">
             {isSubmitting ? "처리 중..." : "다음"}
-          </button>
+          </Button>
         </form>
       </div>
     </div>
