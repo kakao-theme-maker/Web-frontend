@@ -2,6 +2,7 @@ import HeaderIcon from "../components/icons/header/header.svg?react";
 import BackArrowIcon from "../components/icons/header/back-arrow.svg?react";
 import Text from "../components/common/Text";
 import { useNavigate } from "react-router-dom";
+import { cn } from "../utils/cn";
 
 interface IMobileHeaderProps {
   title: string;
@@ -12,7 +13,7 @@ interface IMobileHeaderProps {
 export default function MobileHeader({ title, showBackArrow, className }: IMobileHeaderProps) {
   const navigate = useNavigate();
   return (
-    <header className={`relative flex shrink-0 items-center justify-center bg-white px-4 pt-10 ${className ?? ""}`}>
+    <header className={cn("relative flex shrink-0 items-center justify-center bg-white px-4 pt-10", className)}>
       {/* 왼쪽 영역: 뒤로가기 버튼 */}
       <div className="absolute left-4">
         {showBackArrow && (
