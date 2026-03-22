@@ -8,6 +8,9 @@ export interface ISignUpFormData {
   email: string;
   password: string;
   passwordConfirm: string;
+  age: boolean;
+  terms: boolean;
+  privacy: boolean;
 }
 
 export interface IAuthTokens {

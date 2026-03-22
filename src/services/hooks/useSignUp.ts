@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { usePostMutation } from "../api/useApi";
@@ -9,11 +8,8 @@ const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PW_PATTERN =
   /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+[\]{};':"\\|,.<>/?])[a-zA-Z\d!@#$%^&*()\-_=+[\]{};':"\\|,.<>/?]{8,20}$/;
 
-type IChecks = { age: boolean; terms: boolean; privacy: boolean };
-
 export function useSignUp() {
   const navigate = useNavigate();
-  const [checks, setChecks] = useState<IChecks>({ age: false, terms: false, privacy: false });
 
   const {
     register,
@@ -23,11 +19,7 @@ export function useSignUp() {
     formState: { errors, isValid, isSubmitting },
   } = useForm<ISignUpFormData>({ mode: "onChange" });
 
-  const allChecked = checks.age && checks.terms && checks.privacy;
-  const isSubmittable = isValid && allChecked;
-
-  const toggleCheck = (key: keyof IChecks) =>
-    setChecks((prev) => ({ ...prev, [key]: !prev[key] }));
+  const isSubmittable = isValid;
 
   const { mutate: signUpMutate } = usePostMutation<void, ISignUpFormData>(
     ({ email, password }) => AuthService.signUp(email, password),
@@ -47,8 +39,6 @@ export function useSignUp() {
     errors,
     isSubmitting,
     isSubmittable,
-    checks,
-    toggleCheck,
     EMAIL_PATTERN,
     PW_PATTERN,
   };

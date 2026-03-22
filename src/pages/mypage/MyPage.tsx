@@ -9,7 +9,7 @@ import UserStats from "./UserStats";
 import type { MyPageTabId, IMyPagePost, IUserProfile, IThemeGridItem, IThemeCategory } from "../../types/mypage/types";
 
 // 탭 목록
-const MY_PAGE_TABS = [
+const MY_PAGE_TABS: { id: MyPageTabId; label: string }[] = [
   { id: "activity", label: "내 활동" },
   { id: "saved", label: "저장된" },
   { id: "liked", label: "좋아요" },
@@ -27,7 +27,7 @@ const THEME_CATEGORIES: IThemeCategory[] = [
 // 목 데이터
 const MOCK_USER: IUserProfile = {
   name: "다현",
-  email: "dkwls5471@kookmin.ac.kr",
+  email: "test@kookmin.ac.kr",
   uploadCount: 3,
   followingCount: 122,
   followerCount: 122,
@@ -70,9 +70,9 @@ interface IMyPagePostCardProps {
 
 function MyPagePostCard({ post }: IMyPagePostCardProps) {
   const moreMenuItems = [
-    { label: "수정하기", onClick: () => {} },
-    { label: "삭제하기", onClick: () => {} },
-    { label: "댓글 제한", onClick: () => {} },
+    { id: "edit", label: "수정하기", onClick: () => {} },
+    { id: "delete", label: "삭제하기", onClick: () => {} },
+    { id: "comment-restrict", label: "댓글 제한", onClick: () => {} },
   ];
 
   return (
@@ -186,7 +186,7 @@ export default function MyPage() {
       <section className="flex flex-col items-center px-5 pt-6 pb-1">
         <div className="h-20 w-20 rounded-full bg-secondary-300" />
 
-        <div className="mt-3 flex flex-col items-center gap-1">
+        <div className="mt-2 flex flex-col items-center">
           <Text variant="SEMIBOLD_16">{MOCK_USER.name}</Text>
           <Text variant="LIGHT_12" className="text-secondary-400">
             {MOCK_USER.email}
@@ -208,7 +208,7 @@ export default function MyPage() {
       <TabMenu
         tabs={MY_PAGE_TABS}
         activeTab={activeTab}
-        onTabChange={(id) => setActiveTab(id as MyPageTabId)}
+        onTabChange={setActiveTab}
         cols={3}
         showInactiveBorder
       />
