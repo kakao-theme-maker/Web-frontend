@@ -20,8 +20,6 @@ export default function SignUp() {
     errors,
     isSubmitting,
     isSubmittable,
-    checks,
-    toggleCheck,
     EMAIL_PATTERN,
     PW_PATTERN,
   } = useSignUp();
@@ -106,8 +104,7 @@ export default function SignUp() {
               <label key={key} className="flex cursor-pointer items-center gap-2">
                 <input
                   type="checkbox"
-                  checked={checks[key]}
-                  onChange={() => toggleCheck(key)}
+                  {...register(key, { required: true })}
                   className="h-4 w-4 cursor-pointer accent-primary"
                 />
                 <span className="text-[14px] text-gray-700">{label}</span>

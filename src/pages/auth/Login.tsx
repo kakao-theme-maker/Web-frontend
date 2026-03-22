@@ -29,12 +29,14 @@ export default function Login() {
         <input
           type="text"
           placeholder="이메일"
+          aria-label="이메일"
           {...register("email", { required: true })}
           className="w-full rounded-xl border border-secondary-300 bg-white px-4 py-3 text-[14px] shadow-sm outline-none focus:border-primary"
         />
         <input
           type="password"
           placeholder="비밀번호"
+          aria-label="비밀번호"
           {...register("password", { required: true })}
           className="w-full rounded-xl border border-secondary-300 bg-white px-4 py-3 text-[14px] shadow-sm outline-none focus:border-primary"
         />
