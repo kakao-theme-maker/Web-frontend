@@ -27,7 +27,7 @@ const THEME_CATEGORIES: IThemeCategory[] = [
 // 목 데이터
 const MOCK_USER: IUserProfile = {
   name: "다현",
-  email: "dkwls5471@kookmin.ac.kr",
+  email: "test@kookmin.ac.kr",
   uploadCount: 3,
   followingCount: 122,
   followerCount: 122,
@@ -186,7 +186,7 @@ export default function MyPage() {
       <section className="flex flex-col items-center px-5 pt-6 pb-1">
         <div className="h-20 w-20 rounded-full bg-secondary-300" />
 
-        <div className="mt-3 flex flex-col items-center gap-1">
+        <div className="mt-2 flex flex-col items-center">
           <Text variant="SEMIBOLD_16">{MOCK_USER.name}</Text>
           <Text variant="LIGHT_12" className="text-secondary-400">
             {MOCK_USER.email}
