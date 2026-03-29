@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { CommunityService } from '../api/CommunityService';
 import type { IThemeBoard, IThemeBoardRaw } from '../../types/community/post';
@@ -33,7 +34,11 @@ export function useCommunityPosts() {
       lastPage.length < PAGE_SIZE ? undefined : allPages.length,
   });
 
-  const posts: IThemeBoard[] = (data?.pages ?? []).flat().map(mapPost);
+  // data가 변경될 때만 재계산하여 불필요한 배열 재생성을 방지합니다.
+  const posts = useMemo<IThemeBoard[]>(
+    () => (data?.pages ?? []).flat().map(mapPost),
+    [data]
+  );
 
   return { posts, isLoading, isError, fetchNextPage, hasNextPage, isFetchingNextPage };
 }

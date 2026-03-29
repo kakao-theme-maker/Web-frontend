@@ -2,9 +2,9 @@ import apiClient from './apiClient';
 import type { IThemeBoardRaw, IThemeBoardDetailRaw, ICommentRaw } from '../../types/community/post';
 
 export const CommunityService = {
-  getThemeBoards: (pageNumber: number, pageSize: number) =>
+  getThemeBoards: (page: number, size: number) =>
     apiClient
-      .get<IThemeBoardRaw[]>('/api/theme-boards', { params: { pageNumber, pageSize } })
+      .get<IThemeBoardRaw[]>('/api/theme-boards', { params: { page, size } })
       .then((res) => res.data),
 
   getThemeBoardDetail: (postId: number) =>

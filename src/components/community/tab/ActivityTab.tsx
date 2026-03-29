@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import { CommunityPostGridItem, SearchBar } from "../../community";
 import Text from "../../common/Text";
 import type { IThemeBoard } from "../../../types/community/post";
@@ -20,9 +21,13 @@ export default function ActivityTab({
   hasNextPage,
   isFetchingNextPage,
 }: IActivityTabProps) {
-  const sentinelRef = useIntersectionObserver(() => {
-    if (hasNextPage) fetchNextPage();
-  });
+  // 렌더링마다 콜백이 새로 생성되지 않도록 메모이제이션합니다.
+  // isFetchingNextPage가 true일 때 중복 호출을 방지합니다.
+  const handleIntersect = useCallback(() => {
+    if (hasNextPage && !isFetchingNextPage) fetchNextPage();
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
+
+  const sentinelRef = useIntersectionObserver(handleIntersect);
 
   return (
     <>
