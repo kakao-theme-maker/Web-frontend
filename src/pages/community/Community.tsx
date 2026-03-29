@@ -11,14 +11,21 @@ const tabs: { id: TabId; label: string }[] = [
 
 export default function Community() {
   const [activeTab, setActiveTab] = useState<TabId>('activity');
-  const { posts, isLoading, isError } = useCommunityPosts();
+  const { posts, isLoading, isError, fetchNextPage, hasNextPage, isFetchingNextPage } = useCommunityPosts();
 
   return (
     <div>
       <TabMenu tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab} />
       <div className="flex-1">
         {activeTab === 'activity' && (
-          <ActivityTab posts={posts} isLoading={isLoading} isError={isError} />
+          <ActivityTab
+            posts={posts}
+            isLoading={isLoading}
+            isError={isError}
+            fetchNextPage={fetchNextPage}
+            hasNextPage={hasNextPage}
+            isFetchingNextPage={isFetchingNextPage}
+          />
         )}
         {activeTab === 'keyword' && <KeywordTab />}
       </div>
