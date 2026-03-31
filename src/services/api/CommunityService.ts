@@ -31,4 +31,14 @@ export const CommunityService = {
     apiClient
       .put<ICommentRaw>(`/api/posts/comments/${commentId}`, { content })
       .then((res) => res.data),
+
+  preferPost: (postId: number) =>
+    apiClient
+      .post(`/api/posts/${postId}/prefer`)
+      .then((res) => res.data),
+
+  unpreferPost: (postId: number) =>
+    apiClient
+      .delete(`/api/posts/${postId}/prefer`)
+      .then((res) => res.data),
 };

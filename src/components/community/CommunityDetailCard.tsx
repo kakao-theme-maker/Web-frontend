@@ -4,6 +4,7 @@ import Text from "../common/Text";
 import { useOutsideClick } from "../../services/hooks/useOutsideClick";
 import { useComments } from "../../services/hooks/useComments";
 import { useCommentActions } from "../../services/hooks/useCommentActions";
+import { usePrefer } from "../../services/hooks/usePrefer";
 import CommentModal from "./CommentModal";
 import Confirm from "../common/Confirm";
 import Alert from "../common/Alert";
@@ -19,6 +20,7 @@ interface ICommunityDetailCardProps {
 
 export default function CommunityDetailCard({ post }: ICommunityDetailCardProps) {
   const { comments } = useComments(post.boardId);
+  const { isPreferred, prefers, togglePrefer } = usePrefer(post.boardId, post.prefers);
   const {
     deleteTargetId,
     editTarget,
@@ -108,8 +110,14 @@ export default function CommunityDetailCard({ post }: ICommunityDetailCardProps)
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-5">
             <div className="flex items-center gap-1.5">
-              <HeartIcon width={24} height={24} aria-label="좋아요" />
-              <Text variant="REGULAR_15">{post.prefers}</Text>
+              <button onClick={togglePrefer} aria-label="좋아요">
+                <HeartIcon
+                  width={24}
+                  height={24}
+                  className={isPreferred ? 'text-red-500' : 'text-secondary-300'}
+                />
+              </button>
+              <Text variant="REGULAR_15">{prefers}</Text>
             </div>
             <div className="flex items-center gap-1.5">
               <button onClick={() => setIsCommentOpen(true)}>
