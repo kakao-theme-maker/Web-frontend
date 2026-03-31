@@ -60,3 +60,48 @@ export interface ITab {
   id: TabId
   label: string;
 }
+
+// GET /api/themes/user/{userEmail} 응답 항목 - 서버 원본 형식 (snake_case)
+export interface IUserThemeRaw {
+  themeComponentId: number;
+  userEmail: string;
+  themeName: string;
+  versionNumber: string;
+  versionName: string;
+  isDone: boolean;
+  isPublic: boolean;
+  styles: { colorStyleId: number; color: string }[];
+  images: { designComponentId: number }[];
+}
+
+// 유저 테마 UI 모델
+export interface IUserTheme {
+  themeComponentId: number;
+  userEmail: string;
+  themeName: string;
+  versionNumber: string;
+  versionName: string;
+  isDone: boolean;
+  isPublic: boolean;
+  styles: { colorStyleId: number; color: string }[];
+  images: { designComponentId: number }[];
+}
+
+// POST /api/theme-boards 응답 - 서버 원본 형식 (snake_case)
+export interface IBoardCreateResponseRaw {
+  title: string;
+  content: string;
+  prefers: number;
+  post_id: number;
+  theme_component_id: number;
+  user_email: string;
+  created_at: string;
+  preview_image_url: string;
+}
+
+// 게시글 작성 폼 데이터
+export interface IBoardWriteFormData {
+  title: string;
+  content: string;
+  isPublic: boolean;
+}
