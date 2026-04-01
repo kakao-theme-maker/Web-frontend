@@ -1,24 +1,26 @@
 import { useState, useRef } from "react";
-import type { IThemeBoardDetail } from "../../types/community/post";
-import Text from "../common/Text";
-import { useOutsideClick } from "../../services/hooks/useOutsideClick";
-import { useComments } from "../../services/hooks/useComments";
-import { useCommentActions } from "../../services/hooks/useCommentActions";
-import CommentModal from "./CommentModal";
-import Confirm from "../common/Confirm";
-import Alert from "../common/Alert";
+import type { IDesignBoardDetail } from "../../../types/community/design";
+import Text from "../../common/Text";
+import { useOutsideClick } from "../../../services/hooks/useOutsideClick";
+import { useComments } from "../../../services/hooks/useComments";
+import { useCommentActions } from "../../../services/hooks/useCommentActions";
+import { usePrefer } from "../../../services/hooks/usePrefer";
+import CommentModal from "../CommentModal";
+import Confirm from "../../common/Confirm";
+import Alert from "../../common/Alert";
 
 // icons
-import BookmarkIcon from '../icons/community-detail/bookmark.svg?react';
-import HeartIcon from '../icons/community-detail/heart.svg?react';
-import CommentIcon from '../icons/community-detail/comment.svg?react';
+import BookmarkIcon from '../../icons/community-detail/bookmark.svg?react';
+import HeartIcon from '../../icons/community-detail/heart.svg?react';
+import CommentIcon from '../../icons/community-detail/comment.svg?react';
 
-interface ICommunityDetailCardProps {
-  post: IThemeBoardDetail;
+interface IDesignDetailCardProps {
+  post: IDesignBoardDetail;
 }
 
-export default function CommunityDetailCard({ post }: ICommunityDetailCardProps) {
+export default function DesignDetailCard({ post }: IDesignDetailCardProps) {
   const { comments } = useComments(post.boardId);
+  const { isPreferred, prefers, togglePrefer } = usePrefer(post.boardId, post.prefers);
   const {
     deleteTargetId,
     editTarget,
@@ -80,7 +82,7 @@ export default function CommunityDetailCard({ post }: ICommunityDetailCardProps)
                   className="w-full px-3 py-1 text-left hover:bg-secondary-50 text-center"
                   onClick={() => { setIsMenuOpen(false); setIsDownloadConfirmOpen(true); }}
                 >
-                  <Text variant="MEDIUM_12">테마 다운로드</Text>
+                  <Text variant="MEDIUM_12">디자인 다운로드</Text>
                 </button>
                 <button className="w-full border-t border-secondary-100 px-3 py-1 text-left hover:bg-secondary-50 text-center">
                   <Text variant="MEDIUM_12">공유하기</Text>
@@ -94,7 +96,7 @@ export default function CommunityDetailCard({ post }: ICommunityDetailCardProps)
       <section className="mt-3">
         <div className="relative h-[330px] w-full overflow-hidden rounded-[2px] bg-secondary-200">
           {post.previewImageUrl && (
-            <img src={post.previewImageUrl} alt="테마 미리보기" className="h-full w-full object-cover" />
+            <img src={post.previewImageUrl} alt="디자인 미리보기" className="h-full w-full object-cover" />
           )}
           <div className="absolute bottom-3 left-0 right-0 flex items-center justify-center gap-1">
             <span className="h-1.5 w-1.5 rounded-full bg-black" />
@@ -108,8 +110,14 @@ export default function CommunityDetailCard({ post }: ICommunityDetailCardProps)
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-5">
             <div className="flex items-center gap-1.5">
-              <HeartIcon width={24} height={24} aria-label="좋아요" />
-              <Text variant="REGULAR_15">{post.prefers}</Text>
+              <button onClick={togglePrefer} aria-label="좋아요">
+                <HeartIcon
+                  width={24}
+                  height={24}
+                  className={isPreferred ? 'text-red-500' : 'text-secondary-300'}
+                />
+              </button>
+              <Text variant="REGULAR_15">{prefers}</Text>
             </div>
             <div className="flex items-center gap-1.5">
               <button onClick={() => setIsCommentOpen(true)}>

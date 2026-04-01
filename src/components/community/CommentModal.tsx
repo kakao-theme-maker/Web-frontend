@@ -1,11 +1,11 @@
 import React, { useState, useRef } from "react";
 import HeartIcon from "../icons/community-detail/heart.svg?react";
-import type { ICommentRaw } from "../../types/community/post";
+import type { ICommentRaw } from "../../types/community/theme";
 import Text from "../common/Text";
 import { useAuthStore } from "../../stores/authStore";
 import { useOutsideClick } from "../../services/hooks/useOutsideClick";
 import { usePostMutation } from "../../services/api/useApi";
-import { CommunityService } from "../../services/api/CommunityService";
+import { ThemeService } from "../../services/api/ThemeService";
 import { useQueryClient } from "@tanstack/react-query";
 
 interface ICommentModalProps {
@@ -29,7 +29,7 @@ export default function CommentModal({ postId, comments, onRequestDelete, onRequ
   });
 
   const { mutate: createComment } = usePostMutation<ICommentRaw, string>(
-    (content) => CommunityService.createComment(postId, content),
+    (content) => ThemeService.createComment(postId, content),
     {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['comments', postId] });
