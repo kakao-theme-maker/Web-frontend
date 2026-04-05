@@ -1,8 +1,8 @@
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { usePostMutation } from '../api/useApi';
-import { CommunityService } from '../api/CommunityService';
-import type { IBoardWriteFormData, IBoardCreateResponseRaw, IUserTheme } from '../../types/community/post';
+import { ThemeService } from '../api/ThemeService';
+import type { IBoardWriteFormData, IBoardCreateResponseRaw, IUserTheme } from '../../types/community/theme';
 
 export function useBoardWrite(selectedTheme: IUserTheme) {
   const navigate = useNavigate();
@@ -18,7 +18,7 @@ export function useBoardWrite(selectedTheme: IUserTheme) {
   });
 
   const { mutate: submitBoard, isPending } = usePostMutation<IBoardCreateResponseRaw, FormData>(
-    (formData) => CommunityService.createThemeBoard(formData),
+    (formData) => ThemeService.createThemeBoard(formData),
     {
       onSuccess: () => {
         navigate('/community');

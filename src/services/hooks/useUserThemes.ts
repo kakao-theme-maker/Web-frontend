@@ -1,14 +1,14 @@
 import { useGetQuery } from '../api/useApi';
-import { CommunityService } from '../api/CommunityService';
+import { ThemeService } from '../api/ThemeService';
 import { useAuthStore } from '../../stores/authStore';
-import type { IUserTheme } from '../../types/community/post';
+import type { IUserTheme } from '../../types/community/theme';
 
 export function useUserThemes() {
   const userEmail = useAuthStore((state) => state.userEmail);
 
   const { data, isLoading, isError } = useGetQuery(
     ['user-themes', userEmail],
-    () => CommunityService.getUserThemes(userEmail!, 0, 100),
+    () => ThemeService.getUserThemes(userEmail!, 0, 100),
     { enabled: !!userEmail },
   );
 

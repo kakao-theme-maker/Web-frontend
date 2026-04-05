@@ -1,6 +1,6 @@
 import { cn } from '../../utils/cn';
 import Text from '../common/Text';
-import type { IUserTheme } from '../../types/community/post';
+import type { IUserTheme } from '../../types/community/theme';
 
 interface IThemeSelectItemProps {
   theme: IUserTheme;
