@@ -1,18 +1,14 @@
-/**
- * 커뮤니티 게시글 목록 아이템 컴포넌트
- * @param item 게시글 아이템
- */
-import type { IThemeBoard } from "../../types/community/post";
+import type { IDesignBoard } from "../../../types/community/design";
 import { Link } from "react-router-dom";
 
-interface ICommunityPostGridItemProps {
-  item: IThemeBoard;
+interface IDesignPostGridItemProps {
+  item: IDesignBoard;
 }
 
-export default function CommunityPostGridItem({ item }: ICommunityPostGridItemProps) {
+export default function DesignPostGridItem({ item }: IDesignPostGridItemProps) {
   return (
     <Link
-      to={`/community/${item.boardId}`}
+      to={`/design/${item.boardId}`}
       className="block h-[120px] overflow-hidden rounded-[2px] bg-secondary-100"
       aria-label={`${item.title} 상세 페이지로 이동`}
     >

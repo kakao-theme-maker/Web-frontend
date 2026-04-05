@@ -1,18 +1,18 @@
 import { useGetQuery } from '../api/useApi';
-import { CommunityService } from '../api/CommunityService';
-import type { IThemeBoardDetail } from '../../types/community/post';
+import { DesignService } from '../api/DesignService';
+import type { IDesignBoardDetail } from '../../types/community/design';
 
-export function useCommunityPostDetail(postId: number) {
+export function useDesignPostDetail(postId: number) {
   const { data, isLoading, isError } = useGetQuery(
-    ['theme-board-detail', postId],
-    () => CommunityService.getThemeBoardDetail(postId),
+    ['design-board-detail', postId],
+    () => DesignService.getDesignBoardDetail(postId),
     { enabled: !!postId },
   );
 
-  const post: IThemeBoardDetail | null = data
+  const post: IDesignBoardDetail | null = data
     ? {
         boardId: data.post_id,
-        themeComponentId: data.theme_component_id,
+        designComponentId: data.design_component_id,
         title: data.title,
         content: data.content,
         prefers: data.prefers,

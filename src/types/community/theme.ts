@@ -1,5 +1,5 @@
 /**
- * 커뮤니티 관련 타입 정의 파일
+ * 테마 커뮤니티 관련 타입 정의 파일
  */
 
 // GET /api/theme-boards/{post_id} 응답 - 서버 원본 형식 (snake_case)

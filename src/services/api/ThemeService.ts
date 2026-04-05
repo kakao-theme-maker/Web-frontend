@@ -1,7 +1,7 @@
 import apiClient from './apiClient';
-import type { IThemeBoardRaw, IThemeBoardDetailRaw, ICommentRaw } from '../../types/community/post';
+import type { IThemeBoardRaw, IThemeBoardDetailRaw, ICommentRaw } from '../../types/community/theme';
 
-export const CommunityService = {
+export const ThemeService = {
   getThemeBoards: (page: number, size: number) =>
     apiClient
       .get<IThemeBoardRaw[]>('/api/theme-boards', { params: { page, size } })
@@ -30,5 +30,20 @@ export const CommunityService = {
   updateComment: (commentId: number, content: string) =>
     apiClient
       .put<ICommentRaw>(`/api/posts/comments/${commentId}`, { content })
+      .then((res) => res.data),
+
+  deleteThemeBoard: (postId: number) =>
+    apiClient
+      .delete(`/api/theme-boards/${postId}`)
+      .then((res) => res.data),
+
+  preferPost: (postId: number) =>
+    apiClient
+      .post(`/api/posts/${postId}/prefer`)
+      .then((res) => res.data),
+
+  unpreferPost: (postId: number) =>
+    apiClient
+      .delete(`/api/posts/${postId}/prefer`)
       .then((res) => res.data),
 };

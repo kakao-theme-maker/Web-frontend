@@ -1,11 +1,13 @@
 import { useCallback } from "react";
-import { CommunityPostGridItem, SearchBar } from "../../community";
-import Text from "../../common/Text";
-import type { IThemeBoard } from "../../../types/community/post";
-import { useIntersectionObserver } from "../../../services/hooks/useIntersectionObserver";
+import { useNavigate } from "react-router-dom";
+import DesignPostGridItem from "../DesignPostGridItem";
+import SearchBar from "../../SearchBar";
+import Text from "../../../common/Text";
+import type { IDesignBoard } from "../../../../types/community/design";
+import { useIntersectionObserver } from "../../../../services/hooks/useIntersectionObserver";
 
-interface IActivityTabProps {
-  posts: IThemeBoard[];
+interface IDesignActivityTabProps {
+  posts: IDesignBoard[];
   isLoading: boolean;
   isError: boolean;
   fetchNextPage: () => void;
@@ -13,16 +15,16 @@ interface IActivityTabProps {
   isFetchingNextPage: boolean;
 }
 
-export default function ActivityTab({
+export default function DesignActivityTab({
   posts,
   isLoading,
   isError,
   fetchNextPage,
   hasNextPage,
   isFetchingNextPage,
-}: IActivityTabProps) {
-  // 렌더링마다 콜백이 새로 생성되지 않도록 메모이제이션합니다.
-  // isFetchingNextPage가 true일 때 중복 호출을 방지합니다.
+}: IDesignActivityTabProps) {
+  const navigate = useNavigate();
+
   const handleIntersect = useCallback(() => {
     if (hasNextPage && !isFetchingNextPage) fetchNextPage();
   }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
@@ -46,7 +48,7 @@ export default function ActivityTab({
         {!isLoading && !isError && (
           <section className="grid grid-cols-2 gap-2">
             {posts.map((item) => (
-              <CommunityPostGridItem key={item.boardId} item={item} />
+              <DesignPostGridItem key={item.boardId} item={item} />
             ))}
           </section>
         )}
@@ -57,7 +59,10 @@ export default function ActivityTab({
           </div>
         )}
       </main>
-      <button className="absolute bottom-16 right-4 flex h-9 items-center rounded-full bg-primary px-4 text-white shadow-sm">
+      <button
+        onClick={() => navigate('/design/write')}
+        className="absolute bottom-16 right-4 flex h-9 items-center rounded-full bg-primary px-4 text-white shadow-sm"
+      >
         <span className="mr-1 text-base leading-none">+</span>
         <Text variant="REGULAR_14">글쓰기</Text>
       </button>
