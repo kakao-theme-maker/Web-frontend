@@ -1,10 +1,13 @@
 import { useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import type { IDesignBoardDetail } from "../../../types/community/design";
 import Text from "../../common/Text";
 import { useOutsideClick } from "../../../services/hooks/useOutsideClick";
 import { useComments } from "../../../services/hooks/useComments";
 import { useCommentActions } from "../../../services/hooks/useCommentActions";
 import { usePrefer } from "../../../services/hooks/usePrefer";
+import { useDeleteDesignPost } from "../../../services/hooks/useDeleteDesignPost";
+import { useAuthStore } from "../../../stores/authStore";
 import CommentModal from "../CommentModal";
 import Confirm from "../../common/Confirm";
 import Alert from "../../common/Alert";
@@ -19,8 +22,13 @@ interface IDesignDetailCardProps {
 }
 
 export default function DesignDetailCard({ post }: IDesignDetailCardProps) {
+  const navigate = useNavigate();
+  const userEmail = useAuthStore((state) => state.userEmail);
+  const isMyPost = userEmail === post.userEmail;
+
   const { comments } = useComments(post.boardId);
   const { isPreferred, prefers, togglePrefer } = usePrefer(post.boardId, post.prefers);
+  const { deletePost } = useDeleteDesignPost(() => navigate(-1));
   const {
     deleteTargetId,
     editTarget,
@@ -42,6 +50,7 @@ export default function DesignDetailCard({ post }: IDesignDetailCardProps) {
   const [isCommentOpen, setIsCommentOpen] = useState(false);
   const [isDownloadConfirmOpen, setIsDownloadConfirmOpen] = useState(false);
   const [isDownloadAlertOpen, setIsDownloadAlertOpen] = useState(false);
+  const [isDeletePostConfirmOpen, setIsDeletePostConfirmOpen] = useState(false);
 
   const menuRef = useRef<HTMLDivElement | null>(null);
   useOutsideClick(menuRef, () => setIsMenuOpen(false));
@@ -87,6 +96,14 @@ export default function DesignDetailCard({ post }: IDesignDetailCardProps) {
                 <button className="w-full border-t border-secondary-100 px-3 py-1 text-left hover:bg-secondary-50 text-center">
                   <Text variant="MEDIUM_12">공유하기</Text>
                 </button>
+                {isMyPost && (
+                  <button
+                    className="w-full border-t border-secondary-100 px-3 py-1 text-left hover:bg-secondary-50 text-center"
+                    onClick={() => { setIsMenuOpen(false); setIsDeletePostConfirmOpen(true); }}
+                  >
+                    <Text variant="MEDIUM_12" className="text-red-500">게시글 삭제</Text>
+                  </button>
+                )}
               </div>
             )}
           </div>
@@ -153,6 +170,17 @@ export default function DesignDetailCard({ post }: IDesignDetailCardProps) {
         <Alert
           message="저장 완료!"
           onConfirm={() => setIsDownloadAlertOpen(false)}
+        />
+      )}
+
+      {isDeletePostConfirmOpen && (
+        <Confirm
+          message="게시글을 삭제하시겠습니까?"
+          confirmText="삭제할게요"
+          cancelText="아니요"
+          onConfirm={() => { setIsDeletePostConfirmOpen(false); deletePost(post.boardId); }}
+          onCancel={() => setIsDeletePostConfirmOpen(false)}
+          onClose={() => setIsDeletePostConfirmOpen(false)}
         />
       )}
 

@@ -12,4 +12,9 @@ export const DesignService = {
     apiClient
       .get<IDesignBoardDetailRaw>(`/api/design-boards/${postId}`)
       .then((res) => res.data),
+
+  deleteDesignBoard: (postId: number) =>
+    apiClient
+      .delete(`/api/design-boards/${postId}`)
+      .then((res) => res.data),
 };

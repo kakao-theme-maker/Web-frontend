@@ -32,6 +32,11 @@ export const ThemeService = {
       .put<ICommentRaw>(`/api/posts/comments/${commentId}`, { content })
       .then((res) => res.data),
 
+  deleteThemeBoard: (postId: number) =>
+    apiClient
+      .delete(`/api/theme-boards/${postId}`)
+      .then((res) => res.data),
+
   preferPost: (postId: number) =>
     apiClient
       .post(`/api/posts/${postId}/prefer`)
