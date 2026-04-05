@@ -6,6 +6,8 @@ import DesignCommunityList from "../pages/design-community/List.tsx";
 import DesignCommunityDetail from "../pages/design-community/Detail.tsx";
 import BoardThemeSelect from "../pages/theme-community/BoardThemeSelect.tsx";
 import BoardWrite from "../pages/theme-community/BoardWrite.tsx";
+import BoardDesignSelect from "../pages/design-community/BoardDesignSelect.tsx";
+import BoardDesignWrite from "../pages/design-community/BoardDesignWrite.tsx";
 import MyPage from "../pages/mypage/MyPage.tsx";
 import ProfileEdit from "../pages/mypage/ProfileEdit.tsx";
 import MobileLayout from "../layouts/MobileLayout.tsx";
@@ -45,6 +47,8 @@ export default function AppRoutes() {
             <Route path="/community/write/post" element={<BoardWrite />} />
             <Route path="/community/:boardId" element={<ThemeCommunityDetail />} />
             <Route path="/design" element={<DesignCommunityList />} />
+            <Route path="/design/write" element={<BoardDesignSelect />} />
+            <Route path="/design/write/post" element={<BoardDesignWrite />} />
             <Route path="/design/:boardId" element={<DesignCommunityDetail />} />
             <Route path="/mypage" element={<MyPage />} />
             <Route path="/mypage/profile-edit" element={<ProfileEdit />} />

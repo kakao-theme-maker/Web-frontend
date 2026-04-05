@@ -34,3 +34,32 @@ export interface IDesignBoardDetailRaw extends IDesignBoardRaw {
 export interface IDesignBoardDetail extends IDesignBoard {
   content: string;
 }
+
+// GET /api/design-components/user/{userEmail} 응답 항목 - 서버 원본 형식 (snake_case)
+export interface IUserDesignComponentRaw {
+  design_component_id: number;
+  public_user_id: string;
+  image_url: string;
+  created_at: string;
+  updated_at: string;
+  is_public: boolean;
+}
+
+// POST /api/design-boards 응답 - 서버 원본 형식
+export interface IDesignBoardCreateResponseRaw {
+  title: string;
+  content: string;
+  prefers: number;
+  post_id: number;
+  design_component_id: number;
+  user_email: string;
+  created_at: string;
+  preview_image_url: string;
+}
+
+// 게시글 작성 폼 데이터
+export interface IDesignBoardWriteFormData {
+  title: string;
+  content: string;
+  isPublic: boolean;
+}

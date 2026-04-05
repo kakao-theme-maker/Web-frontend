@@ -1,23 +1,23 @@
 import { useNavigate } from 'react-router-dom';
 import { usePostMutation } from '../api/useApi';
-import { ThemeService } from '../api/ThemeService';
+import { DesignService } from '../api/DesignService';
 import { useBoardWriteForm } from './useBoardWriteForm';
-import type { IBoardCreateResponseRaw, IUserTheme } from '../../types/community/theme';
+import type { IDesignBoardCreateResponseRaw, IUserDesignComponentRaw } from '../../types/community/design';
 
-export function useBoardWrite(selectedTheme: IUserTheme) {
+export function useDesignBoardWrite(selectedComponent: IUserDesignComponentRaw) {
   const navigate = useNavigate();
   const { rhfHandleSubmit, formIsSubmitting, previewImage, tags, ...formProps } = useBoardWriteForm();
 
-  const { mutate, isPending } = usePostMutation<IBoardCreateResponseRaw, FormData>(
-    (formData) => ThemeService.createThemeBoard(formData),
-    { onSuccess: () => navigate('/community') },
+  const { mutate, isPending } = usePostMutation<IDesignBoardCreateResponseRaw, FormData>(
+    (formData) => DesignService.createDesignBoard(formData),
+    { onSuccess: () => navigate('/design') },
   );
 
   const handleSubmit = rhfHandleSubmit((formData) => {
     const boardInfo = {
       title: formData.title,
       content: formData.content,
-      themeComponentId: selectedTheme.themeComponentId,
+      designComponentId: selectedComponent.design_component_id,
       publicFlag: formData.isPublic,
       post_tags: tags.map((tag) => ({ tag_name: tag })),
     };
