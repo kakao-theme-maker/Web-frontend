@@ -6,7 +6,8 @@ import MoreMenu from "../../components/common/MoreMenu";
 import Button from "../../components/common/Button";
 import { cn } from "../../utils/cn";
 import UserStats from "./UserStats";
-import type { MyPageTabId, IMyPagePost, IUserProfile, IThemeGridItem, IThemeCategory } from "../../types/mypage/types";
+import { useUserProfile } from "../../services/hooks/useUserProfile";
+import type { MyPageTabId, IMyPagePost, IThemeGridItem, IThemeCategory } from "../../types/mypage/types";
 
 // 탭 목록
 const MY_PAGE_TABS: { id: MyPageTabId; label: string }[] = [
@@ -23,15 +24,6 @@ const THEME_CATEGORIES: IThemeCategory[] = [
   { id: "animal", label: "동물" },
   { id: "classic", label: "클래식" },
 ];
-
-// 목 데이터
-const MOCK_USER: IUserProfile = {
-  name: "다현",
-  email: "test@kookmin.ac.kr",
-  uploadCount: 3,
-  followingCount: 122,
-  followerCount: 122,
-};
 
 const MOCK_POSTS: IMyPagePost[] = [
   { id: 1, author: "다현", date: "3월 25일" },
@@ -173,6 +165,7 @@ function ThemeGridTab({ themes, emptyMessage }: IThemeGridTabProps) {
 export default function MyPage() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<MyPageTabId>("activity");
+  const { profile, isLoading } = useUserProfile();
 
   const TAB_CONTENT: Record<MyPageTabId, React.ReactNode> = {
     activity: <ActivityTab />,
@@ -184,20 +177,38 @@ export default function MyPage() {
     <main>
       {/* 프로필 섹션 */}
       <section className="flex flex-col items-center px-5 pt-6 pb-1">
-        <div className="h-20 w-20 rounded-full bg-secondary-300" />
+        {profile?.profileImage ? (
+          <img
+            src={profile.profileImage}
+            alt="프로필 이미지"
+            className="h-20 w-20 rounded-full object-cover"
+          />
+        ) : (
+          <div className="h-20 w-20 rounded-full bg-secondary-300" />
+        )}
 
         <div className="mt-2 flex flex-col items-center">
-          <Text variant="SEMIBOLD_16">{MOCK_USER.name}</Text>
-          <Text variant="LIGHT_12" className="text-secondary-400">
-            {MOCK_USER.email}
-          </Text>
+          {isLoading ? (
+            <div className="h-5 w-24 rounded bg-secondary-200 animate-pulse" />
+          ) : (
+            <>
+              <Text variant="SEMIBOLD_16">{profile?.name}</Text>
+              <Text variant="LIGHT_12" className="text-secondary-400">
+                {profile?.userEmail}
+              </Text>
+            </>
+          )}
         </div>
 
-        <UserStats
-          uploadCount={MOCK_USER.uploadCount}
-          followingCount={MOCK_USER.followingCount}
-          followerCount={MOCK_USER.followerCount}
-        />
+        {isLoading ? (
+          <div className="mt-3 h-10 w-full rounded bg-secondary-200 animate-pulse" />
+        ) : (
+          <UserStats
+            uploads={profile?.uploads ?? 0}
+            following={profile?.following ?? 0}
+            followers={profile?.followers ?? 0}
+          />
+        )}
 
         <Button fullWidth className="mt-4" onClick={() => navigate("/mypage/profile-edit")}>
           <Text variant="LIGHT_14" className="text-white">프로필 수정</Text>
