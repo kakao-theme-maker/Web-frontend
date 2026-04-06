@@ -1,11 +1,11 @@
 import { useGetQuery } from '../api/useApi';
-import { CommunityService } from '../api/CommunityService';
-import type { ICommentRaw } from '../../types/community/post';
+import { ThemeService } from '../api/ThemeService';
+import type { ICommentRaw } from '../../types/community/theme';
 
 export function useComments(postId: number) {
   const { data, isLoading, isError } = useGetQuery<ICommentRaw[]>(
     ['comments', postId],
-    () => CommunityService.getComments(postId, 0, 100),
+    () => ThemeService.getComments(postId, 0, 100),
     { enabled: !!postId },
   );
 

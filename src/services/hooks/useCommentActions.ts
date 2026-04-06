@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useDeleteMutation, usePutMutation } from '../api/useApi';
-import { CommunityService } from '../api/CommunityService';
-import type { ICommentRaw } from '../../types/community/post';
+import { ThemeService } from '../api/ThemeService';
+import type { ICommentRaw } from '../../types/community/theme';
 
 export function useCommentActions(postId: number) {
   const queryClient = useQueryClient();
@@ -15,7 +15,7 @@ export function useCommentActions(postId: number) {
   const [isEditAlertOpen, setIsEditAlertOpen] = useState(false);
 
   const { mutate: deleteComment } = useDeleteMutation<ICommentRaw, number>(
-    (commentId) => CommunityService.deleteComment(commentId),
+    (commentId) => ThemeService.deleteComment(commentId),
     {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['comments', postId] });
@@ -26,7 +26,7 @@ export function useCommentActions(postId: number) {
   );
 
   const { mutate: updateComment } = usePutMutation<ICommentRaw, { commentId: number; content: string }>(
-    ({ commentId, content }) => CommunityService.updateComment(commentId, content),
+    ({ commentId, content }) => ThemeService.updateComment(commentId, content),
     {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['comments', postId] });

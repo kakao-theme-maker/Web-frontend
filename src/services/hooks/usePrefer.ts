@@ -1,14 +1,36 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import { usePostMutation, useDeleteMutation } from '../api/useApi';
-import { CommunityService } from '../api/CommunityService';
+import { ThemeService } from '../api/ThemeService';
 
-export function usePrefer(postId: number, initialPrefers: number) {
-  const [isPreferred, setIsPreferred] = useState(false);
+export function usePrefer(
+  postId: number,
+  initialPrefers: number,
+  initialIsPreferred: boolean = false,
+  queryKey?: unknown[],
+) {
+  const queryClient = useQueryClient();
+  const [isPreferred, setIsPreferred] = useState(initialIsPreferred);
   const [prefers, setPrefers] = useState(initialPrefers);
 
+  useEffect(() => {
+    setIsPreferred(initialIsPreferred);
+  }, [initialIsPreferred]);
+
+  useEffect(() => {
+    setPrefers(initialPrefers);
+  }, [initialPrefers]);
+
   const { mutate: prefer } = usePostMutation<unknown, number>(
-    (id) => CommunityService.preferPost(id),
+    (id) => ThemeService.preferPost(id),
     {
+      onSuccess: () => {
+        if (queryKey) {
+          queryClient.setQueryData(queryKey, (old: Record<string, unknown> | undefined) =>
+            old ? { ...old, liked: true, prefers: (old.prefers as number) + 1 } : old,
+          );
+        }
+      },
       onError: () => {
         setIsPreferred(false);
         setPrefers((prev) => prev - 1);
@@ -17,8 +39,15 @@ export function usePrefer(postId: number, initialPrefers: number) {
   );
 
   const { mutate: unprefer } = useDeleteMutation<unknown, number>(
-    (id) => CommunityService.unpreferPost(id),
+    (id) => ThemeService.unpreferPost(id),
     {
+      onSuccess: () => {
+        if (queryKey) {
+          queryClient.setQueryData(queryKey, (old: Record<string, unknown> | undefined) =>
+            old ? { ...old, liked: false, prefers: (old.prefers as number) - 1 } : old,
+          );
+        }
+      },
       onError: () => {
         setIsPreferred(true);
         setPrefers((prev) => prev + 1);

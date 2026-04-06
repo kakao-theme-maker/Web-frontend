@@ -1,11 +1,11 @@
 import { useGetQuery } from '../api/useApi';
-import { CommunityService } from '../api/CommunityService';
-import type { IThemeBoardDetail } from '../../types/community/post';
+import { ThemeService } from '../api/ThemeService';
+import type { IThemeBoardDetail } from '../../types/community/theme';
 
-export function useCommunityPostDetail(postId: number) {
+export function useThemePostDetail(postId: number) {
   const { data, isLoading, isError } = useGetQuery(
     ['theme-board-detail', postId],
-    () => CommunityService.getThemeBoardDetail(postId),
+    () => ThemeService.getThemeBoardDetail(postId),
     { enabled: !!postId },
   );
 
@@ -16,8 +16,13 @@ export function useCommunityPostDetail(postId: number) {
         title: data.title,
         content: data.content,
         prefers: data.prefers,
+        comments: data.comments,
+        tags: data.tags,
+        isLiked: data.liked,
+        isBookmarked: data.bookmarked,
         previewImageUrl: data.preview_image_url,
         userEmail: data.user_email,
+        userName: data.user_name,
         createdAt: data.created_at,
       }
     : null;

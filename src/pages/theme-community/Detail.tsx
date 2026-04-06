@@ -1,17 +1,17 @@
 import { useState, useRef, useMemo, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
-import CommunityDetailCard from "../../components/community/CommunityDetailCard";
-import { MOCK_POSTS } from "../../services/mock/communityMock";
-import { useCommunityPostDetail } from "../../services/hooks/useCommunityPostDetail";
+import ThemeDetailCard from "../../components/community/theme/ThemeDetailCard";
+import { MOCK_POSTS } from "../../services/mock/themeMock";
+import { useThemePostDetail } from "../../services/hooks/useThemePostDetail";
 import Text from "../../components/common/Text";
 
 const TRANSITION_DURATION = 700;
 
-export default function CommunityDetail() {
+export default function Detail() {
   const { boardId } = useParams();
   const postId = Number(boardId);
 
-  const { post, isLoading, isError } = useCommunityPostDetail(postId);
+  const { post, isLoading, isError } = useThemePostDetail(postId);
 
   const posts = useMemo(() => {
     if (!post) return MOCK_POSTS;
@@ -39,7 +39,6 @@ export default function CommunityDetail() {
     setTimeout(() => { stateRef.current.isAnimating = false; }, TRANSITION_DURATION);
   }, []);
 
-  // 네이티브 wheel 이벤트로 등록 (passive: false 로 preventDefault 가능)
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
@@ -92,7 +91,7 @@ export default function CommunityDetail() {
             transitionDuration: `${TRANSITION_DURATION}ms`,
           }}
         >
-          <CommunityDetailCard post={p} />
+          <ThemeDetailCard post={p} />
         </div>
       ))}
     </div>

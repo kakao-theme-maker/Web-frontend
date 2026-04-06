@@ -1,4 +1,4 @@
-import type { IThemeBoardDetail } from "../../types/community/post";
+import type { IThemeBoardDetail } from "../../types/community/theme";
 
 export const MOCK_POSTS: IThemeBoardDetail[] = [
   {
