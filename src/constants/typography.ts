@@ -9,6 +9,7 @@ export const TYPOGRAPHY = {
   BOLD_12: 'text-[12px] font-bold',
 
   SEMIBOLD_20: 'text-[20px] font-semibold',
+  SEMIBOLD_18: 'text-[18px] font-semibold',
   SEMIBOLD_16: 'text-[16px] font-semibold',
   SEMIBOLD_15: 'text-[15px] font-semibold',
   SEMIBOLD_14: 'text-[14px] font-semibold',

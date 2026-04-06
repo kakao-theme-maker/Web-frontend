@@ -4,6 +4,12 @@ import ThemeCommunityList from "../pages/theme-community/List.tsx";
 import ThemeCommunityDetail from "../pages/theme-community/Detail.tsx";
 import DesignCommunityList from "../pages/design-community/List.tsx";
 import DesignCommunityDetail from "../pages/design-community/Detail.tsx";
+import BoardThemeSelect from "../pages/theme-community/BoardThemeSelect.tsx";
+import BoardWrite from "../pages/theme-community/BoardWrite.tsx";
+import BoardDesignSelect from "../pages/design-community/BoardDesignSelect.tsx";
+import BoardDesignWrite from "../pages/design-community/BoardDesignWrite.tsx";
+import BoardThemeEdit from "../pages/theme-community/BoardThemeEdit.tsx";
+import BoardDesignEdit from "../pages/design-community/BoardDesignEdit.tsx";
 import MyPage from "../pages/mypage/MyPage.tsx";
 import ProfileEdit from "../pages/mypage/ProfileEdit.tsx";
 import MobileLayout from "../layouts/MobileLayout.tsx";
@@ -39,8 +45,14 @@ export default function AppRoutes() {
           <Route element={<MobileLayout />}>
             <Route path="/" element={<App />} />
             <Route path="/community" element={<ThemeCommunityList />} />
+            <Route path="/community/write" element={<BoardThemeSelect />} />
+            <Route path="/community/write/post" element={<BoardWrite />} />
+            <Route path="/community/edit/:boardId" element={<BoardThemeEdit />} />
             <Route path="/community/:boardId" element={<ThemeCommunityDetail />} />
             <Route path="/design" element={<DesignCommunityList />} />
+            <Route path="/design/write" element={<BoardDesignSelect />} />
+            <Route path="/design/write/post" element={<BoardDesignWrite />} />
+            <Route path="/design/edit/:boardId" element={<BoardDesignEdit />} />
             <Route path="/design/:boardId" element={<DesignCommunityDetail />} />
             <Route path="/mypage" element={<MyPage />} />
             <Route path="/mypage/profile-edit" element={<ProfileEdit />} />

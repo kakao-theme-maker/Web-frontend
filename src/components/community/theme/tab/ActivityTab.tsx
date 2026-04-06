@@ -1,4 +1,5 @@
 import { useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import ThemePostGridItem from "../ThemePostGridItem";
 import SearchBar from "../../SearchBar";
 import Text from "../../../common/Text";
@@ -27,6 +28,7 @@ export default function ActivityTab({
   }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
   const sentinelRef = useIntersectionObserver(handleIntersect);
+  const navigate = useNavigate();
 
   return (
     <>
@@ -56,7 +58,10 @@ export default function ActivityTab({
           </div>
         )}
       </main>
-      <button className="absolute bottom-16 right-4 flex h-9 items-center rounded-full bg-primary px-4 text-white shadow-sm">
+      <button
+        onClick={() => navigate('/community/write')}
+        className="absolute bottom-16 right-4 flex h-9 items-center rounded-full bg-primary px-4 text-white shadow-sm"
+      >
         <span className="mr-1 text-base leading-none">+</span>
         <Text variant="REGULAR_14">글쓰기</Text>
       </button>

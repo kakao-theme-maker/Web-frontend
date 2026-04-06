@@ -1,5 +1,5 @@
 import apiClient from './apiClient';
-import type { IThemeBoardRaw, IThemeBoardDetailRaw, ICommentRaw } from '../../types/community/theme';
+import type { IThemeBoardRaw, IThemeBoardDetailRaw, ICommentRaw, IUserThemeRaw, IBoardCreateResponseRaw } from '../../types/community/theme';
 
 export const ThemeService = {
   getThemeBoards: (page: number, size: number) =>
@@ -30,6 +30,25 @@ export const ThemeService = {
   updateComment: (commentId: number, content: string) =>
     apiClient
       .put<ICommentRaw>(`/api/posts/comments/${commentId}`, { content })
+      .then((res) => res.data),
+
+  getUserThemes: (userEmail: string, page: number, size: number) =>
+    apiClient
+      .get<IUserThemeRaw[]>(`/api/themes/user/${userEmail}`, { params: { page, size } })
+      .then((res) => res.data),
+
+  createThemeBoard: (formData: FormData) =>
+    apiClient
+      .post<IBoardCreateResponseRaw>('/api/theme-boards', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      })
+      .then((res) => res.data),
+
+  updateThemeBoard: (postId: number, formData: FormData) =>
+    apiClient
+      .patch<IBoardCreateResponseRaw>(`/api/theme-boards/${postId}`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      })
       .then((res) => res.data),
 
   deleteThemeBoard: (postId: number) =>

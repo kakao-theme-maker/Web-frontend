@@ -1,4 +1,5 @@
-import { useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import type { IThemeBoardDetail } from "../../../types/community/theme";
 import Text from "../../common/Text";
@@ -26,8 +27,10 @@ export default function ThemeDetailCard({ post }: IThemeDetailCardProps) {
   const userEmail = useAuthStore((state) => state.userEmail);
   const isMyPost = userEmail === post.userEmail;
 
+  const [isBookmarked, setIsBookmarked] = useState(post.isBookmarked);
+  useEffect(() => { setIsBookmarked(post.isBookmarked); }, [post.isBookmarked]);
   const { comments } = useComments(post.boardId);
-  const { isPreferred, prefers, togglePrefer } = usePrefer(post.boardId, post.prefers);
+  const { isPreferred, prefers, togglePrefer } = usePrefer(post.boardId, post.prefers, post.isLiked, ['theme-board-detail', post.boardId]);
   const { deletePost } = useDeleteThemePost(() => navigate(-1));
   const {
     deleteTargetId,
@@ -97,12 +100,20 @@ export default function ThemeDetailCard({ post }: IThemeDetailCardProps) {
                   <Text variant="MEDIUM_12">공유하기</Text>
                 </button>
                 {isMyPost && (
-                  <button
-                    className="w-full border-t border-secondary-100 px-3 py-1 text-left hover:bg-secondary-50 text-center"
-                    onClick={() => { setIsMenuOpen(false); setIsDeletePostConfirmOpen(true); }}
-                  >
-                    <Text variant="MEDIUM_12" className="text-red-500">게시글 삭제</Text>
-                  </button>
+                  <>
+                    <button
+                      className="w-full border-t border-secondary-100 px-3 py-1 text-left hover:bg-secondary-50 text-center"
+                      onClick={() => { setIsMenuOpen(false); navigate(`/community/edit/${post.boardId}`, { state: { post } }); }}
+                    >
+                      <Text variant="MEDIUM_12">수정하기</Text>
+                    </button>
+                    <button
+                      className="w-full border-t border-secondary-100 px-3 py-1 text-left hover:bg-secondary-50 text-center"
+                      onClick={() => { setIsMenuOpen(false); setIsDeletePostConfirmOpen(true); }}
+                    >
+                      <Text variant="MEDIUM_12" className="text-red-500">게시글 삭제</Text>
+                    </button>
+                  </>
                 )}
               </div>
             )}
@@ -143,7 +154,13 @@ export default function ThemeDetailCard({ post }: IThemeDetailCardProps) {
               <Text variant="REGULAR_15">{comments.length}</Text>
             </div>
           </div>
-          <BookmarkIcon width={12} height={17} aria-label="북마크" />
+          <button onClick={() => setIsBookmarked((prev) => !prev)} aria-label="북마크">
+            <BookmarkIcon
+              width={12}
+              height={17}
+              className={isBookmarked ? 'text-primary' : 'text-secondary-300'}
+            />
+          </button>
         </div>
 
         <div className="mt-2">
@@ -184,7 +201,7 @@ export default function ThemeDetailCard({ post }: IThemeDetailCardProps) {
         />
       )}
 
-      {isCommentOpen && (
+      {isCommentOpen && createPortal(
         <>
           <div
             className="absolute inset-0 z-40 bg-black/70"
@@ -234,7 +251,8 @@ export default function ThemeDetailCard({ post }: IThemeDetailCardProps) {
               onConfirm={() => setIsEditAlertOpen(false)}
             />
           )}
-        </>
+        </>,
+        document.getElementById('phone-root')!,
       )}
     </main>
   );

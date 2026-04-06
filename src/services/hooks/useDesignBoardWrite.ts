@@ -1,0 +1,31 @@
+import { useNavigate } from 'react-router-dom';
+import { usePostMutation } from '../api/useApi';
+import { DesignService } from '../api/DesignService';
+import { useBoardWriteForm } from './useBoardWriteForm';
+import type { IDesignBoardCreateResponseRaw, IUserDesignComponentRaw } from '../../types/community/design';
+
+export function useDesignBoardWrite(selectedComponent: IUserDesignComponentRaw) {
+  const navigate = useNavigate();
+  const { rhfHandleSubmit, formIsSubmitting, previewImage, tags, ...formProps } = useBoardWriteForm();
+
+  const { mutate, isPending } = usePostMutation<IDesignBoardCreateResponseRaw, FormData>(
+    (formData) => DesignService.createDesignBoard(formData),
+    { onSuccess: () => navigate('/design') },
+  );
+
+  const handleSubmit = rhfHandleSubmit((formData) => {
+    const boardInfo = {
+      title: formData.title,
+      content: formData.content,
+      designComponentId: selectedComponent.design_component_id,
+      publicFlag: formData.isPublic,
+      post_tags: tags.map((tag) => ({ tag_name: tag })),
+    };
+    const multipartForm = new FormData();
+    multipartForm.append('board_info', new Blob([JSON.stringify(boardInfo)], { type: 'application/json' }));
+    if (previewImage) multipartForm.append('preview_image', previewImage);
+    mutate(multipartForm);
+  });
+
+  return { ...formProps, tags, handleSubmit, isSubmitting: formIsSubmitting || isPending };
+}
