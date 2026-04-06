@@ -23,7 +23,7 @@ export default function MobileLayout() {
 
   return (
     <div className="flex min-h-screen items-start justify-center bg-white py-4">
-      <div className="relative flex h-[700px] w-[340px] flex-col overflow-hidden border border-secondary-200">
+      <div id="phone-root" className="relative flex h-[700px] w-[340px] flex-col overflow-hidden border border-secondary-200">
         {hasHeader && <MobileHeader title={headerTitle} showBackArrow={showBackArrow} className={isProfileEdit ? "!bg-[#f1f1f1]" : ""} />}
 
         <div className={`scrollbar-hidden flex-1 overflow-y-auto ${isCommunityDetail || isDesignDetail ? "" : "pb-16"}`}>

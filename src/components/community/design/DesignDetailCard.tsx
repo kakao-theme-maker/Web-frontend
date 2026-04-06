@@ -1,4 +1,5 @@
-import { useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import type { IDesignBoardDetail } from "../../../types/community/design";
 import Text from "../../common/Text";
@@ -26,8 +27,10 @@ export default function DesignDetailCard({ post }: IDesignDetailCardProps) {
   const userEmail = useAuthStore((state) => state.userEmail);
   const isMyPost = userEmail === post.userEmail;
 
+  const [isBookmarked, setIsBookmarked] = useState(post.isBookmarked);
+  useEffect(() => { setIsBookmarked(post.isBookmarked); }, [post.isBookmarked]);
   const { comments } = useComments(post.boardId);
-  const { isPreferred, prefers, togglePrefer } = usePrefer(post.boardId, post.prefers);
+  const { isPreferred, prefers, togglePrefer } = usePrefer(post.boardId, post.prefers, post.isLiked, ['design-board-detail', post.boardId]);
   const { deletePost } = useDeleteDesignPost(() => navigate(-1));
   const {
     deleteTargetId,
@@ -143,7 +146,13 @@ export default function DesignDetailCard({ post }: IDesignDetailCardProps) {
               <Text variant="REGULAR_15">{comments.length}</Text>
             </div>
           </div>
-          <BookmarkIcon width={12} height={17} aria-label="북마크" />
+          <button onClick={() => setIsBookmarked((prev) => !prev)} aria-label="북마크">
+            <BookmarkIcon
+              width={12}
+              height={17}
+              className={isBookmarked ? 'text-primary' : 'text-secondary-300'}
+            />
+          </button>
         </div>
 
         <div className="mt-2">
@@ -184,7 +193,7 @@ export default function DesignDetailCard({ post }: IDesignDetailCardProps) {
         />
       )}
 
-      {isCommentOpen && (
+      {isCommentOpen && createPortal(
         <>
           <div
             className="absolute inset-0 z-40 bg-black/70"
@@ -234,7 +243,8 @@ export default function DesignDetailCard({ post }: IDesignDetailCardProps) {
               onConfirm={() => setIsEditAlertOpen(false)}
             />
           )}
-        </>
+        </>,
+        document.getElementById('phone-root')!,
       )}
     </main>
   );

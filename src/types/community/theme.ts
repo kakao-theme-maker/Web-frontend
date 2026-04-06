@@ -2,6 +2,11 @@
  * 테마 커뮤니티 관련 타입 정의 파일
  */
 
+export interface ITag {
+  tag_id: number;
+  tag_name: string;
+}
+
 // GET /api/theme-boards/{post_id} 응답 - 서버 원본 형식 (snake_case)
 export interface IThemeBoardDetailRaw {
   post_id: number;
@@ -9,8 +14,13 @@ export interface IThemeBoardDetailRaw {
   title: string;
   content: string;
   prefers: number;
+  comments: number;
+  tags: ITag[];
+  liked: boolean;
+  bookmarked: boolean;
   preview_image_url: string;
   user_email: string;
+  user_name: string;
   created_at: string;
 }
 
@@ -21,8 +31,13 @@ export interface IThemeBoardDetail {
   title: string;
   content: string;
   prefers: number;
+  comments: number;
+  tags: ITag[];
+  isLiked: boolean;
+  isBookmarked: boolean;
   previewImageUrl: string;
   userEmail: string;
+  userName: string;
   createdAt: string;
 }
 

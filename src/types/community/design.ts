@@ -1,7 +1,12 @@
 /**
  * 디자인 커뮤니티 관련 타입 정의 파일
- * ※ API 엔드포인트 확인 후 실제 응답 구조에 맞게 수정 필요
+ * ※ API 엔드포인트 확인 후 실제 경로로 교체 필요
  */
+
+export interface ITag {
+  tag_id: number;
+  tag_name: string;
+}
 
 // GET /api/design-boards 응답 항목 - 서버 원본 형식 (snake_case)
 export interface IDesignBoardRaw {
@@ -28,11 +33,21 @@ export interface IDesignBoard {
 // GET /api/design-boards/{post_id} 응답 - 서버 원본 형식 (snake_case)
 export interface IDesignBoardDetailRaw extends IDesignBoardRaw {
   content: string;
+  comments: number;
+  tags: ITag[];
+  liked: boolean;
+  bookmarked: boolean;
+  user_name: string;
 }
 
 // 디자인 게시글 상세 UI 모델 (camelCase)
 export interface IDesignBoardDetail extends IDesignBoard {
   content: string;
+  comments: number;
+  tags: ITag[];
+  isLiked: boolean;
+  isBookmarked: boolean;
+  userName: string;
 }
 
 // GET /api/design-components/user/{userEmail} 응답 항목 - 서버 원본 형식 (snake_case)
