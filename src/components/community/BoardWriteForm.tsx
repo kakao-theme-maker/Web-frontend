@@ -18,6 +18,7 @@ interface IBoardWriteFormProps {
   previewUrl: string | null;
   handleImageChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSubmit: React.FormEventHandler<HTMLFormElement>;
+  submitLabel?: string;
 }
 
 export default function BoardWriteForm({
@@ -35,6 +36,7 @@ export default function BoardWriteForm({
   previewUrl,
   handleImageChange,
   onSubmit,
+  submitLabel = '작성완료',
 }: IBoardWriteFormProps) {
   const isPublic = watch('isPublic');
 
@@ -153,7 +155,7 @@ export default function BoardWriteForm({
       </div>
 
       <Button type="submit" fullWidth disabled={isSubmitting}>
-        {isSubmitting ? '등록 중...' : '작성완료'}
+        {isSubmitting ? '처리 중...' : submitLabel}
       </Button>
     </form>
   );

@@ -100,12 +100,20 @@ export default function ThemeDetailCard({ post }: IThemeDetailCardProps) {
                   <Text variant="MEDIUM_12">공유하기</Text>
                 </button>
                 {isMyPost && (
-                  <button
-                    className="w-full border-t border-secondary-100 px-3 py-1 text-left hover:bg-secondary-50 text-center"
-                    onClick={() => { setIsMenuOpen(false); setIsDeletePostConfirmOpen(true); }}
-                  >
-                    <Text variant="MEDIUM_12" className="text-red-500">게시글 삭제</Text>
-                  </button>
+                  <>
+                    <button
+                      className="w-full border-t border-secondary-100 px-3 py-1 text-left hover:bg-secondary-50 text-center"
+                      onClick={() => { setIsMenuOpen(false); navigate(`/community/edit/${post.boardId}`, { state: { post } }); }}
+                    >
+                      <Text variant="MEDIUM_12">수정하기</Text>
+                    </button>
+                    <button
+                      className="w-full border-t border-secondary-100 px-3 py-1 text-left hover:bg-secondary-50 text-center"
+                      onClick={() => { setIsMenuOpen(false); setIsDeletePostConfirmOpen(true); }}
+                    >
+                      <Text variant="MEDIUM_12" className="text-red-500">게시글 삭제</Text>
+                    </button>
+                  </>
                 )}
               </div>
             )}

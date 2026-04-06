@@ -2,12 +2,24 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import type { IBoardWriteFormData } from '../../types/community/theme';
 
-export function useBoardWriteForm() {
+interface IBoardWriteFormInitialValues {
+  title?: string;
+  content?: string;
+  isPublic?: boolean;
+  tags?: string[];
+  previewUrl?: string | null;
+}
+
+export function useBoardWriteForm(initialValues?: IBoardWriteFormInitialValues) {
   const { register, handleSubmit, watch, setValue, formState: { errors, isSubmitting } } = useForm<IBoardWriteFormData>({
-    defaultValues: { isPublic: true },
+    defaultValues: {
+      isPublic: initialValues?.isPublic ?? true,
+      title: initialValues?.title ?? '',
+      content: initialValues?.content ?? '',
+    },
   });
 
-  const [tags, setTags] = useState<string[]>([]);
+  const [tags, setTags] = useState<string[]>(initialValues?.tags ?? []);
   const [tagInput, setTagInput] = useState('');
 
   const handleAddTag = () => {
@@ -22,7 +34,7 @@ export function useBoardWriteForm() {
   };
 
   const [previewImage, setPreviewImage] = useState<File | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(initialValues?.previewUrl ?? null);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] ?? null;

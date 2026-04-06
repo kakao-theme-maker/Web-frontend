@@ -11,10 +11,12 @@ export default function MobileLayout() {
   const isProfileEdit: boolean = pathname === "/mypage/profile-edit"
   const isBoardWrite: boolean = pathname.startsWith("/community/write")
   const isDesignBoardWrite: boolean = pathname.startsWith("/design/write")
-  const isCommunityDetail: boolean = pathname.split('/').filter(Boolean).length >= 2 && isCommunity && !isBoardWrite
-  const isDesignDetail: boolean = pathname.split('/').filter(Boolean).length >= 2 && isDesign && !isDesignBoardWrite
+  const isBoardEdit: boolean = pathname.startsWith("/community/edit")
+  const isDesignBoardEdit: boolean = pathname.startsWith("/design/edit")
+  const isCommunityDetail: boolean = pathname.split('/').filter(Boolean).length >= 2 && isCommunity && !isBoardWrite && !isBoardEdit
+  const isDesignDetail: boolean = pathname.split('/').filter(Boolean).length >= 2 && isDesign && !isDesignBoardWrite && !isDesignBoardEdit
   const hasHeader: boolean = isHome || isCommunity || isDesign || isMyPage
-  const headerTitle: string = isBoardWrite || isDesignBoardWrite ? "글 작성" : isCommunity ? "테마 커뮤니티" : isDesign ? "디자인 커뮤니티" : isProfileEdit ? "프로필 수정" : isMyPage ? "마이페이지" : "고정 헤더"
+  const headerTitle: string = isBoardWrite || isDesignBoardWrite ? "글 작성" : isBoardEdit || isDesignBoardEdit ? "글 수정" : isCommunity ? "테마 커뮤니티" : isDesign ? "디자인 커뮤니티" : isProfileEdit ? "프로필 수정" : isMyPage ? "마이페이지" : "고정 헤더"
 
   // 뒤로가기 버튼을 보여주어야 하는 경로인지 판별
   // 현재 기준은 depth가 2이상인 경우 ('/'의 경우 0으로 보고, '/community'의 경우 1로 보고, '/community/6'의 경우 2로 봄)
