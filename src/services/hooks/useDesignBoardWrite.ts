@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
 import { usePostMutation } from '../api/useApi';
 import { DesignService } from '../api/DesignService';
 import { useBoardWriteForm } from './useBoardWriteForm';
@@ -6,11 +7,17 @@ import type { IDesignBoardCreateResponseRaw, IUserDesignComponentRaw } from '../
 
 export function useDesignBoardWrite(selectedComponent: IUserDesignComponentRaw) {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const { rhfHandleSubmit, formIsSubmitting, previewImage, tags, ...formProps } = useBoardWriteForm();
 
   const { mutate, isPending } = usePostMutation<IDesignBoardCreateResponseRaw, FormData>(
     (formData) => DesignService.createDesignBoard(formData),
-    { onSuccess: () => navigate('/design') },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['userProfile'] });
+        navigate('/design');
+      },
+    },
   );
 
   const handleSubmit = rhfHandleSubmit((formData) => {
