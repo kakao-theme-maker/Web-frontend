@@ -10,11 +10,11 @@ interface IProfileInfoRowProps {
 function ProfileInfoRow({ label, value }: IProfileInfoRowProps) {
   return (
     <button className="flex w-full items-center justify-between px-4 py-3">
-      <div className="flex items-center gap-6">
+      <div className="flex items-center gap-6 min-w-0">
         <Text variant="REGULAR_14" className="text-secondary-400 w-10 shrink-0 text-left">
           {label}
         </Text>
-        <Text variant="REGULAR_14">{value}</Text>
+        <Text variant="REGULAR_14" className="truncate">{value}</Text>
       </div>
       <span className="text-secondary-300">{">"}</span>
     </button>
