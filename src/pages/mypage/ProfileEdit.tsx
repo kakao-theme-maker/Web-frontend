@@ -1,14 +1,6 @@
 import Text from "../../components/common/Text";
 import UserStats from "./UserStats";
-import type { IUserProfile } from "../../types/mypage/types";
-
-const MOCK_USER: IUserProfile = {
-  name: "다현",
-  email: "rkwhr5471@kookmin.ac.kr",
-  uploadCount: 3,
-  followingCount: 122,
-  followerCount: 122,
-};
+import { useUserProfile } from "../../services/hooks/useUserProfile";
 
 interface IProfileInfoRowProps {
   label: string;
@@ -30,11 +22,21 @@ function ProfileInfoRow({ label, value }: IProfileInfoRowProps) {
 }
 
 export default function ProfileEdit() {
+  const { profile } = useUserProfile();
+
   return (
     <main className="flex flex-col gap-4 bg-[#f1f1f1] px-4 pt-6 pb-8 min-h-full">
       {/* 프로필 이미지 */}
       <section className="flex flex-col items-center gap-2">
-        <div className="h-20 w-20 rounded-full bg-secondary-300" />
+        {profile?.profileImage ? (
+          <img
+            src={profile.profileImage}
+            alt="프로필 이미지"
+            className="h-20 w-20 rounded-full object-cover"
+          />
+        ) : (
+          <div className="h-20 w-20 rounded-full bg-secondary-300" />
+        )}
         <button>
           <Text variant="REGULAR_14" className="text-primary">
             사진 변경
@@ -43,16 +45,16 @@ export default function ProfileEdit() {
 
         {/* 통계 */}
         <UserStats
-          uploadCount={MOCK_USER.uploadCount}
-          followingCount={MOCK_USER.followingCount}
-          followerCount={MOCK_USER.followerCount}
+          uploads={profile?.uploads ?? 0}
+          following={profile?.following ?? 0}
+          followers={profile?.followers ?? 0}
         />
       </section>
 
       {/* 정보 수정 */}
       <section className="overflow-hidden rounded-xl bg-white mt-2">
-        <ProfileInfoRow label="이름" value={MOCK_USER.name} />
-        <ProfileInfoRow label="이메일" value={MOCK_USER.email} />
+        <ProfileInfoRow label="이름" value={profile?.name ?? ""} />
+        <ProfileInfoRow label="이메일" value={profile?.userEmail ?? ""} />
       </section>
     </main>
   );
