@@ -4,10 +4,11 @@ import Text from "../../components/common/Text";
 import TabMenu from "../../components/common/TabMenu";
 import MoreMenu from "../../components/common/MoreMenu";
 import Button from "../../components/common/Button";
-import { cn } from "../../utils/cn";
 import UserStats from "./UserStats";
 import { useUserProfile } from "../../services/hooks/useUserProfile";
-import type { MyPageTabId, IMyPagePost, IThemeGridItem, IThemeCategory } from "../../types/mypage/types";
+import { useSavedPosts } from "../../services/hooks/useSavedPosts";
+import { usePreferredPosts } from "../../services/hooks/usePreferredPosts";
+import type { MyPageTabId, IMyPagePost, IThemeGridItem } from "../../types/mypage/types";
 
 // 탭 목록
 const MY_PAGE_TABS: { id: MyPageTabId; label: string }[] = [
@@ -16,42 +17,9 @@ const MY_PAGE_TABS: { id: MyPageTabId; label: string }[] = [
   { id: "liked", label: "좋아요" },
 ];
 
-const THEME_CATEGORIES: IThemeCategory[] = [
-  { id: "all", label: "전체" },
-  { id: "cute", label: "귀여움" },
-  { id: "fancy", label: "화려함" },
-  { id: "game", label: "게임" },
-  { id: "animal", label: "동물" },
-  { id: "classic", label: "클래식" },
-];
-
 const MOCK_POSTS: IMyPagePost[] = [
   { id: 1, author: "다현", date: "3월 25일" },
   { id: 2, author: "다현", date: "3월 20일" },
-];
-
-const MOCK_SAVED_THEMES: IThemeGridItem[] = [
-  { id: 1, categoryId: "cute" },
-  { id: 2, categoryId: "fancy" },
-  { id: 3, categoryId: "game" },
-  { id: 4, categoryId: "animal" },
-  { id: 5, categoryId: "cute" },
-  { id: 6, categoryId: "classic" },
-  { id: 7, categoryId: "game" },
-  { id: 8, categoryId: "fancy" },
-  { id: 9, categoryId: "cute" },
-];
-
-const MOCK_LIKED_THEMES: IThemeGridItem[] = [
-  { id: 1, categoryId: "classic" },
-  { id: 2, categoryId: "cute" },
-  { id: 3, categoryId: "fancy" },
-  { id: 4, categoryId: "game" },
-  { id: 5, categoryId: "animal" },
-  { id: 6, categoryId: "cute" },
-  { id: 7, categoryId: "classic" },
-  { id: 8, categoryId: "game" },
-  { id: 9, categoryId: "fancy" },
 ];
 
 
@@ -107,57 +75,43 @@ function ActivityTab() {
   );
 }
 
-// 필터 칩 + 그리드 탭 (저장된 / 좋아요 공용)
+// 그리드 탭 (저장된 / 좋아요 공용)
 interface IThemeGridTabProps {
   themes: IThemeGridItem[];
+  isLoading: boolean;
   emptyMessage: string;
 }
 
-function ThemeGridTab({ themes, emptyMessage }: IThemeGridTabProps) {
-  const [activeCategory, setActiveCategory] = useState("all");
+function ThemeGridTab({ themes, isLoading, emptyMessage }: IThemeGridTabProps) {
+  if (isLoading) {
+    return (
+      <div className="grid grid-cols-3 gap-2 px-4 pt-3">
+        {Array.from({ length: 9 }).map((_, i) => (
+          <div key={i} className="aspect-square animate-pulse rounded-sm bg-secondary-200" />
+        ))}
+      </div>
+    );
+  }
 
-  const filtered =
-    activeCategory === "all"
-      ? themes
-      : themes.filter((t) => t.categoryId === activeCategory);
+  if (themes.length === 0) {
+    return (
+      <div className="flex h-40 items-center justify-center">
+        <Text variant="REGULAR_14" className="text-secondary-300">
+          {emptyMessage}
+        </Text>
+      </div>
+    );
+  }
 
   return (
-    <div>
-      {/* 필터 칩 */}
-      <div className="flex flex-wrap gap-2 px-4 py-3">
-        {THEME_CATEGORIES.map((cat) => {
-          const isActive = activeCategory === cat.id;
-          return (
-            <button
-              key={cat.id}
-              onClick={() => setActiveCategory(cat.id)}
-              className={cn(
-                "shrink-0 rounded-full border px-3 py-1 text-xs transition-colors",
-                isActive
-                  ? "border-primary bg-primary text-white"
-                  : "border-secondary-300 bg-white text-secondary-400",
-              )}
-            >
-              {cat.label}
-            </button>
-          );
-        })}
-      </div>
-
-      {/* 그리드 */}
-      {filtered.length === 0 ? (
-        <div className="flex h-40 items-center justify-center">
-          <Text variant="REGULAR_14" className="text-secondary-300">
-            {emptyMessage}
-          </Text>
+    <div className="grid grid-cols-3 gap-2 px-4 pt-3">
+      {themes.map((theme) => (
+        <div key={theme.id} className="aspect-square overflow-hidden rounded-sm bg-secondary-200">
+          {theme.previewImageUrl && (
+            <img src={theme.previewImageUrl} alt="" className="h-full w-full object-cover" />
+          )}
         </div>
-      ) : (
-        <div className="grid grid-cols-3 gap-2 px-4">
-          {filtered.map((theme) => (
-            <div key={theme.id} className="aspect-square rounded-sm bg-secondary-200" />
-          ))}
-        </div>
-      )}
+      ))}
     </div>
   );
 }
@@ -166,11 +120,13 @@ export default function MyPage() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<MyPageTabId>("activity");
   const { profile, isLoading } = useUserProfile();
+  const { posts: savedPosts, isLoading: isSavedLoading } = useSavedPosts();
+  const { posts: preferredPosts, isLoading: isPreferredLoading } = usePreferredPosts();
 
   const TAB_CONTENT: Record<MyPageTabId, React.ReactNode> = {
     activity: <ActivityTab />,
-    saved: <ThemeGridTab key="saved" themes={MOCK_SAVED_THEMES} emptyMessage="저장된 테마가 없습니다." />,
-    liked: <ThemeGridTab key="liked" themes={MOCK_LIKED_THEMES} emptyMessage="좋아요한 테마가 없습니다." />,
+    saved: <ThemeGridTab themes={savedPosts} isLoading={isSavedLoading} emptyMessage="저장된 테마가 없습니다." />,
+    liked: <ThemeGridTab themes={preferredPosts} isLoading={isPreferredLoading} emptyMessage="좋아요한 테마가 없습니다." />,
   };
 
   return (

@@ -37,15 +37,16 @@ export interface IMyPagePost {
   previewImageUrl?: string;
 }
 
+// 저장된/좋아요 게시글 API 응답 (snake_case)
+export interface IUserPostListItemRaw {
+  postId: number;
+  previewImageUrl: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 // 테마 그리드 아이템 (저장된/좋아요 탭)
 export interface IThemeGridItem {
   id: number;
   previewImageUrl?: string;
-  categoryId: string;
-}
-
-// 테마 카테고리 필터
-export interface IThemeCategory {
-  id: string;
-  label: string;
 }
