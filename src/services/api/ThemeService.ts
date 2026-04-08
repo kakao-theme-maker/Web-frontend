@@ -44,7 +44,7 @@ export const ThemeService = {
 
   updateThemeBoard: (postId: number, formData: FormData) =>
     apiClient
-      .patch<IBoardCreateResponseRaw>(`/api/theme-boards/${postId}`, formData)
+      .put<IBoardCreateResponseRaw>(`/api/theme-boards/${postId}`, formData)
       .then((res) => res.data),
 
   deleteThemeBoard: (postId: number) =>
