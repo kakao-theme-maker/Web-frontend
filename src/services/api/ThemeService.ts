@@ -39,16 +39,12 @@ export const ThemeService = {
 
   createThemeBoard: (formData: FormData) =>
     apiClient
-      .post<IBoardCreateResponseRaw>('/api/theme-boards', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      })
+      .post<IBoardCreateResponseRaw>('/api/theme-boards', formData)
       .then((res) => res.data),
 
   updateThemeBoard: (postId: number, formData: FormData) =>
     apiClient
-      .patch<IBoardCreateResponseRaw>(`/api/theme-boards/${postId}`, formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      })
+      .patch<IBoardCreateResponseRaw>(`/api/theme-boards/${postId}`, formData)
       .then((res) => res.data),
 
   deleteThemeBoard: (postId: number) =>

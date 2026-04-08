@@ -14,7 +14,7 @@ export function useBoardEdit(post: IThemeBoardDetail) {
     title: post.title,
     content: post.content,
     isPublic: true,
-    tags: post.tags.map((t) => t.tag_name),
+    tags: (post.tags ?? []).map((t) => t.tag_name),
     previewUrl: post.previewImageUrl ?? null,
   });
 
