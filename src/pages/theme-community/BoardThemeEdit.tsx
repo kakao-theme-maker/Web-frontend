@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useBoardEdit } from '../../services/hooks/useBoardEdit';
+import { useThemeBoardEdit } from '../../services/hooks/useThemeBoardEdit';
 import BoardWriteForm from '../../components/community/BoardWriteForm';
 import type { IThemeBoardDetail } from '../../types/community/theme';
 
@@ -20,7 +20,7 @@ export default function BoardThemeEdit() {
   }, [state, navigate]);
 
   const post = state?.post;
-  const { handleSubmit, ...formProps } = useBoardEdit(post!);
+  const { handleSubmit, ...formProps } = useThemeBoardEdit(post!);
 
   if (!post) return null;
 

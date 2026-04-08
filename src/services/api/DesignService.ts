@@ -25,15 +25,11 @@ export const DesignService = {
 
   createDesignBoard: (formData: FormData) =>
     apiClient
-      .post<IDesignBoardCreateResponseRaw>('/api/design-boards', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      })
+      .post<IDesignBoardCreateResponseRaw>('/api/design-boards', formData)
       .then((res) => res.data),
 
   updateDesignBoard: (postId: number, formData: FormData) =>
     apiClient
-      .patch<IDesignBoardCreateResponseRaw>(`/api/design-boards/${postId}`, formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      })
+      .patch<IDesignBoardCreateResponseRaw>(`/api/design-boards/${postId}`, formData)
       .then((res) => res.data),
 };
