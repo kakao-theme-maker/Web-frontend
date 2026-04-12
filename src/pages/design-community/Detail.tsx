@@ -2,7 +2,7 @@ import { useState, useRef, useMemo, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { DesignDetailCard } from "../../components/community/design";
 import { DESIGN_MOCK_POSTS } from "../../services/mock/designMock";
-import { useDesignPostDetail } from "../../services/hooks/useDesignPostDetail";
+import { useDesignPostDetail } from "../../services/hooks/design/useDesignPostDetail";
 import Text from "../../components/common/Text";
 
 const TRANSITION_DURATION = 700;

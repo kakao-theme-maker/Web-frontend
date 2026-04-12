@@ -1,6 +1,6 @@
 import Text from "../../components/common/Text";
 import UserStats from "./UserStats";
-import { useUserProfile } from "../../services/hooks/useUserProfile";
+import { useUserProfile } from "../../services/hooks/user/useUserProfile";
 
 interface IProfileInfoRowProps {
   label: string;

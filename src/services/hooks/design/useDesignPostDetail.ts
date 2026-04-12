@@ -1,6 +1,6 @@
-import { useGetQuery } from '../api/useApi';
-import { DesignService } from '../api/DesignService';
-import type { IDesignBoardDetail } from '../../types/community/design';
+import { useGetQuery } from '../../api/useApi';
+import { DesignService } from '../../api/DesignService';
+import type { IDesignBoardDetail } from '../../../types/community/design';
 
 export function useDesignPostDetail(postId: number) {
   const { data, isLoading, isError } = useGetQuery(

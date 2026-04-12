@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import { useDeleteMutation, usePutMutation } from '../api/useApi';
-import { ThemeService } from '../api/ThemeService';
-import type { ICommentRaw } from '../../types/community/theme';
+import { useDeleteMutation, usePutMutation } from '../../api/useApi';
+import { ThemeService } from '../../api/ThemeService';
+import type { ICommentRaw } from '../../../types/community/theme';
 
 export function useCommentActions(postId: number) {
   const queryClient = useQueryClient();

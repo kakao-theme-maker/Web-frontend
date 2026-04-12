@@ -1,9 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { useAuthStore } from "../../stores/authStore";
-import { usePostMutation } from "../api/useApi";
-import { AuthService } from "../api/AuthService";
-import type { ILoginFormData, IAuthTokens } from "../../types/auth/types";
+import { useAuthStore } from "../../../stores/authStore";
+import { usePostMutation } from "../../api/useApi";
+import { AuthService } from "../../api/AuthService";
+import type { ILoginFormData, IAuthTokens } from "../../../types/auth/types";
 
 export function useLogin() {
   const navigate = useNavigate();

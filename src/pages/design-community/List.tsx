@@ -3,7 +3,7 @@ import { DesignActivityTab } from "../../components/community/design";
 import { KeywordTab } from "../../components/community";
 import TabMenu from "../../components/common/TabMenu";
 import type { TabId } from "../../types/community/theme";
-import { useDesignPosts } from "../../services/hooks/useDesignPosts";
+import { useDesignPosts } from "../../services/hooks/design/useDesignPosts";
 
 const tabs: { id: TabId; label: string }[] = [
   { id: 'activity', label: '활동' },

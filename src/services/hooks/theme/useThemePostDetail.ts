@@ -1,6 +1,6 @@
-import { useGetQuery } from '../api/useApi';
-import { ThemeService } from '../api/ThemeService';
-import type { IThemeBoardDetail } from '../../types/community/theme';
+import { useGetQuery } from '../../api/useApi';
+import { ThemeService } from '../../api/ThemeService';
+import type { IThemeBoardDetail } from '../../../types/community/theme';
 
 export function useThemePostDetail(postId: number) {
   const { data, isLoading, isError } = useGetQuery(

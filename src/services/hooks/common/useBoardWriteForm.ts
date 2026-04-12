@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import type { IBoardWriteFormData } from '../../types/community/theme';
+import type { IBoardWriteFormData } from '../../../types/community/theme';
 
 interface IBoardWriteFormInitialValues {
   title?: string;

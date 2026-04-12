@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import BackArrowIcon from "../../components/icons/header/back-arrow.svg?react";
 import Text from "../../components/common/Text";
 import Button from "../../components/common/Button";
-import { useSignUp } from "../../services/hooks/useSignUp";
+import { useSignUp } from "../../services/hooks/auth/useSignUp";
 
 const CHECKBOXES = [
   { key: "age" as const, label: "만 14세 이상입니다." },

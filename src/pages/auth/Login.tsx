@@ -3,7 +3,7 @@ import LoginLogoIcon from "../../components/icons/login/login-logo.svg?react";
 import LoginBottomIcon from "../../components/icons/login/login-bottom.svg?react";
 import Text from "../../components/common/Text";
 import Button from "../../components/common/Button";
-import { useLogin } from "../../services/hooks/useLogin";
+import { useLogin } from "../../services/hooks/auth/useLogin";
 
 export default function Login() {
   const { register, handleSubmit, onSubmit, errors, isSubmitting } = useLogin();

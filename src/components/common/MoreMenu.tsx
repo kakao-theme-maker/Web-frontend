@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import Text from "./Text";
-import { useOutsideClick } from "../../services/hooks/useOutsideClick";
+import { useOutsideClick } from "../../services/hooks/common/useOutsideClick";
 import { cn } from "../../utils/cn";
 
 export interface IMoreMenuItem {

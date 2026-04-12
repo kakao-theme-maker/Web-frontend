@@ -1,7 +1,7 @@
-import { useGetQuery } from '../api/useApi';
-import { DesignService } from '../api/DesignService';
-import { useAuthStore } from '../../stores/authStore';
-import type { IUserDesignComponentRaw } from '../../types/community/design';
+import { useGetQuery } from '../../api/useApi';
+import { DesignService } from '../../api/DesignService';
+import { useAuthStore } from '../../../stores/authStore';
+import type { IUserDesignComponentRaw } from '../../../types/community/design';
 
 export function useUserDesignComponents() {
   const userEmail = useAuthStore((state) => state.userEmail);

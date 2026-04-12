@@ -1,21 +1,21 @@
 import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
-import { usePostMutation } from '../api/useApi';
-import { ThemeService } from '../api/ThemeService';
-import { useBoardWriteForm } from './useBoardWriteForm';
-import type { IBoardCreateResponseRaw, IUserTheme } from '../../types/community/theme';
+import { usePostMutation } from '../../api/useApi';
+import { DesignService } from '../../api/DesignService';
+import { useBoardWriteForm } from '../common/useBoardWriteForm';
+import type { IDesignBoardCreateResponseRaw, IUserDesignComponentRaw } from '../../../types/community/design';
 
-export function useBoardWrite(selectedTheme: IUserTheme) {
+export function useDesignBoardWrite(selectedComponent: IUserDesignComponentRaw) {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { rhfHandleSubmit, formIsSubmitting, previewImage, tags, ...formProps } = useBoardWriteForm();
 
-  const { mutate, isPending } = usePostMutation<IBoardCreateResponseRaw, FormData>(
-    (formData) => ThemeService.createThemeBoard(formData),
+  const { mutate, isPending } = usePostMutation<IDesignBoardCreateResponseRaw, FormData>(
+    (formData) => DesignService.createDesignBoard(formData),
     {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['userProfile'] });
-        navigate('/community');
+        navigate('/design');
       },
     },
   );
@@ -24,7 +24,7 @@ export function useBoardWrite(selectedTheme: IUserTheme) {
     const boardInfo = {
       title: formData.title,
       content: formData.content,
-      themeComponentId: selectedTheme.themeComponentId,
+      designComponentId: selectedComponent.design_component_id,
       publicFlag: formData.isPublic,
       post_tags: tags.map((tag) => ({ tag_name: tag })),
     };

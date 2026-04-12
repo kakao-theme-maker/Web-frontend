@@ -1,11 +1,11 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { ThemeService } from '../api/ThemeService';
+import { DesignService } from '../../api/DesignService';
 
-export function useDeleteThemePost(onSuccess?: () => void) {
+export function useDeleteDesignPost(onSuccess?: () => void) {
   const queryClient = useQueryClient();
 
   const { mutate: deletePost, isPending } = useMutation({
-    mutationFn: (postId: number) => ThemeService.deleteThemeBoard(postId),
+    mutationFn: (postId: number) => DesignService.deleteDesignBoard(postId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['userProfile'] });
       onSuccess?.();

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { ActivityTab, KeywordTab } from "../../components/community";
 import TabMenu from "../../components/common/TabMenu";
 import type { TabId } from "../../types/community/theme";
-import { useThemePosts } from "../../services/hooks/useThemePosts";
+import { useThemePosts } from "../../services/hooks/theme/useThemePosts";
 
 const tabs: { id: TabId; label: string }[] = [
   { id: 'activity', label: '활동' },

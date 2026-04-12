@@ -1,6 +1,6 @@
-import { useGetQuery } from '../api/useApi';
-import { ThemeService } from '../api/ThemeService';
-import type { ICommentRaw } from '../../types/community/theme';
+import { useGetQuery } from '../../api/useApi';
+import { ThemeService } from '../../api/ThemeService';
+import type { ICommentRaw } from '../../../types/community/theme';
 
 export function useComments(postId: number) {
   const { data, isLoading, isError } = useGetQuery<ICommentRaw[]>(

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useDesignBoardEdit } from '../../services/hooks/useDesignBoardEdit';
+import { useDesignBoardEdit } from '../../services/hooks/design/useDesignBoardEdit';
 import BoardWriteForm from '../../components/community/BoardWriteForm';
 import type { IDesignBoardDetail } from '../../types/community/design';
 

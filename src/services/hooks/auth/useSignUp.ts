@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { usePostMutation } from "../api/useApi";
-import { AuthService } from "../api/AuthService";
-import type { ISignUpFormData } from "../../types/auth/types";
+import { usePostMutation } from "../../api/useApi";
+import { AuthService } from "../../api/AuthService";
+import type { ISignUpFormData } from "../../../types/auth/types";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PW_PATTERN =

@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { useUserThemes } from '../../services/hooks/useUserThemes';
+import { useUserThemes } from '../../services/hooks/theme/useUserThemes';
 import BoardSelectPage from '../../components/community/BoardSelectPage';
 import ThemeSelectItem from '../../components/community/ThemeSelectItem';
 import type { IUserTheme } from '../../types/community/theme';

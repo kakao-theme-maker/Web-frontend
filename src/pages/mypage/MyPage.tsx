@@ -6,7 +6,7 @@ import MoreMenu from "../../components/common/MoreMenu";
 import Button from "../../components/common/Button";
 import { cn } from "../../utils/cn";
 import UserStats from "./UserStats";
-import { useUserProfile } from "../../services/hooks/useUserProfile";
+import { useUserProfile } from "../../services/hooks/user/useUserProfile";
 import type { MyPageTabId, IMyPagePost, IThemeGridItem, IThemeCategory } from "../../types/mypage/types";
 
 // 탭 목록

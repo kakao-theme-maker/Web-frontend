@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useThemeBoardEdit } from '../../services/hooks/useThemeBoardEdit';
+import { useThemeBoardEdit } from '../../services/hooks/theme/useThemeBoardEdit';
 import BoardWriteForm from '../../components/community/BoardWriteForm';
 import type { IThemeBoardDetail } from '../../types/community/theme';
 

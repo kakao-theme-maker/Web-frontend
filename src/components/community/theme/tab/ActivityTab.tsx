@@ -4,7 +4,7 @@ import ThemePostGridItem from "../ThemePostGridItem";
 import SearchBar from "../../SearchBar";
 import Text from "../../../common/Text";
 import type { IThemeBoard } from "../../../../types/community/theme";
-import { useIntersectionObserver } from "../../../../services/hooks/useIntersectionObserver";
+import { useIntersectionObserver } from "../../../../services/hooks/common/useIntersectionObserver";
 
 interface IActivityTabProps {
   posts: IThemeBoard[];

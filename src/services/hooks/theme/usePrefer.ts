@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import { usePostMutation, useDeleteMutation } from '../api/useApi';
-import { ThemeService } from '../api/ThemeService';
+import { usePostMutation, useDeleteMutation } from '../../api/useApi';
+import { ThemeService } from '../../api/ThemeService';
 
 export function usePrefer(
   postId: number,

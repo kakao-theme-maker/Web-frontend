@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { DesignService } from '../api/DesignService';
-import type { IDesignBoard, IDesignBoardRaw } from '../../types/community/design';
+import { DesignService } from '../../api/DesignService';
+import type { IDesignBoard, IDesignBoardRaw } from '../../../types/community/design';
 
 const PAGE_SIZE = 20;
 

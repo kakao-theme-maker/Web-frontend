@@ -1,10 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
-import { usePutMutation } from '../api/useApi';
-import { ThemeService } from '../api/ThemeService';
-import { useBoardWriteForm } from './useBoardWriteForm';
-import type { IBoardCreateResponseRaw } from '../../types/community/theme';
-import type { IThemeBoardDetail } from '../../types/community/theme';
+import { usePutMutation } from '../../api/useApi';
+import { ThemeService } from '../../api/ThemeService';
+import { useBoardWriteForm } from '../common/useBoardWriteForm';
+import type { IBoardCreateResponseRaw } from '../../../types/community/theme';
+import type { IThemeBoardDetail } from '../../../types/community/theme';
 
 export function useThemeBoardEdit(post: IThemeBoardDetail) {
   const navigate = useNavigate();

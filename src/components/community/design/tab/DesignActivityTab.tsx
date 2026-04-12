@@ -4,7 +4,7 @@ import DesignPostGridItem from "../DesignPostGridItem";
 import SearchBar from "../../SearchBar";
 import Text from "../../../common/Text";
 import type { IDesignBoard } from "../../../../types/community/design";
-import { useIntersectionObserver } from "../../../../services/hooks/useIntersectionObserver";
+import { useIntersectionObserver } from "../../../../services/hooks/common/useIntersectionObserver";
 
 interface IDesignActivityTabProps {
   posts: IDesignBoard[];

@@ -1,10 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
-import { usePatchMutation } from '../api/useApi';
-import { DesignService } from '../api/DesignService';
-import { useBoardWriteForm } from './useBoardWriteForm';
-import type { IDesignBoardCreateResponseRaw } from '../../types/community/design';
-import type { IDesignBoardDetail } from '../../types/community/design';
+import { usePatchMutation } from '../../api/useApi';
+import { DesignService } from '../../api/DesignService';
+import { useBoardWriteForm } from '../common/useBoardWriteForm';
+import type { IDesignBoardCreateResponseRaw } from '../../../types/community/design';
+import type { IDesignBoardDetail } from '../../../types/community/design';
 
 export function useDesignBoardEdit(post: IDesignBoardDetail) {
   const navigate = useNavigate();
