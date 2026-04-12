@@ -9,6 +9,7 @@ import { useCommentActions } from "../../../services/hooks/theme/useCommentActio
 import { usePrefer } from "../../../services/hooks/theme/usePrefer";
 import { useDeleteDesignPost } from "../../../services/hooks/design/useDeleteDesignPost";
 import { useAuthStore } from "../../../stores/authStore";
+import ImageSlider from "../../common/ImageSlider";
 import CommentModal from "../CommentModal";
 import Confirm from "../../common/Confirm";
 import Alert from "../../common/Alert";
@@ -126,16 +127,7 @@ export default function DesignDetailCard({ post }: IDesignDetailCardProps) {
       </section>
 
       <section className="mt-3">
-        <div className="relative h-[330px] w-full overflow-hidden rounded-[2px] bg-secondary-200">
-          {post.previewImageUrl && (
-            <img src={post.previewImageUrl} alt="디자인 미리보기" className="h-full w-full object-cover" />
-          )}
-          <div className="absolute bottom-3 left-0 right-0 flex items-center justify-center gap-1">
-            <span className="h-1.5 w-1.5 rounded-full bg-black" />
-            <span className="h-1.5 w-1.5 rounded-full bg-white" />
-            <span className="h-1.5 w-1.5 rounded-full bg-white" />
-          </div>
-        </div>
+        <ImageSlider images={post.previewImageUrls} alt="디자인 미리보기" />
       </section>
 
       <section className="mt-5 px-5">

@@ -21,6 +21,9 @@ export function useThemePostDetail(postId: number) {
         isLiked: data.liked,
         isBookmarked: data.bookmarked,
         previewImageUrl: data.preview_image_url,
+        previewImageUrls: data.preview_image_urls?.length
+          ? data.preview_image_urls
+          : data.preview_image_url ? [data.preview_image_url] : [],
         userEmail: data.user_email,
         userName: data.user_name,
         profileImage: data.profile_image,
