@@ -12,6 +12,7 @@ const SWIPE_THRESHOLD = 50;
 export default function ImageSlider({ images, alt = "미리보기", className = "" }: IImageSliderProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const touchStartX = useRef(0);
+  const touchStartY = useRef(0);
 
   const total = images.length;
   const visibleCount = Math.min(MAX_DOTS, total);
@@ -22,14 +23,19 @@ export default function ImageSlider({ images, alt = "미리보기", className = 
 
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.changedTouches[0].clientX;
+    touchStartY.current = e.changedTouches[0].clientY;
   };
 
   const handleTouchEnd = (e: React.TouchEvent) => {
-    const delta = touchStartX.current - e.changedTouches[0].clientX;
-    if (delta > SWIPE_THRESHOLD) {
-      setCurrentIndex((prev) => Math.min(prev + 1, total - 1));
-    } else if (delta < -SWIPE_THRESHOLD) {
-      setCurrentIndex((prev) => Math.max(prev - 1, 0));
+    const deltaX = touchStartX.current - e.changedTouches[0].clientX;
+    const deltaY = touchStartY.current - e.changedTouches[0].clientY;
+
+    if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > SWIPE_THRESHOLD) {
+      if (deltaX > 0) {
+        setCurrentIndex((prev) => Math.min(prev + 1, total - 1));
+      } else {
+        setCurrentIndex((prev) => Math.max(prev - 1, 0));
+      }
     }
   };
 
