@@ -6,24 +6,24 @@ import { useBoardWriteForm } from '../common/useBoardWriteForm';
 import type { IBoardCreateResponseRaw } from '../../../types/community/theme';
 import type { IThemeBoardDetail } from '../../../types/community/theme';
 
-export function useThemeBoardEdit(post: IThemeBoardDetail) {
+export function useThemeBoardEdit(board: IThemeBoardDetail) {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   const { rhfHandleSubmit, formIsSubmitting, previewImage, tags, ...formProps } = useBoardWriteForm({
-    title: post.title,
-    content: post.content,
+    title: board.title,
+    content: board.content,
     isPublic: true,
-    tags: (post.tags ?? []).map((t) => t.tag_name),
-    previewUrl: post.previewImageUrl ?? null,
+    tags: (board.tags ?? []).map((t) => t.tag_name),
+    previewUrl: board.previewImageUrl ?? null,
   });
 
   const { mutate, isPending } = usePutMutation<IBoardCreateResponseRaw, FormData>(
-    (formData) => ThemeService.updateThemeBoard(post.boardId, formData),
+    (formData) => ThemeService.updateThemeBoard(board.boardId, formData),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ['theme-board-detail', post.boardId] });
-        navigate(`/community/${post.boardId}`, { replace: true });
+        queryClient.invalidateQueries({ queryKey: ['theme-board-detail', board.boardId] });
+        navigate(`/community/${board.boardId}`, { replace: true });
       },
     },
   );

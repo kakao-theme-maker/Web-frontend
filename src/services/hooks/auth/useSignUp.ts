@@ -19,6 +19,7 @@ export function useSignUp() {
     formState: { errors, isValid, isSubmitting },
   } = useForm<ISignUpFormData>({ mode: "onChange" });
 
+
   const isSubmittable = isValid;
 
   const { mutate: signUpMutate } = usePostMutation<void, ISignUpFormData>(

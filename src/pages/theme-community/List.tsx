@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { ActivityTab, KeywordTab } from "../../components/community";
 import TabMenu from "../../components/common/TabMenu";
 import type { TabId } from "../../types/community/theme";
-import { useThemePosts } from "../../services/hooks/theme/useThemePosts";
+import { useThemeBoards } from "../../services/hooks/theme/useThemeBoards";
 
 const tabs: { id: TabId; label: string }[] = [
   { id: 'activity', label: '활동' },
@@ -11,7 +11,7 @@ const tabs: { id: TabId; label: string }[] = [
 
 export default function List() {
   const [activeTab, setActiveTab] = useState<TabId>('activity');
-  const { posts, isLoading, isError, fetchNextPage, hasNextPage, isFetchingNextPage } = useThemePosts();
+  const { boards, isLoading, isError, fetchNextPage, hasNextPage, isFetchingNextPage } = useThemeBoards();
 
   return (
     <div>
@@ -19,7 +19,7 @@ export default function List() {
       <div className="flex-1">
         {activeTab === 'activity' && (
           <ActivityTab
-            posts={posts}
+            boards={boards}
             isLoading={isLoading}
             isError={isError}
             fetchNextPage={fetchNextPage}

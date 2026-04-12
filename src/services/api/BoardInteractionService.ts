@@ -1,25 +1,25 @@
 import apiClient from './apiClient';
 import type { ICommentRaw } from '../../types/community/theme';
 
-export const PostService = {
-  preferPost: (postId: number) =>
+export const BoardInteractionService = {
+  preferBoard: (boardId: number) =>
     apiClient
-      .post(`/api/posts/${postId}/prefer`)
+      .post(`/api/posts/${boardId}/prefer`)
       .then((res) => res.data),
 
-  unpreferPost: (postId: number) =>
+  unpreferBoard: (boardId: number) =>
     apiClient
-      .delete(`/api/posts/${postId}/prefer`)
+      .delete(`/api/posts/${boardId}/prefer`)
       .then((res) => res.data),
 
-  getComments: (postId: number, pageNumber: number, pageSize: number) =>
+  getComments: (boardId: number, pageNumber: number, pageSize: number) =>
     apiClient
-      .get<ICommentRaw[]>(`/api/posts/${postId}/comments`, { params: { pageNumber, pageSize } })
+      .get<ICommentRaw[]>(`/api/posts/${boardId}/comments`, { params: { pageNumber, pageSize } })
       .then((res) => res.data),
 
-  createComment: (postId: number, content: string) =>
+  createComment: (boardId: number, content: string) =>
     apiClient
-      .post<ICommentRaw>(`/api/posts/${postId}/comments`, { content })
+      .post<ICommentRaw>(`/api/posts/${boardId}/comments`, { content })
       .then((res) => res.data),
 
   deleteComment: (commentId: number) =>

@@ -6,24 +6,24 @@ import { useBoardWriteForm } from '../common/useBoardWriteForm';
 import type { IDesignBoardCreateResponseRaw } from '../../../types/community/design';
 import type { IDesignBoardDetail } from '../../../types/community/design';
 
-export function useDesignBoardEdit(post: IDesignBoardDetail) {
+export function useDesignBoardEdit(board: IDesignBoardDetail) {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   const { rhfHandleSubmit, formIsSubmitting, previewImage, tags, ...formProps } = useBoardWriteForm({
-    title: post.title,
-    content: post.content,
+    title: board.title,
+    content: board.content,
     isPublic: true,
-    tags: post.tags.map((t) => t.tag_name),
-    previewUrl: post.previewImageUrl ?? null,
+    tags: board.tags.map((t) => t.tag_name),
+    previewUrl: board.previewImageUrl ?? null,
   });
 
   const { mutate, isPending } = usePatchMutation<IDesignBoardCreateResponseRaw, FormData>(
-    (formData) => DesignService.updateDesignBoard(post.boardId, formData),
+    (formData) => DesignService.updateDesignBoard(board.boardId, formData),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ['design-board-detail', post.boardId] });
-        navigate(`/design/${post.boardId}`, { replace: true });
+        queryClient.invalidateQueries({ queryKey: ['design-board-detail', board.boardId] });
+        navigate(`/design/${board.boardId}`, { replace: true });
       },
     },
   );

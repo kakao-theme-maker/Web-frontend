@@ -5,7 +5,7 @@ import BoardWriteForm from '../../components/community/BoardWriteForm';
 import type { IDesignBoardDetail } from '../../types/community/design';
 
 interface IBoardDesignEditLocationState {
-  post: IDesignBoardDetail;
+  board: IDesignBoardDetail;
 }
 
 export default function BoardDesignEdit() {
@@ -14,15 +14,15 @@ export default function BoardDesignEdit() {
   const state = location.state as IBoardDesignEditLocationState | null;
 
   useEffect(() => {
-    if (!state?.post) {
+    if (!state?.board) {
       navigate(-1);
     }
   }, [state, navigate]);
 
-  const post = state?.post;
-  const { handleSubmit, ...formProps } = useDesignBoardEdit(post!);
+  const board = state?.board;
+  const { handleSubmit, ...formProps } = useDesignBoardEdit(board!);
 
-  if (!post) return null;
+  if (!board) return null;
 
   return (
     <BoardWriteForm
@@ -30,10 +30,10 @@ export default function BoardDesignEdit() {
       onSubmit={handleSubmit}
       submitLabel="수정완료"
       preview={
-        post.previewImageUrl ? (
+        board.previewImageUrl ? (
           <div className="mb-5">
             <div className="flex h-44 w-full items-center justify-center overflow-hidden rounded-xl bg-secondary-200">
-              <img src={post.previewImageUrl} alt="디자인 미리보기" className="h-full w-full object-cover" />
+              <img src={board.previewImageUrl} alt="디자인 미리보기" className="h-full w-full object-cover" />
             </div>
           </div>
         ) : null

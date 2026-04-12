@@ -58,10 +58,8 @@ export function usePostMutation<TData, TVariables>(
 export function usePostMutation<TData, TBody = unknown>(
   options?: IUseMutationOptions<TData, TBody>,
 ): UseMutationResult<TData, IApiError, IMutationVariables<TBody>>;
-export function usePostMutation(
-  fnOrOptions?: unknown,
-  extraOptions?: unknown,
-) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function usePostMutation(fnOrOptions?: any, extraOptions?: any): UseMutationResult<any, any, any> {
   const isFn = typeof fnOrOptions === 'function';
   const mutationFn = isFn
     ? (fnOrOptions as (vars: unknown) => Promise<unknown>)
@@ -88,10 +86,8 @@ export function usePutMutation<TData, TVariables>(
 export function usePutMutation<TData, TBody = unknown>(
   options?: IUseMutationOptions<TData, TBody>,
 ): UseMutationResult<TData, IApiError, IMutationVariables<TBody>>;
-export function usePutMutation(
-  fnOrOptions?: unknown,
-  extraOptions?: unknown,
-) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function usePutMutation(fnOrOptions?: any, extraOptions?: any): UseMutationResult<any, any, any> {
   const isFn = typeof fnOrOptions === 'function';
   const mutationFn = isFn
     ? (fnOrOptions as (vars: unknown) => Promise<unknown>)
@@ -118,10 +114,8 @@ export function usePatchMutation<TData, TVariables>(
 export function usePatchMutation<TData, TBody = unknown>(
   options?: IUseMutationOptions<TData, TBody>,
 ): UseMutationResult<TData, IApiError, IMutationVariables<TBody>>;
-export function usePatchMutation(
-  fnOrOptions?: unknown,
-  extraOptions?: unknown,
-) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function usePatchMutation(fnOrOptions?: any, extraOptions?: any): UseMutationResult<any, any, any> {
   const isFn = typeof fnOrOptions === 'function';
   const mutationFn = isFn
     ? (fnOrOptions as (vars: unknown) => Promise<unknown>)
@@ -148,10 +142,8 @@ export function useDeleteMutation<TData, TVariables>(
 export function useDeleteMutation<TData, TBody = unknown>(
   options?: IUseMutationOptions<TData, TBody>,
 ): UseMutationResult<TData, IApiError, IMutationVariables<TBody>>;
-export function useDeleteMutation(
-  fnOrOptions?: unknown,
-  extraOptions?: unknown,
-) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function useDeleteMutation(fnOrOptions?: any, extraOptions?: any): UseMutationResult<any, any, any> {
   const isFn = typeof fnOrOptions === 'function';
   const mutationFn = isFn
     ? (fnOrOptions as (vars: unknown) => Promise<unknown>)

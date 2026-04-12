@@ -1,13 +1,13 @@
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import ThemePostGridItem from "../ThemePostGridItem";
+import ThemeBoardGridItem from "../ThemeBoardGridItem";
 import SearchBar from "../../SearchBar";
 import Text from "../../../common/Text";
 import type { IThemeBoard } from "../../../../types/community/theme";
 import { useIntersectionObserver } from "../../../../services/hooks/common/useIntersectionObserver";
 
 interface IActivityTabProps {
-  posts: IThemeBoard[];
+  boards: IThemeBoard[];
   isLoading: boolean;
   isError: boolean;
   fetchNextPage: () => void;
@@ -16,7 +16,7 @@ interface IActivityTabProps {
 }
 
 export default function ActivityTab({
-  posts,
+  boards,
   isLoading,
   isError,
   fetchNextPage,
@@ -46,8 +46,8 @@ export default function ActivityTab({
         )}
         {!isLoading && !isError && (
           <section className="grid grid-cols-2 gap-2">
-            {posts.map((item) => (
-              <ThemePostGridItem key={item.boardId} item={item} />
+            {boards.map((item) => (
+              <ThemeBoardGridItem key={item.boardId} item={item} />
             ))}
           </section>
         )}

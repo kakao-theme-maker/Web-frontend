@@ -1,12 +1,12 @@
 import { useGetQuery } from '../../api/useApi';
-import { PostService } from '../../api/PostService';
+import { BoardInteractionService } from '../../api/BoardInteractionService';
 import type { ICommentRaw } from '../../../types/community/theme';
 
-export function useComments(postId: number) {
+export function useComments(boardId: number) {
   const { data, isLoading, isError } = useGetQuery<ICommentRaw[]>(
-    ['comments', postId],
-    () => PostService.getComments(postId, 0, 100),
-    { enabled: !!postId },
+    ['comments', boardId],
+    () => BoardInteractionService.getComments(boardId, 0, 100),
+    { enabled: !!boardId },
   );
 
   return { comments: data ?? [], isLoading, isError };

@@ -6,7 +6,7 @@ import Button from "../../components/common/Button";
 import { useLogin } from "../../services/hooks/auth/useLogin";
 
 export default function Login() {
-  const { register, handleSubmit, onSubmit, errors, isSubmitting } = useLogin();
+  const { register, onSubmit, errors, isSubmitting } = useLogin();
 
   return (
     <div className="relative flex h-full flex-col overflow-hidden bg-gradient-to-b from-white via-[#f0f5ff] to-[#dce8ff]">
@@ -25,7 +25,7 @@ export default function Login() {
       </div>
 
       {/* 폼 영역 */}
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3 px-8 pb-44">
+      <form onSubmit={onSubmit} className="flex flex-col gap-3 px-8 pb-44">
         <input
           type="text"
           placeholder="이메일"

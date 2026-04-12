@@ -31,5 +31,5 @@ export function useLogin() {
 
   const onSubmit = handleSubmit((formData) => loginMutate(formData));
 
-  return { register, handleSubmit, onSubmit, errors, isSubmitting };
+  return { register, onSubmit, errors, isSubmitting };
 }

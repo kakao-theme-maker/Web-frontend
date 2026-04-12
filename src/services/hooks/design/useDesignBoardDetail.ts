@@ -1,23 +1,23 @@
 import { useGetQuery } from '../../api/useApi';
-import { ThemeService } from '../../api/ThemeService';
-import type { IThemeBoardDetail } from '../../../types/community/theme';
+import { DesignService } from '../../api/DesignService';
+import type { IDesignBoardDetail } from '../../../types/community/design';
 
-export function useThemePostDetail(postId: number) {
+export function useDesignBoardDetail(boardId: number) {
   const { data, isLoading, isError } = useGetQuery(
-    ['theme-board-detail', postId],
-    () => ThemeService.getThemeBoardDetail(postId),
-    { enabled: !!postId },
+    ['design-board-detail', boardId],
+    () => DesignService.getDesignBoardDetail(boardId),
+    { enabled: !!boardId },
   );
 
-  const post: IThemeBoardDetail | null = data
+  const board: IDesignBoardDetail | null = data
     ? {
         boardId: data.post_id,
-        themeComponentId: data.theme_component_id,
+        designComponentId: data.design_component_id,
         title: data.title,
         content: data.content,
         prefers: data.prefers,
         comments: data.comments,
-        tags: data.tags ?? [],
+        tags: data.tags,
         isLiked: data.liked,
         isBookmarked: data.bookmarked,
         previewImageUrl: data.preview_image_url,
@@ -31,5 +31,5 @@ export function useThemePostDetail(postId: number) {
       }
     : null;
 
-  return { post, isLoading, isError };
+  return { board, isLoading, isError };
 }

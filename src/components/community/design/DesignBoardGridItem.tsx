@@ -1,14 +1,14 @@
-import type { IThemeBoard } from "../../../types/community/theme";
+import type { IDesignBoard } from "../../../types/community/design";
 import { Link } from "react-router-dom";
 
-interface IThemePostGridItemProps {
-  item: IThemeBoard;
+interface IDesignBoardGridItemProps {
+  item: IDesignBoard;
 }
 
-export default function ThemePostGridItem({ item }: IThemePostGridItemProps) {
+export default function DesignBoardGridItem({ item }: IDesignBoardGridItemProps) {
   return (
     <Link
-      to={`/community/${item.boardId}`}
+      to={`/design/${item.boardId}`}
       className="block h-[120px] overflow-hidden rounded-[2px] bg-secondary-100"
       aria-label={`${item.title} 상세 페이지로 이동`}
     >

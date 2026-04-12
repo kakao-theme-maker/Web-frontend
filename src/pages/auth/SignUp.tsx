@@ -14,7 +14,6 @@ export default function SignUp() {
   const navigate = useNavigate();
   const {
     register,
-    handleSubmit,
     watch,
     onSubmit,
     errors,
@@ -40,7 +39,7 @@ export default function SignUp() {
           <Text variant="BOLD_20">회원가입</Text>
         </section>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="mt-6 flex flex-col gap-3">
+        <form onSubmit={onSubmit} className="mt-6 flex flex-col gap-3">
           {/* 이름 */}
           <input
             type="text"

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import type { IDesignBoardDetail } from "../../../types/community/design";
@@ -7,7 +7,7 @@ import { useOutsideClick } from "../../../services/hooks/common/useOutsideClick"
 import { useComments } from "../../../services/hooks/common/useComments";
 import { useCommentActions } from "../../../services/hooks/common/useCommentActions";
 import { usePrefer } from "../../../services/hooks/common/usePrefer";
-import { useDeleteDesignPost } from "../../../services/hooks/design/useDeleteDesignPost";
+import { useDeleteDesignBoard } from "../../../services/hooks/design/useDeleteDesignBoard";
 import { useAuthStore } from "../../../stores/authStore";
 import ImageSlider from "../../common/ImageSlider";
 import CommentModal from "../CommentModal";
@@ -20,19 +20,18 @@ import HeartIcon from '../../icons/community-detail/heart.svg?react';
 import CommentIcon from '../../icons/community-detail/comment.svg?react';
 
 interface IDesignDetailCardProps {
-  post: IDesignBoardDetail;
+  board: IDesignBoardDetail;
 }
 
-export default function DesignDetailCard({ post }: IDesignDetailCardProps) {
+export default function DesignDetailCard({ board }: IDesignDetailCardProps) {
   const navigate = useNavigate();
   const userEmail = useAuthStore((state) => state.userEmail);
-  const isMyPost = userEmail === post.userEmail;
+  const isMyBoard = userEmail === board.userEmail;
 
-  const [isBookmarked, setIsBookmarked] = useState(post.isBookmarked);
-  useEffect(() => { setIsBookmarked(post.isBookmarked); }, [post.isBookmarked]);
-  const { comments } = useComments(post.boardId);
-  const { isPreferred, prefers, togglePrefer } = usePrefer(post.boardId, post.prefers, post.isLiked, ['design-board-detail', post.boardId]);
-  const { deletePost } = useDeleteDesignPost(() => navigate(-1));
+  const [isBookmarked, setIsBookmarked] = useState(board.isBookmarked);
+  const { comments } = useComments(board.boardId);
+  const { isPreferred, prefers, togglePrefer } = usePrefer(board.boardId, board.prefers, board.isLiked, ['design-board-detail', board.boardId]);
+  const { deleteBoard } = useDeleteDesignBoard(() => navigate(-1));
   const {
     deleteTargetId,
     editTarget,
@@ -48,13 +47,13 @@ export default function DesignDetailCard({ post }: IDesignDetailCardProps) {
     updateComment,
     requestDelete,
     requestEdit,
-  } = useCommentActions(post.boardId);
+  } = useCommentActions(board.boardId);
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isCommentOpen, setIsCommentOpen] = useState(false);
   const [isDownloadConfirmOpen, setIsDownloadConfirmOpen] = useState(false);
   const [isDownloadAlertOpen, setIsDownloadAlertOpen] = useState(false);
-  const [isDeletePostConfirmOpen, setIsDeletePostConfirmOpen] = useState(false);
+  const [isDeleteBoardConfirmOpen, setIsDeleteBoardConfirmOpen] = useState(false);
 
   const menuRef = useRef<HTMLDivElement | null>(null);
   useOutsideClick(menuRef, () => setIsMenuOpen(false));
@@ -65,9 +64,9 @@ export default function DesignDetailCard({ post }: IDesignDetailCardProps) {
     <main className="pt-8 pb-16">
       <section className="flex items-center justify-between px-5">
         <div className="flex min-w-0 max-w-[55%] items-center gap-2.5">
-          {post.profileImage ? (
+          {board.profileImage ? (
             <img
-              src={post.profileImage}
+              src={board.profileImage}
               alt="프로필"
               className="h-10 w-10 shrink-0 rounded-full object-cover"
             />
@@ -75,8 +74,8 @@ export default function DesignDetailCard({ post }: IDesignDetailCardProps) {
             <div className="h-10 w-10 shrink-0 rounded-full bg-secondary-300" />
           )}
           <div className="flex min-w-0 flex-col">
-            <Text variant="BOLD_15" className="truncate">{post.userEmail}</Text>
-            <Text variant="REGULAR_10" className="text-secondary-400">{post.createdAt}</Text>
+            <Text variant="BOLD_15" className="truncate">{board.userEmail}</Text>
+            <Text variant="REGULAR_10" className="text-secondary-400">{board.createdAt}</Text>
           </div>
         </div>
 
@@ -104,17 +103,17 @@ export default function DesignDetailCard({ post }: IDesignDetailCardProps) {
                 <button className="w-full border-t border-secondary-100 px-3 py-1 text-left hover:bg-secondary-50 text-center">
                   <Text variant="MEDIUM_12">공유하기</Text>
                 </button>
-                {isMyPost && (
+                {isMyBoard && (
                   <>
                     <button
                       className="w-full border-t border-secondary-100 px-3 py-1 text-left hover:bg-secondary-50 text-center"
-                      onClick={() => { setIsMenuOpen(false); navigate(`/design/edit/${post.boardId}`, { state: { post } }); }}
+                      onClick={() => { setIsMenuOpen(false); navigate(`/design/edit/${board.boardId}`, { state: { board } }); }}
                     >
                       <Text variant="MEDIUM_12">수정하기</Text>
                     </button>
                     <button
                       className="w-full border-t border-secondary-100 px-3 py-1 text-left hover:bg-secondary-50 text-center"
-                      onClick={() => { setIsMenuOpen(false); setIsDeletePostConfirmOpen(true); }}
+                      onClick={() => { setIsMenuOpen(false); setIsDeleteBoardConfirmOpen(true); }}
                     >
                       <Text variant="MEDIUM_12" className="text-red-500">게시글 삭제</Text>
                     </button>
@@ -127,7 +126,7 @@ export default function DesignDetailCard({ post }: IDesignDetailCardProps) {
       </section>
 
       <section className="mt-3">
-        <ImageSlider images={post.previewImageUrls} alt="디자인 미리보기" />
+        <ImageSlider images={board.previewImageUrls} alt="디자인 미리보기" />
       </section>
 
       <section className="mt-5 px-5">
@@ -161,11 +160,11 @@ export default function DesignDetailCard({ post }: IDesignDetailCardProps) {
 
         <div className="mt-2">
           <Text variant="MEDIUM_14" className="mr-2 inline-block max-w-[40%] truncate align-bottom">
-            {post.userEmail}
+            {board.userEmail}
           </Text>
-          <Text variant="REGULAR_14">{post.content}</Text>
+          <Text variant="REGULAR_14">{board.content}</Text>
         </div>
-        <Text variant="REGULAR_14" className="mt-1 text-secondary-400">{post.createdAt}</Text>
+        <Text variant="REGULAR_14" className="mt-1 text-secondary-400">{board.createdAt}</Text>
       </section>
 
       {isDownloadConfirmOpen && (
@@ -186,14 +185,14 @@ export default function DesignDetailCard({ post }: IDesignDetailCardProps) {
         />
       )}
 
-      {isDeletePostConfirmOpen && (
+      {isDeleteBoardConfirmOpen && (
         <Confirm
           message="게시글을 삭제하시겠습니까?"
           confirmText="삭제할게요"
           cancelText="아니요"
-          onConfirm={() => { setIsDeletePostConfirmOpen(false); deletePost(post.boardId); }}
-          onCancel={() => setIsDeletePostConfirmOpen(false)}
-          onClose={() => setIsDeletePostConfirmOpen(false)}
+          onConfirm={() => { setIsDeleteBoardConfirmOpen(false); deleteBoard(board.boardId); }}
+          onCancel={() => setIsDeleteBoardConfirmOpen(false)}
+          onClose={() => setIsDeleteBoardConfirmOpen(false)}
         />
       )}
 
@@ -205,7 +204,7 @@ export default function DesignDetailCard({ post }: IDesignDetailCardProps) {
           />
           <div className="absolute bottom-0 left-0 right-0 z-50">
             <CommentModal
-              postId={post.boardId}
+              boardId={board.boardId}
               comments={comments}
               onRequestDelete={requestDelete}
               onRequestEdit={requestEdit}

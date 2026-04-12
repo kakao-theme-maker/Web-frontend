@@ -3,7 +3,7 @@ import { DesignActivityTab } from "../../components/community/design";
 import { KeywordTab } from "../../components/community";
 import TabMenu from "../../components/common/TabMenu";
 import type { TabId } from "../../types/community/theme";
-import { useDesignPosts } from "../../services/hooks/design/useDesignPosts";
+import { useDesignBoards } from "../../services/hooks/design/useDesignBoards";
 
 const tabs: { id: TabId; label: string }[] = [
   { id: 'activity', label: '활동' },
@@ -12,7 +12,7 @@ const tabs: { id: TabId; label: string }[] = [
 
 export default function List() {
   const [activeTab, setActiveTab] = useState<TabId>('activity');
-  const { posts, isLoading, isError, fetchNextPage, hasNextPage, isFetchingNextPage } = useDesignPosts();
+  const { boards, isLoading, isError, fetchNextPage, hasNextPage, isFetchingNextPage } = useDesignBoards();
 
   return (
     <div>
@@ -20,7 +20,7 @@ export default function List() {
       <div className="flex-1">
         {activeTab === 'activity' && (
           <DesignActivityTab
-            posts={posts}
+            boards={boards}
             isLoading={isLoading}
             isError={isError}
             fetchNextPage={fetchNextPage}
