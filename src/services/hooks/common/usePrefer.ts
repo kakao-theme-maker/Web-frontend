@@ -27,7 +27,7 @@ export function usePrefer(
       onSuccess: () => {
         if (queryKey) {
           queryClient.setQueryData(queryKey, (old: Record<string, unknown> | undefined) =>
-            old ? { ...old, liked: true, prefers: (old.prefers as number) + 1 } : old,
+            old ? { ...old, isLiked: true, prefers: (old.prefers as number) + 1 } : old,
           );
         }
       },
@@ -44,7 +44,7 @@ export function usePrefer(
       onSuccess: () => {
         if (queryKey) {
           queryClient.setQueryData(queryKey, (old: Record<string, unknown> | undefined) =>
-            old ? { ...old, liked: false, prefers: (old.prefers as number) - 1 } : old,
+            old ? { ...old, isLiked: false, prefers: (old.prefers as number) - 1 } : old,
           );
         }
       },
