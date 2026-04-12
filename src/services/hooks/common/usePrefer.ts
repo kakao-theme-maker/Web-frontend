@@ -31,7 +31,7 @@ export function usePrefer(
         await queryClient.cancelQueries({ queryKey });
         const snapshot = queryClient.getQueryData<Record<string, unknown>>(queryKey);
         queryClient.setQueryData(queryKey, (old: Record<string, unknown> | undefined) =>
-          old ? { ...old, isLiked: true, prefers: (old.prefers as number) + 1 } : old,
+          old ? { ...old, isLiked: true, prefers: ((old.prefers as number) ?? 0) + 1 } : old,
         );
         return { snapshot } as IPreferSnapshot;
       },
@@ -60,7 +60,7 @@ export function usePrefer(
         await queryClient.cancelQueries({ queryKey });
         const snapshot = queryClient.getQueryData<Record<string, unknown>>(queryKey);
         queryClient.setQueryData(queryKey, (old: Record<string, unknown> | undefined) =>
-          old ? { ...old, isLiked: false, prefers: (old.prefers as number) - 1 } : old,
+          old ? { ...old, isLiked: false, prefers: ((old.prefers as number) ?? 0) - 1 } : old,
         );
         return { snapshot } as IPreferSnapshot;
       },
