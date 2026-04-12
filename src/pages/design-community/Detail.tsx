@@ -1,7 +1,6 @@
 import { useState, useRef, useMemo, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { DesignDetailCard } from "../../components/community/design";
-import { DESIGN_MOCK_POSTS } from "../../services/mock/designMock";
 import { useDesignPostDetail } from "../../services/hooks/design/useDesignPostDetail";
 import Text from "../../components/common/Text";
 
@@ -14,8 +13,8 @@ export default function Detail() {
   const { post, isLoading, isError } = useDesignPostDetail(postId);
 
   const posts = useMemo(() => {
-    if (!post) return DESIGN_MOCK_POSTS;
-    return [post, ...DESIGN_MOCK_POSTS];
+    if (!post) return [];
+    return [post];
   }, [post]);
 
   const [currentIndex, setCurrentIndex] = useState(0);

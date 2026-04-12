@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useDeleteMutation, usePutMutation } from '../../api/useApi';
-import { ThemeService } from '../../api/ThemeService';
+import { PostService } from '../../api/PostService';
 import type { ICommentRaw } from '../../../types/community/theme';
 
 export function useCommentActions(postId: number) {
@@ -15,7 +15,7 @@ export function useCommentActions(postId: number) {
   const [isEditAlertOpen, setIsEditAlertOpen] = useState(false);
 
   const { mutate: deleteComment } = useDeleteMutation<ICommentRaw, number>(
-    (commentId) => ThemeService.deleteComment(commentId),
+    (commentId) => PostService.deleteComment(commentId),
     {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['comments', postId] });
@@ -26,7 +26,7 @@ export function useCommentActions(postId: number) {
   );
 
   const { mutate: updateComment } = usePutMutation<ICommentRaw, { commentId: number; content: string }>(
-    ({ commentId, content }) => ThemeService.updateComment(commentId, content),
+    ({ commentId, content }) => PostService.updateComment(commentId, content),
     {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['comments', postId] });

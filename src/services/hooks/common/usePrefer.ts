@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { usePostMutation, useDeleteMutation } from '../../api/useApi';
-import { ThemeService } from '../../api/ThemeService';
+import { PostService } from '../../api/PostService';
 
 export function usePrefer(
   postId: number,
@@ -22,7 +22,7 @@ export function usePrefer(
   }, [initialPrefers]);
 
   const { mutate: prefer } = usePostMutation<unknown, number>(
-    (id) => ThemeService.preferPost(id),
+    (id) => PostService.preferPost(id),
     {
       onSuccess: () => {
         if (queryKey) {
@@ -39,7 +39,7 @@ export function usePrefer(
   );
 
   const { mutate: unprefer } = useDeleteMutation<unknown, number>(
-    (id) => ThemeService.unpreferPost(id),
+    (id) => PostService.unpreferPost(id),
     {
       onSuccess: () => {
         if (queryKey) {

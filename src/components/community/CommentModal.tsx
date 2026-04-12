@@ -5,7 +5,7 @@ import Text from "../common/Text";
 import { useAuthStore } from "../../stores/authStore";
 import { useOutsideClick } from "../../services/hooks/common/useOutsideClick";
 import { usePostMutation } from "../../services/api/useApi";
-import { ThemeService } from "../../services/api/ThemeService";
+import { PostService } from "../../services/api/PostService";
 import { useQueryClient } from "@tanstack/react-query";
 
 interface ICommentModalProps {
@@ -29,7 +29,7 @@ export default function CommentModal({ postId, comments, onRequestDelete, onRequ
   });
 
   const { mutate: createComment } = usePostMutation<ICommentRaw, string>(
-    (content) => ThemeService.createComment(postId, content),
+    (content) => PostService.createComment(postId, content),
     {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['comments', postId] });

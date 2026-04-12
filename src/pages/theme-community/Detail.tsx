@@ -1,7 +1,6 @@
 import { useState, useRef, useMemo, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import ThemeDetailCard from "../../components/community/theme/ThemeDetailCard";
-import { MOCK_POSTS } from "../../services/mock/themeMock";
 import { useThemePostDetail } from "../../services/hooks/theme/useThemePostDetail";
 import Text from "../../components/common/Text";
 
@@ -14,8 +13,8 @@ export default function Detail() {
   const { post, isLoading, isError } = useThemePostDetail(postId);
 
   const posts = useMemo(() => {
-    if (!post) return MOCK_POSTS;
-    return [post, ...MOCK_POSTS];
+    if (!post) return [];
+    return [post];
   }, [post]);
 
   const [currentIndex, setCurrentIndex] = useState(0);
