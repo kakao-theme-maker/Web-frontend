@@ -1,7 +1,7 @@
-import { useGetQuery } from '../api/useApi';
-import { ThemeService } from '../api/ThemeService';
-import { useAuthStore } from '../../stores/authStore';
-import type { IUserTheme } from '../../types/community/theme';
+import { useGetQuery } from '../../api/useApi';
+import { ThemeService } from '../../api/ThemeService';
+import { useAuthStore } from '../../../stores/authStore';
+import type { IUserTheme } from '../../../types/community/theme';
 
 export function useUserThemes() {
   const userEmail = useAuthStore((state) => state.userEmail);

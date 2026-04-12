@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import { usePostMutation, useDeleteMutation } from '../api/useApi';
-import { ThemeService } from '../api/ThemeService';
+import { usePostMutation, useDeleteMutation } from '../../api/useApi';
+import { BoardInteractionService } from '../../api/BoardInteractionService';
 
 export function usePrefer(
-  postId: number,
+  boardId: number,
   initialPrefers: number,
   initialIsPreferred: boolean = false,
   queryKey?: unknown[],
@@ -22,7 +22,7 @@ export function usePrefer(
   }, [initialPrefers]);
 
   const { mutate: prefer } = usePostMutation<unknown, number>(
-    (id) => ThemeService.preferPost(id),
+    (id) => BoardInteractionService.preferBoard(id),
     {
       onSuccess: () => {
         if (queryKey) {
@@ -39,7 +39,7 @@ export function usePrefer(
   );
 
   const { mutate: unprefer } = useDeleteMutation<unknown, number>(
-    (id) => ThemeService.unpreferPost(id),
+    (id) => BoardInteractionService.unpreferBoard(id),
     {
       onSuccess: () => {
         if (queryKey) {
@@ -59,11 +59,11 @@ export function usePrefer(
     if (isPreferred) {
       setIsPreferred(false);
       setPrefers((prev) => prev - 1);
-      unprefer(postId);
+      unprefer(boardId);
     } else {
       setIsPreferred(true);
       setPrefers((prev) => prev + 1);
-      prefer(postId);
+      prefer(boardId);
     }
   };
 

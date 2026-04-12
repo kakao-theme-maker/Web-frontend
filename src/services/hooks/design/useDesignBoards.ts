@@ -1,14 +1,14 @@
 import { useMemo } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { ThemeService } from '../api/ThemeService';
-import type { IThemeBoard, IThemeBoardRaw } from '../../types/community/theme';
+import { DesignService } from '../../api/DesignService';
+import type { IDesignBoard, IDesignBoardRaw } from '../../../types/community/design';
 
 const PAGE_SIZE = 20;
 
-function mapPost(item: IThemeBoardRaw): IThemeBoard {
+function mapBoard(item: IDesignBoardRaw): IDesignBoard {
   return {
     boardId: item.post_id,
-    themeComponentId: item.theme_component_id,
+    designComponentId: item.design_component_id,
     title: item.title,
     prefers: item.prefers,
     previewImageUrl: item.preview_image_url,
@@ -17,7 +17,7 @@ function mapPost(item: IThemeBoardRaw): IThemeBoard {
   };
 }
 
-export function useThemePosts() {
+export function useDesignBoards() {
   const {
     data,
     isLoading,
@@ -26,18 +26,18 @@ export function useThemePosts() {
     hasNextPage,
     isFetchingNextPage,
   } = useInfiniteQuery({
-    queryKey: ['theme-boards'],
+    queryKey: ['design-boards'],
     queryFn: ({ pageParam }) =>
-      ThemeService.getThemeBoards(pageParam, PAGE_SIZE),
+      DesignService.getDesignBoards(pageParam, PAGE_SIZE),
     initialPageParam: 0,
     getNextPageParam: (lastPage, allPages) =>
       lastPage.length < PAGE_SIZE ? undefined : allPages.length,
   });
 
-  const posts = useMemo<IThemeBoard[]>(
-    () => (data?.pages ?? []).flat().map(mapPost),
+  const boards = useMemo<IDesignBoard[]>(
+    () => (data?.pages ?? []).flat().map(mapBoard),
     [data]
   );
 
-  return { posts, isLoading, isError, fetchNextPage, hasNextPage, isFetchingNextPage };
+  return { boards, isLoading, isError, fetchNextPage, hasNextPage, isFetchingNextPage };
 }

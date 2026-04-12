@@ -1,13 +1,13 @@
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import DesignPostGridItem from "../DesignPostGridItem";
+import DesignBoardGridItem from "../DesignBoardGridItem";
 import SearchBar from "../../SearchBar";
 import Text from "../../../common/Text";
 import type { IDesignBoard } from "../../../../types/community/design";
-import { useIntersectionObserver } from "../../../../services/hooks/useIntersectionObserver";
+import { useIntersectionObserver } from "../../../../services/hooks/common/useIntersectionObserver";
 
 interface IDesignActivityTabProps {
-  posts: IDesignBoard[];
+  boards: IDesignBoard[];
   isLoading: boolean;
   isError: boolean;
   fetchNextPage: () => void;
@@ -16,7 +16,7 @@ interface IDesignActivityTabProps {
 }
 
 export default function DesignActivityTab({
-  posts,
+  boards,
   isLoading,
   isError,
   fetchNextPage,
@@ -47,8 +47,8 @@ export default function DesignActivityTab({
         )}
         {!isLoading && !isError && (
           <section className="grid grid-cols-2 gap-2">
-            {posts.map((item) => (
-              <DesignPostGridItem key={item.boardId} item={item} />
+            {boards.map((item) => (
+              <DesignBoardGridItem key={item.boardId} item={item} />
             ))}
           </section>
         )}

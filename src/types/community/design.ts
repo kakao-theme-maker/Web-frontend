@@ -38,6 +38,8 @@ export interface IDesignBoardDetailRaw extends IDesignBoardRaw {
   liked: boolean;
   bookmarked: boolean;
   user_name: string;
+  profile_image?: string;
+  preview_image_urls?: string[];
 }
 
 // 디자인 게시글 상세 UI 모델 (camelCase)
@@ -48,6 +50,8 @@ export interface IDesignBoardDetail extends IDesignBoard {
   isLiked: boolean;
   isBookmarked: boolean;
   userName: string;
+  profileImage?: string;
+  previewImageUrls: string[];
 }
 
 // GET /api/design-components/user/{userEmail} 응답 항목 - 서버 원본 형식 (snake_case)

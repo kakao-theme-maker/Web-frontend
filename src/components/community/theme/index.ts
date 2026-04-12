@@ -1,3 +1,3 @@
 export { default as ThemeDetailCard } from './ThemeDetailCard';
-export { default as ThemePostGridItem } from './ThemePostGridItem';
+export { default as ThemeBoardGridItem } from './ThemeBoardGridItem';
 export * from './tab';

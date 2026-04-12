@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
-import { UserService } from '../api/UserService';
-import { useAuthStore } from '../../stores/authStore';
-import type { IUserProfile, IUserProfileRaw } from '../../types/mypage/types';
+import { UserService } from '../../api/UserService';
+import { useAuthStore } from '../../../stores/authStore';
+import type { IUserProfile, IUserProfileRaw } from '../../../types/mypage/types';
 
 function mapProfile(raw: IUserProfileRaw): IUserProfile {
   return {

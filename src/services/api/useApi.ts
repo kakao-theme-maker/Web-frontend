@@ -58,18 +58,18 @@ export function usePostMutation<TData, TVariables>(
 export function usePostMutation<TData, TBody = unknown>(
   options?: IUseMutationOptions<TData, TBody>,
 ): UseMutationResult<TData, IApiError, IMutationVariables<TBody>>;
-export function usePostMutation(
-  fnOrOptions?: unknown,
-  extraOptions?: unknown,
-) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function usePostMutation(fnOrOptions?: unknown, extraOptions?: unknown): any {
   const isFn = typeof fnOrOptions === 'function';
   const mutationFn = isFn
     ? (fnOrOptions as (vars: unknown) => Promise<unknown>)
-    : async ({ url, body, params, axiosConfig }: IMutationVariables) => {
+    : (async ({ url, body, params, axiosConfig }: IMutationVariables) => {
         const { data } = await apiClient.post(url, body, { params, ...axiosConfig });
         return data;
-      };
-  const options = isFn ? (extraOptions as object | undefined) : (fnOrOptions as object | undefined);
+      }) as (vars: unknown) => Promise<unknown>;
+  const options = isFn
+    ? (extraOptions as UseMutationOptions<unknown, IApiError, unknown> | undefined)
+    : (fnOrOptions as UseMutationOptions<unknown, IApiError, unknown> | undefined);
   return useMutation({ mutationFn, ...options });
 }
 
@@ -88,18 +88,18 @@ export function usePutMutation<TData, TVariables>(
 export function usePutMutation<TData, TBody = unknown>(
   options?: IUseMutationOptions<TData, TBody>,
 ): UseMutationResult<TData, IApiError, IMutationVariables<TBody>>;
-export function usePutMutation(
-  fnOrOptions?: unknown,
-  extraOptions?: unknown,
-) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function usePutMutation(fnOrOptions?: unknown, extraOptions?: unknown): any {
   const isFn = typeof fnOrOptions === 'function';
   const mutationFn = isFn
     ? (fnOrOptions as (vars: unknown) => Promise<unknown>)
-    : async ({ url, body, params, axiosConfig }: IMutationVariables) => {
+    : (async ({ url, body, params, axiosConfig }: IMutationVariables) => {
         const { data } = await apiClient.put(url, body, { params, ...axiosConfig });
         return data;
-      };
-  const options = isFn ? (extraOptions as object | undefined) : (fnOrOptions as object | undefined);
+      }) as (vars: unknown) => Promise<unknown>;
+  const options = isFn
+    ? (extraOptions as UseMutationOptions<unknown, IApiError, unknown> | undefined)
+    : (fnOrOptions as UseMutationOptions<unknown, IApiError, unknown> | undefined);
   return useMutation({ mutationFn, ...options });
 }
 
@@ -118,18 +118,18 @@ export function usePatchMutation<TData, TVariables>(
 export function usePatchMutation<TData, TBody = unknown>(
   options?: IUseMutationOptions<TData, TBody>,
 ): UseMutationResult<TData, IApiError, IMutationVariables<TBody>>;
-export function usePatchMutation(
-  fnOrOptions?: unknown,
-  extraOptions?: unknown,
-) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function usePatchMutation(fnOrOptions?: unknown, extraOptions?: unknown): any {
   const isFn = typeof fnOrOptions === 'function';
   const mutationFn = isFn
     ? (fnOrOptions as (vars: unknown) => Promise<unknown>)
-    : async ({ url, body, params, axiosConfig }: IMutationVariables) => {
+    : (async ({ url, body, params, axiosConfig }: IMutationVariables) => {
         const { data } = await apiClient.patch(url, body, { params, ...axiosConfig });
         return data;
-      };
-  const options = isFn ? (extraOptions as object | undefined) : (fnOrOptions as object | undefined);
+      }) as (vars: unknown) => Promise<unknown>;
+  const options = isFn
+    ? (extraOptions as UseMutationOptions<unknown, IApiError, unknown> | undefined)
+    : (fnOrOptions as UseMutationOptions<unknown, IApiError, unknown> | undefined);
   return useMutation({ mutationFn, ...options });
 }
 
@@ -148,21 +148,21 @@ export function useDeleteMutation<TData, TVariables>(
 export function useDeleteMutation<TData, TBody = unknown>(
   options?: IUseMutationOptions<TData, TBody>,
 ): UseMutationResult<TData, IApiError, IMutationVariables<TBody>>;
-export function useDeleteMutation(
-  fnOrOptions?: unknown,
-  extraOptions?: unknown,
-) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function useDeleteMutation(fnOrOptions?: unknown, extraOptions?: unknown): any {
   const isFn = typeof fnOrOptions === 'function';
   const mutationFn = isFn
     ? (fnOrOptions as (vars: unknown) => Promise<unknown>)
-    : async ({ url, body, params, axiosConfig }: IMutationVariables) => {
-      const { data } = await apiClient.delete(url, {
-        data: body,
-        params,
-        ...axiosConfig,
-      });
-      return data;
-    };
-  const options = isFn ? (extraOptions as object | undefined) : (fnOrOptions as object | undefined);
+    : (async ({ url, body, params, axiosConfig }: IMutationVariables) => {
+        const { data } = await apiClient.delete(url, {
+          data: body,
+          params,
+          ...axiosConfig,
+        });
+        return data;
+      }) as (vars: unknown) => Promise<unknown>;
+  const options = isFn
+    ? (extraOptions as UseMutationOptions<unknown, IApiError, unknown> | undefined)
+    : (fnOrOptions as UseMutationOptions<unknown, IApiError, unknown> | undefined);
   return useMutation({ mutationFn, ...options });
 }

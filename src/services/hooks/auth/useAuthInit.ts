@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { useAuthStore, REFRESH_TOKEN_KEY } from '../../stores/authStore';
-import { AuthService } from '../api/AuthService';
+import { useAuthStore, REFRESH_TOKEN_KEY } from '../../../stores/authStore';
+import { AuthService } from '../../api/AuthService';
 
 /**
  * 앱 최초 마운트 시 localStorage의 refreshToken을 확인하고,
