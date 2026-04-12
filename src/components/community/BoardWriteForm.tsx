@@ -113,7 +113,12 @@ export default function BoardWriteForm({
           <input
             value={tagInput}
             onChange={(e) => setTagInput(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddTag())}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+                if (!e.nativeEvent.isComposing) handleAddTag();
+              }
+            }}
             placeholder="#태그"
             className="h-7 w-16 rounded-md border border-secondary-200 bg-white px-2 text-xs text-secondary-500 outline-none placeholder:text-secondary-400"
           />
