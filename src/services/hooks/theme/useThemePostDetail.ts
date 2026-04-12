@@ -23,6 +23,7 @@ export function useThemePostDetail(postId: number) {
         previewImageUrl: data.preview_image_url,
         userEmail: data.user_email,
         userName: data.user_name,
+        profileImage: data.profile_image,
         createdAt: data.created_at,
       }
     : null;

@@ -64,11 +64,15 @@ export default function DesignDetailCard({ post }: IDesignDetailCardProps) {
     <main className="pt-8 pb-16">
       <section className="flex items-center justify-between px-5">
         <div className="flex min-w-0 max-w-[55%] items-center gap-2.5">
-          <img
-            src="https://placehold.co/40x40"
-            alt="프로필"
-            className="h-10 w-10 shrink-0 rounded-full object-cover"
-          />
+          {post.profileImage ? (
+            <img
+              src={post.profileImage}
+              alt="프로필"
+              className="h-10 w-10 shrink-0 rounded-full object-cover"
+            />
+          ) : (
+            <div className="h-10 w-10 shrink-0 rounded-full bg-secondary-300" />
+          )}
           <div className="flex min-w-0 flex-col">
             <Text variant="BOLD_15" className="truncate">{post.userEmail}</Text>
             <Text variant="REGULAR_10" className="text-secondary-400">{post.createdAt}</Text>

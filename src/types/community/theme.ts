@@ -21,6 +21,7 @@ export interface IThemeBoardDetailRaw {
   preview_image_url: string;
   user_email: string;
   user_name: string;
+  profile_image?: string;
   created_at: string;
 }
 
@@ -38,6 +39,7 @@ export interface IThemeBoardDetail {
   previewImageUrl: string;
   userEmail: string;
   userName: string;
+  profileImage?: string;
   createdAt: string;
 }
 
