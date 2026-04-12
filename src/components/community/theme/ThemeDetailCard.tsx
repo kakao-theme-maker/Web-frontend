@@ -30,7 +30,7 @@ export default function ThemeDetailCard({ board }: IThemeDetailCardProps) {
 
   const [isBookmarked, setIsBookmarked] = useState(board.isBookmarked);
   const { comments } = useComments(board.boardId);
-  const { isPreferred, prefers, togglePrefer } = usePrefer(board.boardId, board.prefers, board.isLiked, ['theme-board-detail', board.boardId]);
+  const { isPreferred, prefers, togglePrefer, isPending } = usePrefer(board.boardId, board.prefers, board.isLiked, ['theme-board-detail', board.boardId]);
   const { deleteBoard } = useDeleteThemeBoard(() => navigate(-1));
   const {
     deleteTargetId,
@@ -133,7 +133,7 @@ export default function ThemeDetailCard({ board }: IThemeDetailCardProps) {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-5">
             <div className="flex items-center gap-1.5">
-              <button onClick={togglePrefer} aria-label="좋아요">
+              <button onClick={togglePrefer} disabled={isPending} aria-label="좋아요">
                 <HeartIcon
                   width={24}
                   height={24}

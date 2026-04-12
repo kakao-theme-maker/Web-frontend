@@ -22,13 +22,15 @@ function ProfileInfoRow({ label, value }: IProfileInfoRowProps) {
 }
 
 export default function ProfileEdit() {
-  const { profile } = useUserProfile();
+  const { profile, isLoading } = useUserProfile();
 
   return (
     <main className="flex flex-col gap-4 bg-[#f1f1f1] px-4 pt-6 pb-8 min-h-full">
       {/* 프로필 이미지 */}
       <section className="flex flex-col items-center gap-2">
-        {profile?.profileImage ? (
+        {isLoading ? (
+          <div className="h-20 w-20 rounded-full bg-secondary-200 animate-pulse" />
+        ) : profile?.profileImage ? (
           <img
             src={profile.profileImage}
             alt="프로필 이미지"
@@ -44,17 +46,30 @@ export default function ProfileEdit() {
         </button>
 
         {/* 통계 */}
-        <UserStats
-          uploads={profile?.uploads ?? 0}
-          following={profile?.following ?? 0}
-          followers={profile?.followers ?? 0}
-        />
+        {isLoading ? (
+          <div className="mt-3 h-10 w-full rounded bg-secondary-200 animate-pulse" />
+        ) : (
+          <UserStats
+            uploads={profile?.uploads ?? 0}
+            following={profile?.following ?? 0}
+            followers={profile?.followers ?? 0}
+          />
+        )}
       </section>
 
       {/* 정보 수정 */}
       <section className="overflow-hidden rounded-xl bg-white mt-2">
-        <ProfileInfoRow label="이름" value={profile?.name ?? ""} />
-        <ProfileInfoRow label="이메일" value={profile?.userEmail ?? ""} />
+        {isLoading ? (
+          <>
+            <div className="h-12 w-full rounded bg-secondary-200 animate-pulse mb-1" />
+            <div className="h-12 w-full rounded bg-secondary-200 animate-pulse" />
+          </>
+        ) : (
+          <>
+            <ProfileInfoRow label="이름" value={profile?.name ?? ""} />
+            <ProfileInfoRow label="이메일" value={profile?.userEmail ?? ""} />
+          </>
+        )}
       </section>
     </main>
   );

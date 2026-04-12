@@ -177,7 +177,9 @@ export default function MyPage() {
     <main>
       {/* 프로필 섹션 */}
       <section className="flex flex-col items-center px-5 pt-6 pb-1">
-        {profile?.profileImage ? (
+        {isLoading ? (
+          <div className="h-20 w-20 rounded-full bg-secondary-200 animate-pulse" />
+        ) : profile?.profileImage ? (
           <img
             src={profile.profileImage}
             alt="프로필 이미지"

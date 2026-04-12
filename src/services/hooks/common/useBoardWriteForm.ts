@@ -38,6 +38,9 @@ export function useBoardWriteForm(initialValues?: IBoardWriteFormInitialValues) 
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] ?? null;
+    if (previewUrl?.startsWith('blob:')) {
+      URL.revokeObjectURL(previewUrl);
+    }
     setPreviewImage(file);
     setPreviewUrl(file ? URL.createObjectURL(file) : null);
   };
