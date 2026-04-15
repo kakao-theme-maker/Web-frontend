@@ -1,4 +1,4 @@
-import apiClient from './apiClient';
+import apiClient from './ApiClient';
 import type { ICommentRaw } from '../../types/community/theme';
 
 export const BoardInteractionService = {

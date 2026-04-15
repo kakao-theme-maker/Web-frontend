@@ -1,6 +1,6 @@
 import { useQuery, useMutation } from '@tanstack/react-query';
 import type { UseMutationOptions, UseMutationResult } from '@tanstack/react-query';
-import apiClient from './apiClient';
+import apiClient from './ApiClient';
 import type {
   IApiError,
   IUseGetQueryOptions,

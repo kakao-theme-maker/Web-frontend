@@ -2,10 +2,8 @@
  * 테마 커뮤니티 관련 타입 정의 파일
  */
 
-export interface ITag {
-  tag_id: number;
-  tag_name: string;
-}
+import type { ITag } from './common';
+export type { ITag } from './common';
 
 // GET /api/theme-boards/{post_id} 응답 - 서버 원본 형식 (snake_case)
 export interface IThemeBoardDetailRaw {

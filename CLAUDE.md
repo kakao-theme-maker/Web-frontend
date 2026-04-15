@@ -48,7 +48,7 @@ ex) AppRoutes.tsx / ProtectedRoutes.tsx
 - props 네임 : Pascal Case 
 - API / Service 네임 : Pascal Case
 - React Query 네임 : Pascal Case
-- 상태 변수 네이밍 : Pascal Case
+- 상태 변수 네이밍 : camelCase
 - 인터페이스 네이밍: Pascal Case (인터페이스 앞에 I 붙이기)
 - 상수 네이밍 : Screaming Snake Case
 - boolean 네이밍 : 앞에 is or has 붙이기

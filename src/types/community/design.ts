@@ -3,10 +3,8 @@
  * ※ API 엔드포인트 확인 후 실제 경로로 교체 필요
  */
 
-export interface ITag {
-  tag_id: number;
-  tag_name: string;
-}
+import type { ITag } from './common';
+export type { ITag } from './common';
 
 // GET /api/design-boards 응답 항목 - 서버 원본 형식 (snake_case)
 export interface IDesignBoardRaw {

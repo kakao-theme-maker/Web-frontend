@@ -3,11 +3,8 @@ import Text from "./Text";
 import { useOutsideClick } from "../../services/hooks/common/useOutsideClick";
 import { cn } from "../../utils/cn";
 
-export interface IMoreMenuItem {
-  id: string;
-  label: string;
-  onClick: () => void;
-}
+import type { IMoreMenuItem } from '../../types/community/common';
+export type { IMoreMenuItem } from '../../types/community/common';
 
 interface IMoreMenuProps {
   items: IMoreMenuItem[];

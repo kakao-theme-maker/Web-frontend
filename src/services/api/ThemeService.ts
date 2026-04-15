@@ -1,4 +1,4 @@
-import apiClient from './apiClient';
+import apiClient from './ApiClient';
 import type { IThemeBoardRaw, IThemeBoardDetailRaw, IUserThemeRaw, IBoardCreateResponseRaw } from '../../types/community/theme';
 
 export const ThemeService = {

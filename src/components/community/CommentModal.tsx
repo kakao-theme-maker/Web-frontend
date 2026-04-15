@@ -4,9 +4,7 @@ import type { ICommentRaw } from "../../types/community/theme";
 import Text from "../common/Text";
 import { useAuthStore } from "../../stores/authStore";
 import { useOutsideClick } from "../../services/hooks/common/useOutsideClick";
-import { usePostMutation } from "../../services/api/useApi";
-import { BoardInteractionService } from "../../services/api/BoardInteractionService";
-import { useQueryClient } from "@tanstack/react-query";
+import { useCreateComment } from "../../services/hooks/common/useCreateComment";
 
 interface ICommentModalProps {
   boardId: number;
@@ -16,7 +14,6 @@ interface ICommentModalProps {
 }
 
 export default function CommentModal({ boardId, comments, onRequestDelete, onRequestEdit }: ICommentModalProps) {
-  const queryClient = useQueryClient();
   const userEmail = useAuthStore((state) => state.userEmail);
 
   const [newComment, setNewComment] = useState("");
@@ -28,15 +25,7 @@ export default function CommentModal({ boardId, comments, onRequestDelete, onReq
     if (editingId !== null) setEditingId(null);
   });
 
-  const { mutate: createComment } = usePostMutation<ICommentRaw, string>(
-    (content) => BoardInteractionService.createComment(boardId, content),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ['comments', boardId] });
-        setNewComment("");
-      },
-    },
-  );
+  const { createComment } = useCreateComment(boardId, () => setNewComment(""));
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

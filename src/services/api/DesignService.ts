@@ -1,5 +1,5 @@
 // ※ API 엔드포인트 확인 후 실제 경로로 교체 필요
-import apiClient from './apiClient';
+import apiClient from './ApiClient';
 import type { IDesignBoardRaw, IDesignBoardDetailRaw, IUserDesignComponentRaw, IDesignBoardCreateResponseRaw } from '../../types/community/design';
 
 export const DesignService = {
