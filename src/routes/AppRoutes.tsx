@@ -17,7 +17,7 @@ import AuthLayout from "../layouts/AuthLayout.tsx";
 import Login from "../pages/auth/Login.tsx";
 import SignUp from "../pages/auth/SignUp.tsx";
 import ProtectedRoutes from "./ProtectedRoutes.tsx";
-import { useAuthInit } from "../services/hooks/useAuthInit.ts";
+import { useAuthInit } from "../services/hooks/auth/useAuthInit.ts";
 
 function AuthInitializer({ children }: { children: React.ReactNode }) {
   const isInitialized = useAuthInit();

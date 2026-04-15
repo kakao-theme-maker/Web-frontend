@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import { useDeleteMutation, usePutMutation } from '../api/useApi';
-import { ThemeService } from '../api/ThemeService';
-import type { ICommentRaw } from '../../types/community/theme';
+import { useDeleteMutation, usePutMutation } from '../../api/useApi';
+import { BoardInteractionService } from '../../api/BoardInteractionService';
+import type { ICommentRaw } from '../../../types/community/theme';
 
-export function useCommentActions(postId: number) {
+export function useCommentActions(boardId: number) {
   const queryClient = useQueryClient();
 
   const [deleteTargetId, setDeleteTargetId] = useState<number | null>(null);
@@ -15,10 +15,10 @@ export function useCommentActions(postId: number) {
   const [isEditAlertOpen, setIsEditAlertOpen] = useState(false);
 
   const { mutate: deleteComment } = useDeleteMutation<ICommentRaw, number>(
-    (commentId) => ThemeService.deleteComment(commentId),
+    (commentId) => BoardInteractionService.deleteComment(commentId),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ['comments', postId] });
+        queryClient.invalidateQueries({ queryKey: ['comments', boardId] });
         setIsDeleteConfirmOpen(false);
         setIsDeleteAlertOpen(true);
       },
@@ -26,10 +26,10 @@ export function useCommentActions(postId: number) {
   );
 
   const { mutate: updateComment } = usePutMutation<ICommentRaw, { commentId: number; content: string }>(
-    ({ commentId, content }) => ThemeService.updateComment(commentId, content),
+    ({ commentId, content }) => BoardInteractionService.updateComment(commentId, content),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ['comments', postId] });
+        queryClient.invalidateQueries({ queryKey: ['comments', boardId] });
         setIsEditConfirmOpen(false);
         setIsEditAlertOpen(true);
       },

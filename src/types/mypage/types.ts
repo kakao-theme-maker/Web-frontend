@@ -30,7 +30,7 @@ export interface IUserProfile {
 export type MyPageTabId = "activity" | "saved" | "liked";
 
 // 마이페이지 게시글 아이템
-export interface IMyPagePost {
+export interface IMyPageBoard {
   id: number;
   author: string;
   date: string;

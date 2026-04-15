@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { useUserDesignComponents } from '../../services/hooks/useUserDesignComponents';
+import { useUserDesignComponents } from '../../services/hooks/design/useUserDesignComponents';
 import BoardSelectPage from '../../components/community/BoardSelectPage';
 import DesignSelectItem from '../../components/community/DesignSelectItem';
 import type { IUserDesignComponentRaw } from '../../types/community/design';

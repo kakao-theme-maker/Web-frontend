@@ -3,19 +3,19 @@ import HeartIcon from "../icons/community-detail/heart.svg?react";
 import type { ICommentRaw } from "../../types/community/theme";
 import Text from "../common/Text";
 import { useAuthStore } from "../../stores/authStore";
-import { useOutsideClick } from "../../services/hooks/useOutsideClick";
+import { useOutsideClick } from "../../services/hooks/common/useOutsideClick";
 import { usePostMutation } from "../../services/api/useApi";
-import { ThemeService } from "../../services/api/ThemeService";
+import { BoardInteractionService } from "../../services/api/BoardInteractionService";
 import { useQueryClient } from "@tanstack/react-query";
 
 interface ICommentModalProps {
-  postId: number;
+  boardId: number;
   comments: ICommentRaw[];
   onRequestDelete: (commentId: number) => void;
   onRequestEdit: (commentId: number, content: string) => void;
 }
 
-export default function CommentModal({ postId, comments, onRequestDelete, onRequestEdit }: ICommentModalProps) {
+export default function CommentModal({ boardId, comments, onRequestDelete, onRequestEdit }: ICommentModalProps) {
   const queryClient = useQueryClient();
   const userEmail = useAuthStore((state) => state.userEmail);
 
@@ -29,10 +29,10 @@ export default function CommentModal({ postId, comments, onRequestDelete, onRequ
   });
 
   const { mutate: createComment } = usePostMutation<ICommentRaw, string>(
-    (content) => ThemeService.createComment(postId, content),
+    (content) => BoardInteractionService.createComment(boardId, content),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ['comments', postId] });
+        queryClient.invalidateQueries({ queryKey: ['comments', boardId] });
         setNewComment("");
       },
     },

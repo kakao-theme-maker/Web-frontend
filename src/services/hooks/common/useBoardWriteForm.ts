@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import type { IBoardWriteFormData } from '../../types/community/theme';
+import type { IBoardWriteFormData } from '../../../types/community/theme';
 
 interface IBoardWriteFormInitialValues {
   title?: string;
@@ -38,6 +38,9 @@ export function useBoardWriteForm(initialValues?: IBoardWriteFormInitialValues) 
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] ?? null;
+    if (previewUrl?.startsWith('blob:')) {
+      URL.revokeObjectURL(previewUrl);
+    }
     setPreviewImage(file);
     setPreviewUrl(file ? URL.createObjectURL(file) : null);
   };

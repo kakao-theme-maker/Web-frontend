@@ -1,14 +1,15 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import type { IThemeBoardDetail } from "../../../types/community/theme";
 import Text from "../../common/Text";
-import { useOutsideClick } from "../../../services/hooks/useOutsideClick";
-import { useComments } from "../../../services/hooks/useComments";
-import { useCommentActions } from "../../../services/hooks/useCommentActions";
-import { usePrefer } from "../../../services/hooks/usePrefer";
-import { useDeleteThemePost } from "../../../services/hooks/useDeleteThemePost";
+import { useOutsideClick } from "../../../services/hooks/common/useOutsideClick";
+import { useComments } from "../../../services/hooks/common/useComments";
+import { useCommentActions } from "../../../services/hooks/common/useCommentActions";
+import { usePrefer } from "../../../services/hooks/common/usePrefer";
+import { useDeleteThemeBoard } from "../../../services/hooks/theme/useDeleteThemeBoard";
 import { useAuthStore } from "../../../stores/authStore";
+import ImageSlider from "../../common/ImageSlider";
 import CommentModal from "../CommentModal";
 import Confirm from "../../common/Confirm";
 import Alert from "../../common/Alert";
@@ -19,19 +20,18 @@ import HeartIcon from '../../icons/community-detail/heart.svg?react';
 import CommentIcon from '../../icons/community-detail/comment.svg?react';
 
 interface IThemeDetailCardProps {
-  post: IThemeBoardDetail;
+  board: IThemeBoardDetail;
 }
 
-export default function ThemeDetailCard({ post }: IThemeDetailCardProps) {
+export default function ThemeDetailCard({ board }: IThemeDetailCardProps) {
   const navigate = useNavigate();
   const userEmail = useAuthStore((state) => state.userEmail);
-  const isMyPost = userEmail === post.userEmail;
+  const isMyBoard = userEmail === board.userEmail;
 
-  const [isBookmarked, setIsBookmarked] = useState(post.isBookmarked);
-  useEffect(() => { setIsBookmarked(post.isBookmarked); }, [post.isBookmarked]);
-  const { comments } = useComments(post.boardId);
-  const { isPreferred, prefers, togglePrefer } = usePrefer(post.boardId, post.prefers, post.isLiked, ['theme-board-detail', post.boardId]);
-  const { deletePost } = useDeleteThemePost(() => navigate(-1));
+  const [isBookmarked, setIsBookmarked] = useState(board.isBookmarked);
+  const { comments } = useComments(board.boardId);
+  const { isPreferred, prefers, togglePrefer, isPending } = usePrefer(board.boardId, board.prefers, board.isLiked, ['theme-board-detail', board.boardId]);
+  const { deleteBoard } = useDeleteThemeBoard(() => navigate(-1));
   const {
     deleteTargetId,
     editTarget,
@@ -47,13 +47,13 @@ export default function ThemeDetailCard({ post }: IThemeDetailCardProps) {
     updateComment,
     requestDelete,
     requestEdit,
-  } = useCommentActions(post.boardId);
+  } = useCommentActions(board.boardId);
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isCommentOpen, setIsCommentOpen] = useState(false);
   const [isDownloadConfirmOpen, setIsDownloadConfirmOpen] = useState(false);
   const [isDownloadAlertOpen, setIsDownloadAlertOpen] = useState(false);
-  const [isDeletePostConfirmOpen, setIsDeletePostConfirmOpen] = useState(false);
+  const [isDeleteBoardConfirmOpen, setIsDeleteBoardConfirmOpen] = useState(false);
 
   const menuRef = useRef<HTMLDivElement | null>(null);
   useOutsideClick(menuRef, () => setIsMenuOpen(false));
@@ -64,14 +64,18 @@ export default function ThemeDetailCard({ post }: IThemeDetailCardProps) {
     <main className="pt-8 pb-16">
       <section className="flex items-center justify-between px-5">
         <div className="flex min-w-0 max-w-[55%] items-center gap-2.5">
-          <img
-            src="https://placehold.co/40x40"
-            alt="프로필"
-            className="h-10 w-10 shrink-0 rounded-full object-cover"
-          />
+          {board.profileImage ? (
+            <img
+              src={board.profileImage}
+              alt="프로필"
+              className="h-10 w-10 shrink-0 rounded-full object-cover"
+            />
+          ) : (
+            <div className="h-10 w-10 shrink-0 rounded-full bg-secondary-300" />
+          )}
           <div className="flex min-w-0 flex-col">
-            <Text variant="BOLD_15" className="truncate">{post.userEmail}</Text>
-            <Text variant="REGULAR_10" className="text-secondary-400">{post.createdAt}</Text>
+            <Text variant="BOLD_15" className="truncate">{board.userEmail}</Text>
+            <Text variant="REGULAR_10" className="text-secondary-400">{board.createdAt}</Text>
           </div>
         </div>
 
@@ -99,17 +103,17 @@ export default function ThemeDetailCard({ post }: IThemeDetailCardProps) {
                 <button className="w-full border-t border-secondary-100 px-3 py-1 text-left hover:bg-secondary-50 text-center">
                   <Text variant="MEDIUM_12">공유하기</Text>
                 </button>
-                {isMyPost && (
+                {isMyBoard && (
                   <>
                     <button
                       className="w-full border-t border-secondary-100 px-3 py-1 text-left hover:bg-secondary-50 text-center"
-                      onClick={() => { setIsMenuOpen(false); navigate(`/community/edit/${post.boardId}`, { state: { post } }); }}
+                      onClick={() => { setIsMenuOpen(false); navigate(`/community/edit/${board.boardId}`, { state: { board } }); }}
                     >
                       <Text variant="MEDIUM_12">수정하기</Text>
                     </button>
                     <button
                       className="w-full border-t border-secondary-100 px-3 py-1 text-left hover:bg-secondary-50 text-center"
-                      onClick={() => { setIsMenuOpen(false); setIsDeletePostConfirmOpen(true); }}
+                      onClick={() => { setIsMenuOpen(false); setIsDeleteBoardConfirmOpen(true); }}
                     >
                       <Text variant="MEDIUM_12" className="text-red-500">게시글 삭제</Text>
                     </button>
@@ -122,23 +126,14 @@ export default function ThemeDetailCard({ post }: IThemeDetailCardProps) {
       </section>
 
       <section className="mt-3">
-        <div className="relative h-[330px] w-full overflow-hidden rounded-[2px] bg-secondary-200">
-          {post.previewImageUrl && (
-            <img src={post.previewImageUrl} alt="테마 미리보기" className="h-full w-full object-cover" />
-          )}
-          <div className="absolute bottom-3 left-0 right-0 flex items-center justify-center gap-1">
-            <span className="h-1.5 w-1.5 rounded-full bg-black" />
-            <span className="h-1.5 w-1.5 rounded-full bg-white" />
-            <span className="h-1.5 w-1.5 rounded-full bg-white" />
-          </div>
-        </div>
+        <ImageSlider images={board.previewImageUrls} alt="테마 미리보기" />
       </section>
 
       <section className="mt-5 px-5">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-5">
             <div className="flex items-center gap-1.5">
-              <button onClick={togglePrefer} aria-label="좋아요">
+              <button onClick={togglePrefer} disabled={isPending} aria-label="좋아요">
                 <HeartIcon
                   width={24}
                   height={24}
@@ -165,11 +160,11 @@ export default function ThemeDetailCard({ post }: IThemeDetailCardProps) {
 
         <div className="mt-2">
           <Text variant="MEDIUM_14" className="mr-2 inline-block max-w-[40%] truncate align-bottom">
-            {post.userEmail}
+            {board.userEmail}
           </Text>
-          <Text variant="REGULAR_14">{post.content}</Text>
+          <Text variant="REGULAR_14">{board.content}</Text>
         </div>
-        <Text variant="REGULAR_14" className="mt-1 text-secondary-400">{post.createdAt}</Text>
+        <Text variant="REGULAR_14" className="mt-1 text-secondary-400">{board.createdAt}</Text>
       </section>
 
       {isDownloadConfirmOpen && (
@@ -190,14 +185,14 @@ export default function ThemeDetailCard({ post }: IThemeDetailCardProps) {
         />
       )}
 
-      {isDeletePostConfirmOpen && (
+      {isDeleteBoardConfirmOpen && (
         <Confirm
           message="게시글을 삭제하시겠습니까?"
           confirmText="삭제할게요"
           cancelText="아니요"
-          onConfirm={() => { setIsDeletePostConfirmOpen(false); deletePost(post.boardId); }}
-          onCancel={() => setIsDeletePostConfirmOpen(false)}
-          onClose={() => setIsDeletePostConfirmOpen(false)}
+          onConfirm={() => { setIsDeleteBoardConfirmOpen(false); deleteBoard(board.boardId); }}
+          onCancel={() => setIsDeleteBoardConfirmOpen(false)}
+          onClose={() => setIsDeleteBoardConfirmOpen(false)}
         />
       )}
 
@@ -209,7 +204,7 @@ export default function ThemeDetailCard({ post }: IThemeDetailCardProps) {
           />
           <div className="absolute bottom-0 left-0 right-0 z-50">
             <CommentModal
-              postId={post.boardId}
+              boardId={board.boardId}
               comments={comments}
               onRequestDelete={requestDelete}
               onRequestEdit={requestEdit}

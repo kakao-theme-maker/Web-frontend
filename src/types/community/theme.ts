@@ -19,8 +19,10 @@ export interface IThemeBoardDetailRaw {
   liked: boolean;
   bookmarked: boolean;
   preview_image_url: string;
+  preview_image_urls?: string[];
   user_email: string;
   user_name: string;
+  profile_image?: string;
   created_at: string;
 }
 
@@ -36,8 +38,10 @@ export interface IThemeBoardDetail {
   isLiked: boolean;
   isBookmarked: boolean;
   previewImageUrl: string;
+  previewImageUrls: string[];
   userEmail: string;
   userName: string;
+  profileImage?: string;
   createdAt: string;
 }
 

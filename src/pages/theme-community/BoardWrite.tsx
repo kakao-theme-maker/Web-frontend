@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useBoardWrite } from '../../services/hooks/useBoardWrite';
+import { useBoardWrite } from '../../services/hooks/theme/useBoardWrite';
 import BoardWriteForm from '../../components/community/BoardWriteForm';
 import Text from '../../components/common/Text';
 import type { IUserTheme } from '../../types/community/theme';

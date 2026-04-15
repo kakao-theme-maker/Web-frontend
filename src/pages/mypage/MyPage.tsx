@@ -5,10 +5,10 @@ import TabMenu from "../../components/common/TabMenu";
 import MoreMenu from "../../components/common/MoreMenu";
 import Button from "../../components/common/Button";
 import UserStats from "./UserStats";
-import { useUserProfile } from "../../services/hooks/useUserProfile";
+import { useUserProfile } from "../../services/hooks/user/useUserProfile";
 import { useSavedPosts } from "../../services/hooks/useSavedPosts";
 import { usePreferredPosts } from "../../services/hooks/usePreferredPosts";
-import type { MyPageTabId, IMyPagePost, IThemeGridItem } from "../../types/mypage/types";
+import type { MyPageTabId, IMyPageBoard, IThemeGridItem, IThemeCategory } from "../../types/mypage/types";
 
 // 탭 목록
 const MY_PAGE_TABS: { id: MyPageTabId; label: string }[] = [
@@ -17,18 +17,27 @@ const MY_PAGE_TABS: { id: MyPageTabId; label: string }[] = [
   { id: "liked", label: "좋아요" },
 ];
 
-const MOCK_POSTS: IMyPagePost[] = [
+const THEME_CATEGORIES: IThemeCategory[] = [
+  { id: "all", label: "전체" },
+  { id: "cute", label: "귀여움" },
+  { id: "fancy", label: "화려함" },
+  { id: "game", label: "게임" },
+  { id: "animal", label: "동물" },
+  { id: "classic", label: "클래식" },
+];
+
+const MOCK_BOARDS: IMyPageBoard[] = [
   { id: 1, author: "다현", date: "3월 25일" },
   { id: 2, author: "다현", date: "3월 20일" },
 ];
 
 
 // 마이페이지 내 활동 게시글 카드
-interface IMyPagePostCardProps {
-  post: IMyPagePost;
+interface IMyPageBoardCardProps {
+  board: IMyPageBoard;
 }
 
-function MyPagePostCard({ post }: IMyPagePostCardProps) {
+function MyPageBoardCard({ board }: IMyPageBoardCardProps) {
   const moreMenuItems = [
     { id: "edit", label: "수정하기", onClick: () => {} },
     { id: "delete", label: "삭제하기", onClick: () => {} },
@@ -41,9 +50,9 @@ function MyPagePostCard({ post }: IMyPagePostCardProps) {
         <div className="flex items-center gap-2.5">
           <div className="h-9 w-9 rounded-full bg-secondary-300" />
           <div className="flex flex-col">
-            <Text variant="BOLD_15">{post.author}</Text>
+            <Text variant="BOLD_15">{board.author}</Text>
             <Text variant="REGULAR_10" className="text-secondary-400">
-              {post.date}
+              {board.date}
             </Text>
           </div>
         </div>
@@ -56,7 +65,7 @@ function MyPagePostCard({ post }: IMyPagePostCardProps) {
 
 // 내 활동 탭
 function ActivityTab() {
-  if (MOCK_POSTS.length === 0) {
+  if (MOCK_BOARDS.length === 0) {
     return (
       <div className="flex h-40 items-center justify-center">
         <Text variant="REGULAR_14" className="text-secondary-300">
@@ -68,8 +77,8 @@ function ActivityTab() {
 
   return (
     <div>
-      {MOCK_POSTS.map((post) => (
-        <MyPagePostCard key={post.id} post={post} />
+      {MOCK_BOARDS.map((board) => (
+        <MyPageBoardCard key={board.id} board={board} />
       ))}
     </div>
   );
@@ -133,7 +142,9 @@ export default function MyPage() {
     <main>
       {/* 프로필 섹션 */}
       <section className="flex flex-col items-center px-5 pt-6 pb-1">
-        {profile?.profileImage ? (
+        {isLoading ? (
+          <div className="h-20 w-20 rounded-full bg-secondary-200 animate-pulse" />
+        ) : profile?.profileImage ? (
           <img
             src={profile.profileImage}
             alt="프로필 이미지"
