@@ -27,14 +27,19 @@ export default function InlineNameEditor({
   }, [isEditing]);
 
   const handleConfirm = async () => {
+    if (isSaving) return;
     const trimmed = draft.trim();
     if (!trimmed || trimmed === name) {
       setDraft(name);
       setIsEditing(false);
       return;
     }
-    await onNameChange(trimmed);
-    setIsEditing(false);
+    try {
+      await onNameChange(trimmed);
+      setIsEditing(false);
+    } catch {
+      // 저장 실패 시 편집 상태 유지 (사용자가 재시도 가능)
+    }
   };
 
   const handleCancel = () => {

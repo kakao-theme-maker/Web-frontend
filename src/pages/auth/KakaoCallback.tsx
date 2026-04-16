@@ -27,8 +27,7 @@ export default function KakaoCallback() {
     };
 
     handleCallback();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [searchParams, navigate, setAuthenticated]);
 
   return (
     <div className="flex min-h-screen items-center justify-center">
