@@ -4,10 +4,6 @@ import { usePostMutation } from "../../api/useApi";
 import { AuthService } from "../../api/AuthService";
 import type { ISignUpFormData } from "../../../types/auth/types";
 
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const PW_PATTERN =
-  /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+[\]{};':"\\|,.<>/?])[a-zA-Z\d!@#$%^&*()\-_=+[\]{};':"\\|,.<>/?]{8,20}$/;
-
 export function useSignUp() {
   const navigate = useNavigate();
 
@@ -17,7 +13,7 @@ export function useSignUp() {
     watch,
     setError,
     formState: { errors, isValid, isSubmitting },
-  } = useForm<ISignUpFormData>({ mode: "onChange" });
+  } = useForm<ISignUpFormData>({ mode: 'onChange' });
 
 
   const isSubmittable = isValid;
@@ -32,15 +28,5 @@ export function useSignUp() {
 
   const onSubmit = handleSubmit((formData) => signUpMutate(formData));
 
-  return {
-    register,
-    handleSubmit,
-    watch,
-    onSubmit,
-    errors,
-    isSubmitting,
-    isSubmittable,
-    EMAIL_PATTERN,
-    PW_PATTERN,
-  };
+  return { register, watch, onSubmit, errors, isSubmitting, isSubmittable };
 }

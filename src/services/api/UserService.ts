@@ -1,4 +1,4 @@
-import apiClient from './apiClient';
+import apiClient from './ApiClient';
 import type { IUserProfileRaw, IUserPostListItemRaw } from '../../types/mypage/types';
 
 export const UserService = {

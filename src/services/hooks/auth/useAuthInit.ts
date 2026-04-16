@@ -1,37 +1,32 @@
 import { useEffect, useState } from 'react';
-import { useAuthStore, REFRESH_TOKEN_KEY } from '../../../stores/authStore';
+import { useAuthStore } from '../../../stores/authStore';
 import { AuthService } from '../../api/AuthService';
 
 /**
- * 앱 최초 마운트 시 localStorage의 refreshToken을 확인하고,
- * 유효하면 새 토큰 쌍을 발급받아 Zustand store에 저장합니다.
+ * 앱 최초 마운트 시 서버에 토큰 재발급을 요청해 인증 상태를 복구합니다.
+ * httpOnly 쿠키 방식이므로 쿠키가 유효하면 서버가 자동으로 인증을 처리합니다.
  *
  * 초기화가 완료되기 전까지 isInitialized = false를 반환해
  * ProtectedRoutes가 /login으로 섣불리 리다이렉트하지 않도록 합니다.
  */
 export function useAuthInit() {
   const [isInitialized, setIsInitialized] = useState(false);
-  const setAccessToken = useAuthStore((state) => state.setAccessToken);
+  const setAuthenticated = useAuthStore((state) => state.setAuthenticated);
 
   useEffect(() => {
     const init = async () => {
-      const refreshToken = localStorage.getItem(REFRESH_TOKEN_KEY);
-
-      if (refreshToken) {
-        try {
-          const data = await AuthService.refresh(refreshToken);
-          setAccessToken(data.accessToken, data.refreshToken);
-        } catch {
-          // refreshToken이 만료되었거나 유효하지 않으면 비인증 상태 유지
-          localStorage.removeItem(REFRESH_TOKEN_KEY);
-        }
+      try {
+        const data = await AuthService.refresh();
+        setAuthenticated(data?.email);
+      } catch {
+        // 쿠키가 없거나 만료된 경우 → 비인증 상태 유지
       }
 
       setIsInitialized(true);
     };
 
     init();
-  }, [setAccessToken]);
+  }, [setAuthenticated]);
 
   return isInitialized;
 }
