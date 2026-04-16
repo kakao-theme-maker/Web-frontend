@@ -10,7 +10,6 @@ export default function KakaoCallback() {
 
   useEffect(() => {
     const handleCallback = async () => {
-      console.log("TEST");
       const error = searchParams.get('error');
 
       if (error) {

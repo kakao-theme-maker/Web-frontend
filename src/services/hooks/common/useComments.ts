@@ -6,7 +6,7 @@ export function useComments(boardId: number) {
   const { data, isLoading, isError } = useGetQuery<ICommentRaw[]>(
     ['comments', boardId],
     () => BoardInteractionService.getComments(boardId, 0, 100),
-    { enabled: !!boardId },
+    { enabled: !!boardId, staleTime: 1000 * 30 },
   );
 
   return { comments: data ?? [], isLoading, isError };

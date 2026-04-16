@@ -2,9 +2,9 @@ import { useState, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import type { IBoardDetailBase } from '../../types/community/common';
+import { cn } from '../../utils/cn';
 import Text from '../common/Text';
 import { useOutsideClick } from '../../services/hooks/common/useOutsideClick';
-import { useComments } from '../../services/hooks/common/useComments';
 import { useCommentActions } from '../../services/hooks/common/useCommentActions';
 import { usePrefer } from '../../services/hooks/common/usePrefer';
 import { useAuthStore } from '../../stores/authStore';
@@ -42,7 +42,6 @@ export default function BoardDetailCard({
   const isMyBoard = userEmail === board.userEmail;
 
   const [isBookmarked, setIsBookmarked] = useState(board.isBookmarked);
-  const { comments } = useComments(board.boardId);
   const { isPreferred, prefers, togglePrefer, isPending } = usePrefer(
     board.boardId,
     board.prefers,
@@ -75,9 +74,10 @@ export default function BoardDetailCard({
   const menuRef = useRef<HTMLDivElement | null>(null);
   useOutsideClick(menuRef, () => setIsMenuOpen(false));
 
-  const menuClass =
-    `flex h-8 w-8 items-center justify-center rounded-full` +
-    (isMenuOpen ? ` text-white bg-primary` : ``);
+  const menuClass = cn(
+    'flex h-8 w-8 items-center justify-center rounded-full',
+    isMenuOpen && 'text-white bg-primary',
+  );
 
   return (
     <main className="pt-8 pb-16">
@@ -94,15 +94,17 @@ export default function BoardDetailCard({
             <div className="h-10 w-10 shrink-0 rounded-full bg-secondary-300" />
           )}
           <div className="flex min-w-0 flex-col">
-            <Text variant="BOLD_15" className="truncate">{board.userEmail}</Text>
+            <Text variant="BOLD_15" className="truncate">{board.userName}</Text>
             <Text variant="REGULAR_10" className="text-secondary-400">{board.createdAt}</Text>
           </div>
         </div>
 
         <div className="relative flex items-center gap-2">
-          <button className="rounded-[5px] bg-primary px-4 py-[3px] text-white">
-            <Text variant="MEDIUM_12">팔로우</Text>
-          </button>
+          {!isMyBoard && (
+            <button className="rounded-[5px] bg-primary px-4 py-[3px] text-white">
+              <Text variant="MEDIUM_12">팔로우</Text>
+            </button>
+          )}
           <div ref={menuRef} className="relative">
             <button
               className={menuClass}
@@ -114,24 +116,24 @@ export default function BoardDetailCard({
             {isMenuOpen && (
               <div className="absolute right-0 top-10 z-20 w-[112px] overflow-hidden rounded-md border border-secondary-200 bg-white shadow-md">
                 <button
-                  className="w-full px-3 py-1 text-left hover:bg-secondary-50 text-center"
+                  className="w-full px-3 py-1 hover:bg-secondary-50 text-center"
                   onClick={() => { setIsMenuOpen(false); setIsDownloadConfirmOpen(true); }}
                 >
                   <Text variant="MEDIUM_12">{downloadLabel}</Text>
                 </button>
-                <button className="w-full border-t border-secondary-100 px-3 py-1 text-left hover:bg-secondary-50 text-center">
+                <button className="w-full border-t border-secondary-100 px-3 py-1 hover:bg-secondary-50 text-center">
                   <Text variant="MEDIUM_12">공유하기</Text>
                 </button>
                 {isMyBoard && (
                   <>
                     <button
-                      className="w-full border-t border-secondary-100 px-3 py-1 text-left hover:bg-secondary-50 text-center"
+                      className="w-full border-t border-secondary-100 px-3 py-1 hover:bg-secondary-50 text-center"
                       onClick={() => { setIsMenuOpen(false); navigate(editPath, { state: { board } }); }}
                     >
                       <Text variant="MEDIUM_12">수정하기</Text>
                     </button>
                     <button
-                      className="w-full border-t border-secondary-100 px-3 py-1 text-left hover:bg-secondary-50 text-center"
+                      className="w-full border-t border-secondary-100 px-3 py-1 hover:bg-secondary-50 text-center"
                       onClick={() => { setIsMenuOpen(false); setIsDeleteBoardConfirmOpen(true); }}
                     >
                       <Text variant="MEDIUM_12" className="text-red-500">게시글 삭제</Text>
@@ -167,7 +169,7 @@ export default function BoardDetailCard({
               <button onClick={() => setIsCommentOpen(true)}>
                 <CommentIcon width={24} height={24} aria-label="댓글" />
               </button>
-              <Text variant="REGULAR_15">{comments.length}</Text>
+              <Text variant="REGULAR_15">{board.comments}</Text>
             </div>
           </div>
           <button onClick={() => setIsBookmarked((prev) => !prev)} aria-label="북마크">
@@ -181,11 +183,10 @@ export default function BoardDetailCard({
 
         <div className="mt-2">
           <Text variant="MEDIUM_14" className="mr-2 inline-block max-w-[40%] truncate align-bottom">
-            {board.userEmail}
+            {board.userName}
           </Text>
           <Text variant="REGULAR_14">{board.content}</Text>
         </div>
-        <Text variant="REGULAR_14" className="mt-1 text-secondary-400">{board.createdAt}</Text>
       </section>
 
       {/* 다운로드 Confirm / Alert */}
@@ -226,7 +227,6 @@ export default function BoardDetailCard({
             <div className="absolute bottom-0 left-0 right-0 z-50">
               <CommentModal
                 boardId={board.boardId}
-                comments={comments}
                 onRequestDelete={requestDelete}
                 onRequestEdit={requestEdit}
               />

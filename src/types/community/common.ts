@@ -20,6 +20,7 @@ export interface IBoardDetailBase {
   isLiked: boolean;
   isBookmarked: boolean;
   userEmail: string;
+  userName: string;
   profileImage?: string;
   createdAt: string;
   content: string;

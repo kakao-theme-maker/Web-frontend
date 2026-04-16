@@ -5,10 +5,17 @@ export function useVerticalSwipe(boardsLength: number, transitionDuration: numbe
   const containerRef = useRef<HTMLDivElement>(null);
   const stateRef = useRef({ currentIndex: 0, isAnimating: false, boardsLength });
   const touchStartY = useRef(0);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     stateRef.current.boardsLength = boardsLength;
   }, [boardsLength]);
+
+  useEffect(() => {
+    return () => {
+      if (timerRef.current !== null) clearTimeout(timerRef.current);
+    };
+  }, []);
 
   const goTo = useCallback(
     (idx: number) => {
@@ -20,8 +27,10 @@ export function useVerticalSwipe(boardsLength: number, transitionDuration: numbe
       stateRef.current.currentIndex = next;
       setCurrentIndex(next);
 
-      setTimeout(() => {
+      if (timerRef.current !== null) clearTimeout(timerRef.current);
+      timerRef.current = setTimeout(() => {
         stateRef.current.isAnimating = false;
+        timerRef.current = null;
       }, transitionDuration);
     },
     [transitionDuration],

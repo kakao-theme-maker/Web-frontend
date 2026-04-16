@@ -1,19 +1,19 @@
 import React, { useState, useRef } from "react";
 import HeartIcon from "../icons/community-detail/heart.svg?react";
-import type { ICommentRaw } from "../../types/community/theme";
 import Text from "../common/Text";
 import { useAuthStore } from "../../stores/authStore";
 import { useOutsideClick } from "../../services/hooks/common/useOutsideClick";
 import { useCreateComment } from "../../services/hooks/common/useCreateComment";
+import { useComments } from "../../services/hooks/common/useComments";
 
 interface ICommentModalProps {
   boardId: number;
-  comments: ICommentRaw[];
   onRequestDelete: (commentId: number) => void;
   onRequestEdit: (commentId: number, content: string) => void;
 }
 
-export default function CommentModal({ boardId, comments, onRequestDelete, onRequestEdit }: ICommentModalProps) {
+export default function CommentModal({ boardId, onRequestDelete, onRequestEdit }: ICommentModalProps) {
+  const { comments } = useComments(boardId);
   const userEmail = useAuthStore((state) => state.userEmail);
 
   const [newComment, setNewComment] = useState("");

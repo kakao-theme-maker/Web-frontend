@@ -37,7 +37,7 @@ export default function SignUpForm({ register, watch, onSubmit, errors, isSubmit
       </header>
 
       {/* 컨텐츠 */}
-      <div className="flex-1 overflow-y-auto px-6 pb-8 [&::-webkit-scrollbar]:hidden [scrollbar-width:none] [-ms-overflow-style:none]">
+      <div className="scrollbar-hidden flex-1 overflow-y-auto px-6 pb-8">
         <section className="flex flex-col gap-2">
           <Text variant="BOLD_24" className="text-primary">KOMENTUM</Text>
           <Text variant="BOLD_20">회원가입</Text>

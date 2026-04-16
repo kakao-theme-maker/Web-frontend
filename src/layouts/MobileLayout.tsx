@@ -28,7 +28,7 @@ export default function MobileLayout() {
       <div id="phone-root" className="relative flex h-[700px] w-[340px] flex-col overflow-hidden border border-secondary-200">
         {hasHeader && <MobileHeader title={headerTitle} showBackArrow={showBackArrow} className={isProfileEdit ? "!bg-[#f1f1f1]" : ""} />}
 
-        <div className={`[&::-webkit-scrollbar]:hidden [scrollbar-width:none] [-ms-overflow-style:none] flex-1 overflow-y-auto ${isCommunityDetail || isDesignDetail ? "" : "pb-16"}`}>
+        <div className={`scrollbar-hidden flex-1 overflow-y-auto ${isCommunityDetail || isDesignDetail ? "" : "pb-16"}`}>
           <Outlet />
         </div>
 
