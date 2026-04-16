@@ -7,6 +7,7 @@ import Text from '../common/Text';
 import { useOutsideClick } from '../../services/hooks/common/useOutsideClick';
 import { useCommentActions } from '../../services/hooks/common/useCommentActions';
 import { usePrefer } from '../../services/hooks/common/usePrefer';
+import { useBookmark } from '../../services/hooks/common/useBookmark';
 import { useAuthStore } from '../../stores/authStore';
 import ImageSlider from '../common/ImageSlider';
 import CommentModal from './CommentModal';
@@ -41,7 +42,11 @@ export default function BoardDetailCard({
   const userEmail = useAuthStore((state) => state.userEmail);
   const isMyBoard = userEmail === board.userEmail;
 
-  const [isBookmarked, setIsBookmarked] = useState(board.isBookmarked);
+  const { isBookmarked, toggleBookmark, isPending: isBookmarkPending } = useBookmark(
+    board.boardId,
+    board.isBookmarked,
+    preferQueryKey,
+  );
   const { isPreferred, prefers, togglePrefer, isPending } = usePrefer(
     board.boardId,
     board.prefers,
@@ -172,7 +177,7 @@ export default function BoardDetailCard({
               <Text variant="REGULAR_15">{board.comments}</Text>
             </div>
           </div>
-          <button onClick={() => setIsBookmarked((prev) => !prev)} aria-label="북마크">
+          <button onClick={toggleBookmark} disabled={isBookmarkPending} aria-label="북마크">
             <BookmarkIcon
               width={12}
               height={17}
