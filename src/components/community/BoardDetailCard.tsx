@@ -16,6 +16,7 @@ import Alert from '../common/Alert';
 import BookmarkIcon from '../icons/community-detail/bookmark.svg?react';
 import HeartIcon from '../icons/community-detail/heart.svg?react';
 import CommentIcon from '../icons/community-detail/comment.svg?react';
+import MoreIcon from '../icons/community-detail/more.svg?react';
 
 interface IBoardDetailCardProps {
   board: IBoardDetailBase;
@@ -24,6 +25,7 @@ interface IBoardDetailCardProps {
   editPath: string;
   preferQueryKey: unknown[];
   deleteBoard: (boardId: number) => void;
+  portalContainer?: Element | null;
 }
 
 export default function BoardDetailCard({
@@ -33,6 +35,7 @@ export default function BoardDetailCard({
   editPath,
   preferQueryKey,
   deleteBoard,
+  portalContainer,
 }: IBoardDetailCardProps) {
   const navigate = useNavigate();
   const userEmail = useAuthStore((state) => state.userEmail);
@@ -106,7 +109,7 @@ export default function BoardDetailCard({
               onClick={() => setIsMenuOpen((prev) => !prev)}
               aria-label="더보기 메뉴"
             >
-              <span className="text-3xl leading-none">⋮</span>
+              <MoreIcon width={24} height={24} />
             </button>
             {isMenuOpen && (
               <div className="absolute right-0 top-10 z-20 w-[112px] overflow-hidden rounded-md border border-secondary-200 bg-white shadow-md">
@@ -262,7 +265,7 @@ export default function BoardDetailCard({
               />
             )}
           </>,
-          document.getElementById('phone-root')!,
+          portalContainer ?? document.getElementById('phone-root') ?? document.body,
         )}
     </main>
   );
