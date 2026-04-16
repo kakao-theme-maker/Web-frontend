@@ -16,4 +16,19 @@ export const UserService = {
     apiClient
       .get<IUserPostListItemRaw[]>('/api/users/me/prefered-posts')
       .then((res) => res.data),
+
+  updateProfileImage: (file: File) => {
+    const formData = new FormData();
+    formData.append('profile_image', file);
+    return apiClient
+      .patch<IUserProfileRaw>('/api/users/me/profile-image', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      })
+      .then((res) => res.data);
+  },
+
+  updateName: (name: string) =>
+    apiClient
+      .patch<IUserProfileRaw>('/api/users/me/name', { name })
+      .then((res) => res.data),
 };

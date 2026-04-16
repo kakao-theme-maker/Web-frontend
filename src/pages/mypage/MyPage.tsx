@@ -1,12 +1,13 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import Text from '../../components/common/Text';
 import TabMenu from '../../components/common/TabMenu';
-import Button from '../../components/common/Button';
 import UserStats from './UserStats';
 import ActivityTab from '../../components/mypage/ActivityTab';
 import ThemeGridTab from '../../components/mypage/ThemeGridTab';
+import ProfileImageEditor from '../../components/mypage/ProfileImageEditor';
+import InlineNameEditor from '../../components/mypage/InlineNameEditor';
 import { useUserProfile } from '../../services/hooks/user/useUserProfile';
+import { useProfileEdit } from '../../services/hooks/user/useProfileEdit';
 import { useSavedPosts } from '../../services/hooks/useSavedPosts';
 import { usePreferredPosts } from '../../services/hooks/usePreferredPosts';
 import type { MyPageTabId } from '../../types/mypage/types';
@@ -18,9 +19,9 @@ const MY_PAGE_TABS: { id: MyPageTabId; label: string }[] = [
 ];
 
 export default function MyPage() {
-  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<MyPageTabId>('activity');
   const { profile, isLoading } = useUserProfile();
+  const { updateImage, isImageUploading, updateName, isNameSaving } = useProfileEdit();
   const { posts: savedPosts, isLoading: isSavedLoading } = useSavedPosts();
   const { posts: preferredPosts, isLoading: isPreferredLoading } = usePreferredPosts();
 
@@ -34,24 +35,23 @@ export default function MyPage() {
     <main>
       {/* 프로필 섹션 */}
       <section className="flex flex-col items-center px-5 pt-6 pb-1">
-        {isLoading ? (
-          <div className="h-20 w-20 rounded-full bg-secondary-200 animate-pulse" />
-        ) : profile?.profileImage ? (
-          <img
-            src={profile.profileImage}
-            alt="프로필 이미지"
-            className="h-20 w-20 rounded-full object-cover"
-          />
-        ) : (
-          <div className="h-20 w-20 rounded-full bg-secondary-300" />
-        )}
+        <ProfileImageEditor
+          profileImage={profile?.profileImage}
+          isLoading={isLoading}
+          isUploading={isImageUploading}
+          onImageChange={updateImage}
+        />
 
         <div className="mt-2 flex flex-col items-center">
           {isLoading ? (
             <div className="h-5 w-24 rounded bg-secondary-200 animate-pulse" />
           ) : (
             <>
-              <Text variant="SEMIBOLD_16">{profile?.name}</Text>
+              <InlineNameEditor
+                name={profile?.name ?? ''}
+                isSaving={isNameSaving}
+                onNameChange={updateName}
+              />
               <Text variant="LIGHT_12" className="text-secondary-400">
                 {profile?.userEmail}
               </Text>
@@ -68,10 +68,6 @@ export default function MyPage() {
             followers={profile?.followers ?? 0}
           />
         )}
-
-        <Button fullWidth className="mt-4" onClick={() => navigate('/mypage/profile-edit')}>
-          <Text variant="LIGHT_14" className="text-white">프로필 수정</Text>
-        </Button>
       </section>
 
       {/* 탭 메뉴 */}
