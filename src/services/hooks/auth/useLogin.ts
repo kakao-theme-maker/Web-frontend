@@ -3,11 +3,11 @@ import { useForm } from "react-hook-form";
 import { useAuthStore } from "../../../stores/authStore";
 import { usePostMutation } from "../../api/useApi";
 import { AuthService } from "../../api/AuthService";
-import type { ILoginFormData, IAuthTokens } from "../../../types/auth/types";
+import type { ILoginFormData, IAuthResponse } from "../../../types/auth/types";
 
 export function useLogin() {
   const navigate = useNavigate();
-  const setAccessToken = useAuthStore((state) => state.setAccessToken);
+  const setAuthenticated = useAuthStore((state) => state.setAuthenticated);
 
   const {
     register,
@@ -16,11 +16,11 @@ export function useLogin() {
     formState: { errors, isSubmitting },
   } = useForm<ILoginFormData>();
 
-  const { mutate: loginMutate } = usePostMutation<IAuthTokens, ILoginFormData>(
+  const { mutate: loginMutate } = usePostMutation<IAuthResponse, ILoginFormData>(
     ({ email, password }) => AuthService.login(email, password),
     {
-      onSuccess: (data, variables) => {
-        setAccessToken(data.accessToken, data.refreshToken, variables.email);
+      onSuccess: (_data, variables) => {
+        setAuthenticated(variables.email);
         navigate("/");
       },
       onError: () => {

@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import type { UseFormRegister, FieldErrors } from 'react-hook-form';
 import LoginLogoIcon from '../icons/login/login-logo.svg?react';
 import LoginBottomIcon from '../icons/login/login-bottom.svg?react';
+import KakaoLogo from '../icons/KakaoLogo';
 import Text from '../common/Text';
 import Button from '../common/Button';
 import type { ILoginFormData } from '../../types/auth/types';
@@ -11,9 +12,10 @@ interface ILoginFormProps {
   onSubmit: React.FormEventHandler<HTMLFormElement>;
   errors: FieldErrors<ILoginFormData>;
   isSubmitting: boolean;
+  onKakaoLogin: () => void;
 }
 
-export default function LoginForm({ register, onSubmit, errors, isSubmitting }: ILoginFormProps) {
+export default function LoginForm({ register, onSubmit, errors, isSubmitting, onKakaoLogin }: ILoginFormProps) {
   return (
     <div className="relative flex h-full flex-col overflow-hidden bg-gradient-to-b from-white via-[#f0f5ff] to-[#dce8ff]">
       {/* 로고 영역 */}
@@ -58,6 +60,23 @@ export default function LoginForm({ register, onSubmit, errors, isSubmitting }: 
             회원가입
           </Link>
         </p>
+
+        {/* 구분선 */}
+        <div className="flex items-center gap-3">
+          <div className="h-px flex-1 bg-gray-200" />
+          <span className="text-[12px] text-gray-400">또는</span>
+          <div className="h-px flex-1 bg-gray-200" />
+        </div>
+
+        {/* 카카오 로그인 버튼 */}
+        <button
+          type="button"
+          onClick={onKakaoLogin}
+          className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#FEE500] py-3 text-[14px] font-semibold text-[#191919] shadow-sm"
+        >
+          <KakaoLogo className="h-5 w-5" />
+          카카오로 로그인
+        </button>
       </form>
 
       {/* 하단 우측 일러스트 */}

@@ -1,13 +1,15 @@
 import apiClient from './ApiClient';
-import type { IAuthTokens } from '../../types/auth/types';
+import type { IAuthResponse } from '../../types/auth/types';
+
+const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? '';
 
 export const AuthService = {
   /**
-   * 로그인: 아이디/비밀번호로 토큰 발급
+   * 로그인: 아이디/비밀번호로 인증 (서버가 httpOnly 쿠키로 토큰 설정)
    */
   login: (email: string, password: string) =>
     apiClient
-      .post<IAuthTokens>('/api/auth/local/sign-in', { email, password })
+      .post<IAuthResponse>('/api/auth/local/sign-in', { email, password })
       .then((res) => res.data),
 
   /**
@@ -19,18 +21,31 @@ export const AuthService = {
       .then((res) => res.data),
 
   /**
-   * 토큰 재발급: refreshToken으로 accessToken + refreshToken 모두 재발급
+   * 토큰 재발급: httpOnly 쿠키의 refreshToken으로 토큰 갱신 (body 불필요)
    */
-  refresh: (refreshToken: string) =>
+  refresh: () =>
     apiClient
-      .post<IAuthTokens>('/api/auth/token', { refreshToken })
+      .post<IAuthResponse>('/api/auth/token')
       .then((res) => res.data),
+
+  /**
+   * 로그아웃: 서버에서 httpOnly 쿠키 무효화
+   */
+  logout: () =>
+    apiClient
+      .post('/api/auth/logout')
+      .then((res) => res.data),
+
+  /**
+   * 카카오 로그인 URL: 백엔드가 카카오 OAuth 페이지로 리다이렉트
+   */
+  getKakaoLoginUrl: () => `${BASE_URL}/oauth2/authorization/kakao`,
 
   /**
    * dev 전용: 테스트 토큰 발급 (개발 서버에서만 사용)
    */
   getDevToken: () =>
     apiClient
-      .post<IAuthTokens>('/dev/users/auth')
+      .post<IAuthResponse>('/dev/users/auth')
       .then((res) => res.data),
 };

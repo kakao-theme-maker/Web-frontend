@@ -16,6 +16,7 @@ import MobileLayout from "../layouts/MobileLayout.tsx";
 import AuthLayout from "../layouts/AuthLayout.tsx";
 import Login from "../pages/auth/Login.tsx";
 import SignUp from "../pages/auth/SignUp.tsx";
+import KakaoCallback from "../pages/auth/KakaoCallback.tsx";
 import ProtectedRoutes from "./ProtectedRoutes.tsx";
 import { useAuthInit } from "../services/hooks/auth/useAuthInit.ts";
 
@@ -41,6 +42,7 @@ export default function AppRoutes() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
         </Route>
+        <Route path="/auth/kakao/callback" element={<KakaoCallback />} />
         <Route element={<ProtectedRoutes />}>
           <Route element={<MobileLayout />}>
             <Route path="/" element={<App />} />
