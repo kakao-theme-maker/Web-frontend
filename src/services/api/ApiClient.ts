@@ -47,6 +47,15 @@ apiClient.interceptors.response.use(
         return apiClient(originalRequest);
       } catch (refreshError) {
         processQueue(refreshError);
+
+        // 서버 httpOnly 쿠키 무효화 (best-effort)
+        // 순환 참조 방지를 위해 raw axios 사용, 실패해도 무시
+        try {
+          await axios.post(`${BASE_URL}/api/auth/local/sign-out`, {}, { withCredentials: true });
+        } catch {
+          // sign-out 실패는 무시 — 클라이언트 상태 초기화가 우선
+        }
+
         useAuthStore.getState().clearAuth();
         return Promise.reject(toApiError(refreshError));
       } finally {

@@ -33,7 +33,7 @@ export const AuthService = {
    */
   logout: () =>
     apiClient
-      .post('/api/auth/logout')
+      .post('/api/auth/local/sign-out')
       .then((res) => res.data),
 
   /**
