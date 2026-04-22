@@ -29,20 +29,25 @@ export interface IUserProfile {
 }
 
 // 마이페이지 탭 ID
-export type MyPageTabId = "activity" | "saved" | "liked";
+export type MyPageTabId = 'activity' | 'saved' | 'custom';
 
-// 저장된/좋아요 게시글 API 응답 (snake_case)
-export interface IUserPostListItemRaw {
-  postId: number;
+// 커스텀 컴포넌트 타입
+export type CustomComponentType = 'THEME' | 'DESIGN';
+
+// GET /api/users/me/custom-components 응답 항목 - 서버 원본 형식
+export interface ICustomComponentRaw {
+  componentType: CustomComponentType;
+  componentId: number;
   previewImageUrl: string;
   createdAt: string;
-  updatedAt: string;
 }
 
-// 테마 그리드 아이템 (저장된/좋아요 탭)
-export interface IThemeGridItem {
+// 내 커스텀 컴포넌트 UI 모델
+export interface ICustomComponent {
   id: number;
-  previewImageUrl?: string;
+  type: CustomComponentType;
+  previewImageUrl: string;
+  createdAt: string;
 }
 
 // 게시글 타입
