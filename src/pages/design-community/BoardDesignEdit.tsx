@@ -30,10 +30,10 @@ export default function BoardDesignEdit() {
       onSubmit={handleSubmit}
       submitLabel="수정완료"
       preview={
-        board.previewImageUrl ? (
+        board.previewImageUrls?.[0] ? (
           <div className="mb-5">
             <div className="flex h-44 w-full items-center justify-center overflow-hidden rounded-xl bg-secondary-200">
-              <img src={board.previewImageUrl} alt="디자인 미리보기" className="h-full w-full object-cover" />
+              <img src={board.previewImageUrls[0]} alt="디자인 미리보기" className="h-full w-full object-cover" />
             </div>
           </div>
         ) : null

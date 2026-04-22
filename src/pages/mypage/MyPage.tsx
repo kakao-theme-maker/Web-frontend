@@ -3,32 +3,29 @@ import Text from '../../components/common/Text';
 import TabMenu from '../../components/common/TabMenu';
 import UserStats from './UserStats';
 import ActivityTab from '../../components/mypage/ActivityTab';
-import ThemeGridTab from '../../components/mypage/ThemeGridTab';
+import SavedTab from '../../components/mypage/SavedTab';
+import CustomTab from '../../components/mypage/CustomTab';
 import ProfileImageEditor from '../../components/mypage/ProfileImageEditor';
 import InlineNameEditor from '../../components/mypage/InlineNameEditor';
 import { useUserProfile } from '../../services/hooks/user/useUserProfile';
 import { useProfileEdit } from '../../services/hooks/user/useProfileEdit';
-import { useSavedPosts } from '../../services/hooks/useSavedPosts';
-import { usePreferredPosts } from '../../services/hooks/usePreferredPosts';
 import type { MyPageTabId } from '../../types/mypage/types';
 
 const MY_PAGE_TABS: { id: MyPageTabId; label: string }[] = [
   { id: 'activity', label: '내 활동' },
   { id: 'saved', label: '저장된' },
-  { id: 'liked', label: '좋아요' },
+  { id: 'custom', label: '내 커스텀' },
 ];
 
 export default function MyPage() {
   const [activeTab, setActiveTab] = useState<MyPageTabId>('activity');
   const { profile, isLoading } = useUserProfile();
   const { updateImage, isImageUploading, updateName, isNameSaving } = useProfileEdit();
-  const { posts: savedPosts, isLoading: isSavedLoading } = useSavedPosts();
-  const { posts: preferredPosts, isLoading: isPreferredLoading } = usePreferredPosts();
 
   const TAB_CONTENT: Record<MyPageTabId, React.ReactNode> = {
     activity: <ActivityTab />,
-    saved: <ThemeGridTab key="saved" themes={savedPosts} isLoading={isSavedLoading} emptyMessage="저장된 테마가 없습니다." />,
-    liked: <ThemeGridTab key="liked" themes={preferredPosts} isLoading={isPreferredLoading} emptyMessage="좋아요한 테마가 없습니다." />,
+    saved: <SavedTab />,
+    custom: <CustomTab />,
   };
 
   return (

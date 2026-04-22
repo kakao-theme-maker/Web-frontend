@@ -1,22 +1,33 @@
-import { useMemo } from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { DesignDetailCard } from "../../components/community/design";
-import { useDesignBoardDetail } from "../../services/hooks/design/useDesignBoardDetail";
+import { useDesignBoardDetails } from "../../services/hooks/design/useDesignBoardDetails";
 import { useVerticalSwipe } from "../../services/hooks/common/useVerticalSwipe";
 import Text from "../../components/common/Text";
 
 const TRANSITION_DURATION = 700;
+const PREFETCH_THRESHOLD = 3;
 
 export default function Detail() {
   const { boardId } = useParams();
   const numericBoardId = Number(boardId);
 
-  const { board, isLoading, isError } = useDesignBoardDetail(numericBoardId);
-
-  const boards = useMemo(() => (board ? [board] : []), [board]);
+  const { boards, isLoading, isError, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useDesignBoardDetails(numericBoardId);
 
   const { currentIndex, containerRef, handleTouchStart, handleTouchEnd } =
     useVerticalSwipe(boards.length, TRANSITION_DURATION);
+
+  useEffect(() => {
+    if (
+      boards.length > 0 &&
+      hasNextPage &&
+      !isFetchingNextPage &&
+      currentIndex >= boards.length - PREFETCH_THRESHOLD
+    ) {
+      fetchNextPage();
+    }
+  }, [currentIndex, boards.length, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   return (
     <div
@@ -46,7 +57,7 @@ export default function Detail() {
               transitionDuration: `${TRANSITION_DURATION}ms`,
             }}
           >
-            <DesignDetailCard board={p} />
+            <DesignDetailCard board={p} pinnedPostId={numericBoardId} />
           </div>
         ))}
     </div>

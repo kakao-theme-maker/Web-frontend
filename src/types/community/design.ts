@@ -28,28 +28,40 @@ export interface IDesignBoard {
   createdAt: string;
 }
 
-// GET /api/design-boards/{post_id} 응답 - 서버 원본 형식 (snake_case)
-export interface IDesignBoardDetailRaw extends IDesignBoardRaw {
+// GET /api/design-boards/details 응답 항목 - 서버 원본 형식 (snake_case)
+export interface IDesignBoardDetailsRaw {
+  post_id: number;
+  design_component_id: number;
+  title: string;
   content: string;
+  prefers: number;
   comments: number;
   tags: ITag[];
   liked: boolean;
   bookmarked: boolean;
+  preview_image_url: string;
+  user_email: string;
   user_name: string;
   profile_image?: string;
-  preview_image_urls?: string[];
+  created_at: string;
 }
 
 // 디자인 게시글 상세 UI 모델 (camelCase)
-export interface IDesignBoardDetail extends IDesignBoard {
+export interface IDesignBoardDetail {
+  boardId: number;
+  designComponentId: number;
+  title: string;
   content: string;
+  prefers: number;
   comments: number;
   tags: ITag[];
   isLiked: boolean;
   isBookmarked: boolean;
+  previewImageUrls: string[];
+  userEmail: string;
   userName: string;
   profileImage?: string;
-  previewImageUrls: string[];
+  createdAt: string;
 }
 
 // GET /api/design-components/user/{userEmail} 응답 항목 - 서버 원본 형식 (snake_case)

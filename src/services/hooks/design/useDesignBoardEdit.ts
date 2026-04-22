@@ -15,14 +15,15 @@ export function useDesignBoardEdit(board: IDesignBoardDetail) {
     content: board.content,
     isPublic: true,
     tags: board.tags.map((t) => t.tag_name),
-    previewUrl: board.previewImageUrl ?? null,
+    previewUrl: board.previewImageUrls?.[0] ?? null,
   });
 
   const { mutate, isPending } = usePatchMutation<IDesignBoardCreateResponseRaw, FormData>(
     (formData) => DesignService.updateDesignBoard(board.boardId, formData),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ['design-board-detail', board.boardId] });
+        queryClient.invalidateQueries({ queryKey: ['design-board-details'] });
+        queryClient.invalidateQueries({ queryKey: ['my-upload-posts'] });
         navigate(`/design/${board.boardId}`, { replace: true });
       },
     },

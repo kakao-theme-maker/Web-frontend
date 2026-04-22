@@ -5,8 +5,8 @@
 import type { ITag } from './common';
 export type { ITag } from './common';
 
-// GET /api/theme-boards/{post_id} 응답 - 서버 원본 형식 (snake_case)
-export interface IThemeBoardDetailRaw {
+// GET /api/theme-boards/details 응답 항목 - 서버 원본 형식 (snake_case)
+export interface IThemeBoardDetailsRaw {
   post_id: number;
   theme_component_id: number;
   title: string;
@@ -17,7 +17,6 @@ export interface IThemeBoardDetailRaw {
   liked: boolean;
   bookmarked: boolean;
   preview_image_url: string;
-  preview_image_urls?: string[];
   user_email: string;
   user_name: string;
   profile_image?: string;
@@ -35,7 +34,6 @@ export interface IThemeBoardDetail {
   tags: ITag[];
   isLiked: boolean;
   isBookmarked: boolean;
-  previewImageUrl: string;
   previewImageUrls: string[];
   userEmail: string;
   userName: string;

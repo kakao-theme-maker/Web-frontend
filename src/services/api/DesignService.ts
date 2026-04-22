@@ -1,6 +1,13 @@
 // ※ API 엔드포인트 확인 후 실제 경로로 교체 필요
 import apiClient from './ApiClient';
-import type { IDesignBoardRaw, IDesignBoardDetailRaw, IUserDesignComponentRaw, IDesignBoardCreateResponseRaw } from '../../types/community/design';
+import type { IDesignBoardRaw, IDesignBoardDetailsRaw, IUserDesignComponentRaw, IDesignBoardCreateResponseRaw } from '../../types/community/design';
+
+interface IGetDesignBoardDetailsParams {
+  pinnedPostId: number;
+  page: number;
+  size: number;
+  sort?: 'asc' | 'desc';
+}
 
 export const DesignService = {
   getDesignBoards: (page: number, size: number) =>
@@ -8,9 +15,11 @@ export const DesignService = {
       .get<IDesignBoardRaw[]>('/api/design-boards', { params: { page, size } })
       .then((res) => res.data),
 
-  getDesignBoardDetail: (postId: number) =>
+  getDesignBoardDetails: ({ pinnedPostId, page, size, sort = 'desc' }: IGetDesignBoardDetailsParams) =>
     apiClient
-      .get<IDesignBoardDetailRaw>(`/api/design-boards/${postId}`)
+      .get<IDesignBoardDetailsRaw[]>('/api/design-boards/details', {
+        params: { pinned_post_id: pinnedPostId, page, size, sort },
+      })
       .then((res) => res.data),
 
   deleteDesignBoard: (postId: number) =>

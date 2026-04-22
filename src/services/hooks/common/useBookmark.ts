@@ -2,13 +2,15 @@ import { useState, useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { usePostMutation, useDeleteMutation } from '../../api/useApi';
 import { BoardInteractionService } from '../../api/BoardInteractionService';
+import { updateBoardInCache, removeBoardFromCache } from '../../../utils/query';
 
-type IBookmarkSnapshot = { snapshot: Record<string, unknown> | undefined };
+type IBookmarkSnapshot = { snapshot: unknown };
 
 export function useBookmark(
   postId: number,
   initialIsBookmarked: boolean = false,
   queryKey?: unknown[],
+  removeOnUnbookmark: boolean = false,
 ) {
   const queryClient = useQueryClient();
   const [isBookmarked, setIsBookmarked] = useState(initialIsBookmarked);
@@ -23,9 +25,9 @@ export function useBookmark(
       onMutate: async () => {
         if (!queryKey) return undefined;
         await queryClient.cancelQueries({ queryKey });
-        const snapshot = queryClient.getQueryData<Record<string, unknown>>(queryKey);
-        queryClient.setQueryData(queryKey, (old: Record<string, unknown> | undefined) =>
-          old ? { ...old, isBookmarked: true } : old,
+        const snapshot = queryClient.getQueryData(queryKey);
+        queryClient.setQueryData(queryKey, (old: unknown) =>
+          updateBoardInCache(old, postId, (item) => ({ ...item, isBookmarked: true })),
         );
         return { snapshot } as IBookmarkSnapshot;
       },
@@ -48,9 +50,11 @@ export function useBookmark(
       onMutate: async () => {
         if (!queryKey) return undefined;
         await queryClient.cancelQueries({ queryKey });
-        const snapshot = queryClient.getQueryData<Record<string, unknown>>(queryKey);
-        queryClient.setQueryData(queryKey, (old: Record<string, unknown> | undefined) =>
-          old ? { ...old, isBookmarked: false } : old,
+        const snapshot = queryClient.getQueryData(queryKey);
+        queryClient.setQueryData(queryKey, (old: unknown) =>
+          removeOnUnbookmark
+            ? removeBoardFromCache(old, postId)
+            : updateBoardInCache(old, postId, (item) => ({ ...item, isBookmarked: false })),
         );
         return { snapshot } as IBookmarkSnapshot;
       },

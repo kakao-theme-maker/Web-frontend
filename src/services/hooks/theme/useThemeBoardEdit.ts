@@ -15,14 +15,15 @@ export function useThemeBoardEdit(board: IThemeBoardDetail) {
     content: board.content,
     isPublic: true,
     tags: (board.tags ?? []).map((t) => t.tag_name),
-    previewUrl: board.previewImageUrl ?? null,
+    previewUrl: board.previewImageUrls?.[0] ?? null,
   });
 
   const { mutate, isPending } = usePutMutation<IBoardCreateResponseRaw, FormData>(
     (formData) => ThemeService.updateThemeBoard(board.boardId, formData),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ['theme-board-detail', board.boardId] });
+        queryClient.invalidateQueries({ queryKey: ['theme-board-details'] });
+        queryClient.invalidateQueries({ queryKey: ['my-upload-posts'] });
         navigate(`/community/${board.boardId}`, { replace: true });
       },
     },

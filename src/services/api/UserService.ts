@@ -1,5 +1,17 @@
 import apiClient from './ApiClient';
-import type { IUserProfileRaw, IUserPostListItemRaw } from '../../types/mypage/types';
+import type { IUserProfileRaw, IMyUploadPostRaw, ICustomComponentRaw } from '../../types/mypage/types';
+
+interface IGetMyUploadPostsParams {
+  page: number;
+  size: number;
+  sort?: 'asc' | 'desc';
+}
+
+interface IGetCustomComponentsParams {
+  page: number;
+  size: number;
+  sort?: string[];
+}
 
 export const UserService = {
   getMe: () =>
@@ -7,14 +19,19 @@ export const UserService = {
       .get<IUserProfileRaw>('/api/users/me')
       .then((res) => res.data),
 
-  getSavedPosts: () =>
+  getMyUploadPosts: ({ page, size, sort = 'desc' }: IGetMyUploadPostsParams) =>
     apiClient
-      .get<IUserPostListItemRaw[]>('/api/users/me/saved-posts')
+      .get<IMyUploadPostRaw[]>('/api/users/me/upload-posts', { params: { page, size, sort } })
       .then((res) => res.data),
 
-  getPreferredPosts: () =>
+  getBookmarkedPosts: ({ page, size, sort = 'desc' }: IGetMyUploadPostsParams) =>
     apiClient
-      .get<IUserPostListItemRaw[]>('/api/users/me/prefered-posts')
+      .get<IMyUploadPostRaw[]>('/api/users/me/bookmarked-posts', { params: { page, size, sort } })
+      .then((res) => res.data),
+
+  getCustomComponents: ({ page, size, sort }: IGetCustomComponentsParams) =>
+    apiClient
+      .get<ICustomComponentRaw[]>('/api/users/me/custom-components', { params: { page, size, sort } })
       .then((res) => res.data),
 
   updateProfileImage: (file: File) => {

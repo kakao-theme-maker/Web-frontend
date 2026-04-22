@@ -1,5 +1,12 @@
 import apiClient from './ApiClient';
-import type { IThemeBoardRaw, IThemeBoardDetailRaw, IUserThemeRaw, IBoardCreateResponseRaw } from '../../types/community/theme';
+import type { IThemeBoardRaw, IThemeBoardDetailsRaw, IUserThemeRaw, IBoardCreateResponseRaw } from '../../types/community/theme';
+
+interface IGetThemeBoardDetailsParams {
+  pinnedPostId: number;
+  page: number;
+  size: number;
+  sort?: 'asc' | 'desc';
+}
 
 export const ThemeService = {
   getThemeBoards: (page: number, size: number) =>
@@ -7,9 +14,11 @@ export const ThemeService = {
       .get<IThemeBoardRaw[]>('/api/theme-boards', { params: { page, size } })
       .then((res) => res.data),
 
-  getThemeBoardDetail: (postId: number) =>
+  getThemeBoardDetails: ({ pinnedPostId, page, size, sort = 'desc' }: IGetThemeBoardDetailsParams) =>
     apiClient
-      .get<IThemeBoardDetailRaw>(`/api/theme-boards/${postId}`)
+      .get<IThemeBoardDetailsRaw[]>('/api/theme-boards/details', {
+        params: { pinned_post_id: pinnedPostId, page, size, sort },
+      })
       .then((res) => res.data),
 
   getUserThemes: (userEmail: string, page: number, size: number) =>

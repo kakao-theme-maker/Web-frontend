@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
-import type { IBoardDetailBase } from '../../types/community/common';
+import type { IBoardDetailBase, IMoreMenuItem } from '../../types/community/common';
 import { cn } from '../../utils/cn';
 import Text from '../common/Text';
 import { useOutsideClick } from '../../services/hooks/common/useOutsideClick';
@@ -21,12 +21,14 @@ import MoreIcon from '../icons/community-detail/more.svg?react';
 
 interface IBoardDetailCardProps {
   board: IBoardDetailBase;
-  downloadLabel: string;
+  downloadLabel?: string;
   imageAlt: string;
-  editPath: string;
+  editPath?: string;
   preferQueryKey: unknown[];
-  deleteBoard: (boardId: number) => void;
+  deleteBoard?: (boardId: number) => void;
   portalContainer?: Element | null;
+  moreMenuItems?: IMoreMenuItem[];
+  removeOnUnbookmark?: boolean;
 }
 
 export default function BoardDetailCard({
@@ -37,6 +39,8 @@ export default function BoardDetailCard({
   preferQueryKey,
   deleteBoard,
   portalContainer,
+  moreMenuItems,
+  removeOnUnbookmark,
 }: IBoardDetailCardProps) {
   const navigate = useNavigate();
   const userEmail = useAuthStore((state) => state.userEmail);
@@ -46,6 +50,7 @@ export default function BoardDetailCard({
     board.boardId,
     board.isBookmarked,
     preferQueryKey,
+    removeOnUnbookmark,
   );
   const { isPreferred, prefers, togglePrefer, isPending } = usePrefer(
     board.boardId,
@@ -84,6 +89,43 @@ export default function BoardDetailCard({
     isMenuOpen && 'text-white bg-primary',
   );
 
+  const handlePrefer = () => {
+    if (isMyBoard) return;
+    togglePrefer();
+  };
+
+  const handleBookmark = () => {
+    if (isMyBoard) return;
+    toggleBookmark();
+  };
+
+  const defaultMenuItems: IMoreMenuItem[] = [
+    ...(downloadLabel
+      ? [{
+          id: 'download',
+          label: downloadLabel,
+          onClick: () => { setIsMenuOpen(false); setIsDownloadConfirmOpen(true); },
+        }]
+      : []),
+    { id: 'share', label: '공유하기', onClick: () => setIsMenuOpen(false) },
+    ...(isMyBoard && editPath
+      ? [{
+          id: 'edit',
+          label: '수정하기',
+          onClick: () => { setIsMenuOpen(false); navigate(editPath, { state: { board } }); },
+        }]
+      : []),
+    ...(isMyBoard && deleteBoard
+      ? [{
+          id: 'delete',
+          label: '게시글 삭제',
+          onClick: () => { setIsMenuOpen(false); setIsDeleteBoardConfirmOpen(true); },
+        }]
+      : []),
+  ];
+
+  const menuItems = moreMenuItems ?? defaultMenuItems;
+
   return (
     <main className="pt-8 pb-16">
       {/* 유저 헤더 */}
@@ -118,33 +160,22 @@ export default function BoardDetailCard({
             >
               <MoreIcon width={24} height={24} />
             </button>
-            {isMenuOpen && (
-              <div className="absolute right-0 top-10 z-20 w-[112px] overflow-hidden rounded-md border border-secondary-200 bg-white shadow-md">
-                <button
-                  className="w-full px-3 py-1 hover:bg-secondary-50 text-center"
-                  onClick={() => { setIsMenuOpen(false); setIsDownloadConfirmOpen(true); }}
-                >
-                  <Text variant="MEDIUM_12">{downloadLabel}</Text>
-                </button>
-                <button className="w-full border-t border-secondary-100 px-3 py-1 hover:bg-secondary-50 text-center">
-                  <Text variant="MEDIUM_12">공유하기</Text>
-                </button>
-                {isMyBoard && (
-                  <>
-                    <button
-                      className="w-full border-t border-secondary-100 px-3 py-1 hover:bg-secondary-50 text-center"
-                      onClick={() => { setIsMenuOpen(false); navigate(editPath, { state: { board } }); }}
+            {isMenuOpen && menuItems.length > 0 && (
+              <div className="absolute right-0 top-10 z-20 w-[112px] overflow-hidden rounded-md border border-secondary-200 bg-white shadow-md divide-y divide-secondary-100">
+                {menuItems.map((item) => (
+                  <button
+                    key={item.id}
+                    className="w-full px-3 py-1 hover:bg-secondary-50 text-center"
+                    onClick={item.onClick}
+                  >
+                    <Text
+                      variant="MEDIUM_12"
+                      className={item.id === 'delete' ? 'text-red-500' : undefined}
                     >
-                      <Text variant="MEDIUM_12">수정하기</Text>
-                    </button>
-                    <button
-                      className="w-full border-t border-secondary-100 px-3 py-1 hover:bg-secondary-50 text-center"
-                      onClick={() => { setIsMenuOpen(false); setIsDeleteBoardConfirmOpen(true); }}
-                    >
-                      <Text variant="MEDIUM_12" className="text-red-500">게시글 삭제</Text>
-                    </button>
-                  </>
-                )}
+                      {item.label}
+                    </Text>
+                  </button>
+                ))}
               </div>
             )}
           </div>
@@ -161,7 +192,11 @@ export default function BoardDetailCard({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-5">
             <div className="flex items-center gap-1.5">
-              <button onClick={togglePrefer} disabled={isPending} aria-label="좋아요">
+              <button
+                onClick={handlePrefer}
+                disabled={isPending || isMyBoard}
+                aria-label="좋아요"
+              >
                 <HeartIcon
                   width={24}
                   height={24}
@@ -177,7 +212,11 @@ export default function BoardDetailCard({
               <Text variant="REGULAR_15">{board.comments}</Text>
             </div>
           </div>
-          <button onClick={toggleBookmark} disabled={isBookmarkPending} aria-label="북마크">
+          <button
+            onClick={handleBookmark}
+            disabled={isBookmarkPending || isMyBoard}
+            aria-label="북마크"
+          >
             <BookmarkIcon
               width={12}
               height={17}
@@ -215,7 +254,7 @@ export default function BoardDetailCard({
           message="게시글을 삭제하시겠습니까?"
           confirmText="삭제할게요"
           cancelText="아니요"
-          onConfirm={() => { setIsDeleteBoardConfirmOpen(false); deleteBoard(board.boardId); }}
+          onConfirm={() => { setIsDeleteBoardConfirmOpen(false); deleteBoard?.(board.boardId); }}
           onCancel={() => setIsDeleteBoardConfirmOpen(false)}
           onClose={() => setIsDeleteBoardConfirmOpen(false)}
         />
@@ -272,6 +311,8 @@ export default function BoardDetailCard({
           </>,
           portalContainer ?? document.getElementById('phone-root') ?? document.body,
         )}
+
+      {/* 삭제 모달이 댓글 모달 바깥에서도 열릴 수 있어야 하므로 별도 렌더 */}
     </main>
   );
 }

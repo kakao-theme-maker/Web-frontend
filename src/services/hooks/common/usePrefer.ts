@@ -2,8 +2,9 @@ import { useState, useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { usePostMutation, useDeleteMutation } from '../../api/useApi';
 import { BoardInteractionService } from '../../api/BoardInteractionService';
+import { updateBoardInCache } from '../../../utils/query';
 
-type IPreferSnapshot = { snapshot: Record<string, unknown> | undefined };
+type IPreferSnapshot = { snapshot: unknown };
 
 export function usePrefer(
   boardId: number,
@@ -29,9 +30,13 @@ export function usePrefer(
       onMutate: async () => {
         if (!queryKey) return undefined;
         await queryClient.cancelQueries({ queryKey });
-        const snapshot = queryClient.getQueryData<Record<string, unknown>>(queryKey);
-        queryClient.setQueryData(queryKey, (old: Record<string, unknown> | undefined) =>
-          old ? { ...old, isLiked: true, prefers: ((old.prefers as number) ?? 0) + 1 } : old,
+        const snapshot = queryClient.getQueryData(queryKey);
+        queryClient.setQueryData(queryKey, (old: unknown) =>
+          updateBoardInCache(old, boardId, (item) => ({
+            ...item,
+            isLiked: true,
+            prefers: ((item.prefers as number) ?? 0) + 1,
+          })),
         );
         return { snapshot } as IPreferSnapshot;
       },
@@ -39,12 +44,9 @@ export function usePrefer(
         const ctx = context as IPreferSnapshot | undefined;
         if (queryKey && ctx?.snapshot !== undefined) {
           queryClient.setQueryData(queryKey, ctx.snapshot);
-          setIsPreferred(ctx.snapshot.isLiked as boolean);
-          setPrefers(ctx.snapshot.prefers as number);
-        } else {
-          setIsPreferred(false);
-          setPrefers((prev) => prev - 1);
         }
+        setIsPreferred(false);
+        setPrefers((prev) => prev - 1);
       },
       onSettled: () => {
         if (queryKey) queryClient.invalidateQueries({ queryKey });
@@ -58,9 +60,13 @@ export function usePrefer(
       onMutate: async () => {
         if (!queryKey) return undefined;
         await queryClient.cancelQueries({ queryKey });
-        const snapshot = queryClient.getQueryData<Record<string, unknown>>(queryKey);
-        queryClient.setQueryData(queryKey, (old: Record<string, unknown> | undefined) =>
-          old ? { ...old, isLiked: false, prefers: ((old.prefers as number) ?? 0) - 1 } : old,
+        const snapshot = queryClient.getQueryData(queryKey);
+        queryClient.setQueryData(queryKey, (old: unknown) =>
+          updateBoardInCache(old, boardId, (item) => ({
+            ...item,
+            isLiked: false,
+            prefers: ((item.prefers as number) ?? 0) - 1,
+          })),
         );
         return { snapshot } as IPreferSnapshot;
       },
@@ -68,12 +74,9 @@ export function usePrefer(
         const ctx = context as IPreferSnapshot | undefined;
         if (queryKey && ctx?.snapshot !== undefined) {
           queryClient.setQueryData(queryKey, ctx.snapshot);
-          setIsPreferred(ctx.snapshot.isLiked as boolean);
-          setPrefers(ctx.snapshot.prefers as number);
-        } else {
-          setIsPreferred(true);
-          setPrefers((prev) => prev + 1);
         }
+        setIsPreferred(true);
+        setPrefers((prev) => prev + 1);
       },
       onSettled: () => {
         if (queryKey) queryClient.invalidateQueries({ queryKey });
