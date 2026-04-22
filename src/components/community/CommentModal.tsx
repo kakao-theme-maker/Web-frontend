@@ -5,6 +5,7 @@ import { useAuthStore } from "../../stores/authStore";
 import { useOutsideClick } from "../../services/hooks/common/useOutsideClick";
 import { useCreateComment } from "../../services/hooks/common/useCreateComment";
 import { useComments } from "../../services/hooks/common/useComments";
+import type { ICommentRaw } from "../../types/community/theme";
 
 interface ICommentModalProps {
   boardId: number;

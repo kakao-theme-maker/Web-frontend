@@ -3,12 +3,12 @@ import Text from '../../components/common/Text';
 import TabMenu from '../../components/common/TabMenu';
 import UserStats from './UserStats';
 import ActivityTab from '../../components/mypage/ActivityTab';
+import SavedTab from '../../components/mypage/SavedTab';
 import ThemeGridTab from '../../components/mypage/ThemeGridTab';
 import ProfileImageEditor from '../../components/mypage/ProfileImageEditor';
 import InlineNameEditor from '../../components/mypage/InlineNameEditor';
 import { useUserProfile } from '../../services/hooks/user/useUserProfile';
 import { useProfileEdit } from '../../services/hooks/user/useProfileEdit';
-import { useSavedPosts } from '../../services/hooks/useSavedPosts';
 import { usePreferredPosts } from '../../services/hooks/usePreferredPosts';
 import type { MyPageTabId } from '../../types/mypage/types';
 
@@ -22,12 +22,11 @@ export default function MyPage() {
   const [activeTab, setActiveTab] = useState<MyPageTabId>('activity');
   const { profile, isLoading } = useUserProfile();
   const { updateImage, isImageUploading, updateName, isNameSaving } = useProfileEdit();
-  const { posts: savedPosts, isLoading: isSavedLoading } = useSavedPosts();
   const { posts: preferredPosts, isLoading: isPreferredLoading } = usePreferredPosts();
 
   const TAB_CONTENT: Record<MyPageTabId, React.ReactNode> = {
     activity: <ActivityTab />,
-    saved: <ThemeGridTab key="saved" themes={savedPosts} isLoading={isSavedLoading} emptyMessage="저장된 테마가 없습니다." />,
+    saved: <SavedTab />,
     liked: <ThemeGridTab key="liked" themes={preferredPosts} isLoading={isPreferredLoading} emptyMessage="좋아요한 테마가 없습니다." />,
   };
 

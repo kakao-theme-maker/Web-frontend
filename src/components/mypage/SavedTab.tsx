@@ -1,11 +1,11 @@
 import Text from '../common/Text';
-import MyActivityCard from './MyActivityCard';
-import { useMyUploadPosts } from '../../services/hooks/user/useMyUploadPosts';
+import MySavedCard from './MySavedCard';
+import { useMyBookmarkedPosts } from '../../services/hooks/user/useMyBookmarkedPosts';
 import { useIntersectionObserver } from '../../services/hooks/common/useIntersectionObserver';
 
-export default function ActivityTab() {
+export default function SavedTab() {
   const { posts, isLoading, isError, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useMyUploadPosts();
+    useMyBookmarkedPosts();
 
   const sentinelRef = useIntersectionObserver(() => {
     if (hasNextPage && !isFetchingNextPage) fetchNextPage();
@@ -33,7 +33,7 @@ export default function ActivityTab() {
     return (
       <div className="flex h-40 items-center justify-center">
         <Text variant="REGULAR_14" className="text-secondary-300">
-          아직 활동이 없습니다.
+          저장된 게시글이 없습니다.
         </Text>
       </div>
     );
@@ -42,7 +42,7 @@ export default function ActivityTab() {
   return (
     <div>
       {posts.map((post) => (
-        <MyActivityCard key={post.boardId} post={post} />
+        <MySavedCard key={post.boardId} post={post} />
       ))}
       <div ref={sentinelRef} className="h-1" />
       {isFetchingNextPage && (

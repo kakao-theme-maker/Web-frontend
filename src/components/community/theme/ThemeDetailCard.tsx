@@ -5,9 +5,10 @@ import BoardDetailCard from '../BoardDetailCard';
 
 interface IThemeDetailCardProps {
   board: IThemeBoardDetail;
+  pinnedPostId: number;
 }
 
-export default function ThemeDetailCard({ board }: IThemeDetailCardProps) {
+export default function ThemeDetailCard({ board, pinnedPostId }: IThemeDetailCardProps) {
   const navigate = useNavigate();
   const { deleteBoard } = useDeleteThemeBoard(() => navigate(-1));
 
@@ -17,7 +18,7 @@ export default function ThemeDetailCard({ board }: IThemeDetailCardProps) {
       downloadLabel="테마 다운로드"
       imageAlt="테마 미리보기"
       editPath={`/community/edit/${board.boardId}`}
-      preferQueryKey={['theme-board-detail', board.boardId]}
+      preferQueryKey={['theme-board-details', pinnedPostId]}
       deleteBoard={deleteBoard}
     />
   );

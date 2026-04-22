@@ -3,12 +3,54 @@ import { useQueryClient } from '@tanstack/react-query';
 import { usePostMutation, useDeleteMutation } from '../../api/useApi';
 import { BoardInteractionService } from '../../api/BoardInteractionService';
 
-type IBookmarkSnapshot = { snapshot: Record<string, unknown> | undefined };
+type IBookmarkSnapshot = { snapshot: unknown };
+
+interface IInfiniteCache {
+  pages: Record<string, unknown>[][];
+  pageParams: unknown[];
+}
+
+function isInfiniteCache(data: unknown): data is IInfiniteCache {
+  return !!data && typeof data === 'object' && Array.isArray((data as IInfiniteCache).pages);
+}
+
+function applyBookmarkUpdate(data: unknown, boardId: number, isBookmarked: boolean): unknown {
+  if (!data) return data;
+  if (isInfiniteCache(data)) {
+    return {
+      ...data,
+      pages: data.pages.map((page) =>
+        page.map((item) =>
+          (item.boardId as number) === boardId ? { ...item, isBookmarked } : item,
+        ),
+      ),
+    };
+  }
+  const obj = data as Record<string, unknown>;
+  if ((obj.boardId as number) === boardId) {
+    return { ...obj, isBookmarked };
+  }
+  return data;
+}
+
+function applyBookmarkRemoval(data: unknown, boardId: number): unknown {
+  if (!data) return data;
+  if (isInfiniteCache(data)) {
+    return {
+      ...data,
+      pages: data.pages.map((page) =>
+        page.filter((item) => (item.boardId as number) !== boardId),
+      ),
+    };
+  }
+  return data;
+}
 
 export function useBookmark(
   postId: number,
   initialIsBookmarked: boolean = false,
   queryKey?: unknown[],
+  removeOnUnbookmark: boolean = false,
 ) {
   const queryClient = useQueryClient();
   const [isBookmarked, setIsBookmarked] = useState(initialIsBookmarked);
@@ -23,9 +65,9 @@ export function useBookmark(
       onMutate: async () => {
         if (!queryKey) return undefined;
         await queryClient.cancelQueries({ queryKey });
-        const snapshot = queryClient.getQueryData<Record<string, unknown>>(queryKey);
-        queryClient.setQueryData(queryKey, (old: Record<string, unknown> | undefined) =>
-          old ? { ...old, isBookmarked: true } : old,
+        const snapshot = queryClient.getQueryData(queryKey);
+        queryClient.setQueryData(queryKey, (old: unknown) =>
+          applyBookmarkUpdate(old, postId, true),
         );
         return { snapshot } as IBookmarkSnapshot;
       },
@@ -48,9 +90,11 @@ export function useBookmark(
       onMutate: async () => {
         if (!queryKey) return undefined;
         await queryClient.cancelQueries({ queryKey });
-        const snapshot = queryClient.getQueryData<Record<string, unknown>>(queryKey);
-        queryClient.setQueryData(queryKey, (old: Record<string, unknown> | undefined) =>
-          old ? { ...old, isBookmarked: false } : old,
+        const snapshot = queryClient.getQueryData(queryKey);
+        queryClient.setQueryData(queryKey, (old: unknown) =>
+          removeOnUnbookmark
+            ? applyBookmarkRemoval(old, postId)
+            : applyBookmarkUpdate(old, postId, false),
         );
         return { snapshot } as IBookmarkSnapshot;
       },
