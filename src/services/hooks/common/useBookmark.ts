@@ -2,49 +2,9 @@ import { useState, useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { usePostMutation, useDeleteMutation } from '../../api/useApi';
 import { BoardInteractionService } from '../../api/BoardInteractionService';
+import { updateBoardInCache, removeBoardFromCache } from '../../../utils/query';
 
 type IBookmarkSnapshot = { snapshot: unknown };
-
-interface IInfiniteCache {
-  pages: Record<string, unknown>[][];
-  pageParams: unknown[];
-}
-
-function isInfiniteCache(data: unknown): data is IInfiniteCache {
-  return !!data && typeof data === 'object' && Array.isArray((data as IInfiniteCache).pages);
-}
-
-function applyBookmarkUpdate(data: unknown, boardId: number, isBookmarked: boolean): unknown {
-  if (!data) return data;
-  if (isInfiniteCache(data)) {
-    return {
-      ...data,
-      pages: data.pages.map((page) =>
-        page.map((item) =>
-          (item.boardId as number) === boardId ? { ...item, isBookmarked } : item,
-        ),
-      ),
-    };
-  }
-  const obj = data as Record<string, unknown>;
-  if ((obj.boardId as number) === boardId) {
-    return { ...obj, isBookmarked };
-  }
-  return data;
-}
-
-function applyBookmarkRemoval(data: unknown, boardId: number): unknown {
-  if (!data) return data;
-  if (isInfiniteCache(data)) {
-    return {
-      ...data,
-      pages: data.pages.map((page) =>
-        page.filter((item) => (item.boardId as number) !== boardId),
-      ),
-    };
-  }
-  return data;
-}
 
 export function useBookmark(
   postId: number,
@@ -67,7 +27,7 @@ export function useBookmark(
         await queryClient.cancelQueries({ queryKey });
         const snapshot = queryClient.getQueryData(queryKey);
         queryClient.setQueryData(queryKey, (old: unknown) =>
-          applyBookmarkUpdate(old, postId, true),
+          updateBoardInCache(old, postId, (item) => ({ ...item, isBookmarked: true })),
         );
         return { snapshot } as IBookmarkSnapshot;
       },
@@ -93,8 +53,8 @@ export function useBookmark(
         const snapshot = queryClient.getQueryData(queryKey);
         queryClient.setQueryData(queryKey, (old: unknown) =>
           removeOnUnbookmark
-            ? applyBookmarkRemoval(old, postId)
-            : applyBookmarkUpdate(old, postId, false),
+            ? removeBoardFromCache(old, postId)
+            : updateBoardInCache(old, postId, (item) => ({ ...item, isBookmarked: false })),
         );
         return { snapshot } as IBookmarkSnapshot;
       },

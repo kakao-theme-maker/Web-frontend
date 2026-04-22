@@ -2,43 +2,9 @@ import { useState, useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { usePostMutation, useDeleteMutation } from '../../api/useApi';
 import { BoardInteractionService } from '../../api/BoardInteractionService';
+import { updateBoardInCache } from '../../../utils/query';
 
 type IPreferSnapshot = { snapshot: unknown };
-
-interface IInfiniteCache {
-  pages: Record<string, unknown>[][];
-  pageParams: unknown[];
-}
-
-function isInfiniteCache(data: unknown): data is IInfiniteCache {
-  return !!data && typeof data === 'object' && Array.isArray((data as IInfiniteCache).pages);
-}
-
-function applyPreferUpdate(
-  data: unknown,
-  boardId: number,
-  isLiked: boolean,
-  delta: number,
-): unknown {
-  if (!data) return data;
-  if (isInfiniteCache(data)) {
-    return {
-      ...data,
-      pages: data.pages.map((page) =>
-        page.map((item) =>
-          (item.boardId as number) === boardId
-            ? { ...item, isLiked, prefers: ((item.prefers as number) ?? 0) + delta }
-            : item,
-        ),
-      ),
-    };
-  }
-  const obj = data as Record<string, unknown>;
-  if ((obj.boardId as number) === boardId) {
-    return { ...obj, isLiked, prefers: ((obj.prefers as number) ?? 0) + delta };
-  }
-  return data;
-}
 
 export function usePrefer(
   boardId: number,
@@ -66,7 +32,11 @@ export function usePrefer(
         await queryClient.cancelQueries({ queryKey });
         const snapshot = queryClient.getQueryData(queryKey);
         queryClient.setQueryData(queryKey, (old: unknown) =>
-          applyPreferUpdate(old, boardId, true, 1),
+          updateBoardInCache(old, boardId, (item) => ({
+            ...item,
+            isLiked: true,
+            prefers: ((item.prefers as number) ?? 0) + 1,
+          })),
         );
         return { snapshot } as IPreferSnapshot;
       },
@@ -92,7 +62,11 @@ export function usePrefer(
         await queryClient.cancelQueries({ queryKey });
         const snapshot = queryClient.getQueryData(queryKey);
         queryClient.setQueryData(queryKey, (old: unknown) =>
-          applyPreferUpdate(old, boardId, false, -1),
+          updateBoardInCache(old, boardId, (item) => ({
+            ...item,
+            isLiked: false,
+            prefers: ((item.prefers as number) ?? 0) - 1,
+          })),
         );
         return { snapshot } as IPreferSnapshot;
       },
