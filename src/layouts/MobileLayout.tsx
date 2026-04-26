@@ -1,8 +1,10 @@
 import { Outlet, useLocation } from "react-router-dom";
+import { useCallback, useMemo, useRef } from "react";
 import BottomTabBar from "./BottomTabBar";
 import MobileHeader from "./MobileHeader";
 
 export default function MobileLayout() {
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
   const { pathname } = useLocation()
   const isHome: boolean = pathname === "/"
   const isCommunity: boolean = pathname.startsWith("/community")
@@ -21,14 +23,21 @@ export default function MobileLayout() {
   // 현재 기준은 depth가 2이상인 경우 ('/'의 경우 0으로 보고, '/community'의 경우 1로 보고, '/community/6'의 경우 2로 봄)
   // 경로의 끝에 /가 올 경우 정확하게 처리하지 못할 수 있어 filter(Boolean)을 사용하여 빈 문자열을 제거
   const showBackArrow: boolean = pathname.split('/').filter(Boolean).length >= 2;
+  const scrollToTop = useCallback(() => {
+    scrollContainerRef.current?.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }, []);
+  const outletContext = useMemo(() => ({ scrollToTop }), [scrollToTop]);
 
   return (
     <div className="flex min-h-screen items-start justify-center bg-white py-4">
       <div id="phone-root" className="relative flex h-[700px] w-[340px] flex-col overflow-hidden border border-secondary-200">
         {hasHeader && <MobileHeader title={headerTitle} showBackArrow={showBackArrow} showMenuButton={isHome} />}
 
-        <div className={`scrollbar-hidden flex-1 overflow-y-auto ${isCommunityDetail || isDesignDetail ? "" : "pb-16"}`}>
-          <Outlet />
+        <div
+          ref={scrollContainerRef}
+          className={`scrollbar-hidden flex-1 overflow-y-auto ${isCommunityDetail || isDesignDetail ? "" : "pb-16"}`}
+        >
+          <Outlet context={outletContext} />
         </div>
 
         <BottomTabBar isHome={isHome} isCommunity={isCommunity} isDesign={isDesign} isMyPage={pathname.startsWith("/mypage")} />

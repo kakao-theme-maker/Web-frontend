@@ -7,13 +7,27 @@ const PAGE_SIZE = 12;
 
 export type HomeThemeListType = 'popular' | 'bookmarked';
 
+function isSnakeHomeTheme(item: IHomeThemeRaw): item is Extract<IHomeThemeRaw, { preview_image_url: string }> {
+  return 'preview_image_url' in item;
+}
+
 function mapHomeTheme(item: IHomeThemeRaw): IHomeTheme {
+  if (!isSnakeHomeTheme(item)) {
+    return {
+      themeComponentId: item.themeComponentId,
+      previewImageUrl: item.previewImageUrl,
+      themeName: item.themeName,
+      createdAt: item.createdAt,
+      updatedAt: item.updatedAt,
+    };
+  }
+
   return {
-    themeComponentId: item.themeComponentId,
-    previewImageUrl: item.previewImageUrl,
-    themeName: item.themeName,
-    createdAt: item.createdAt,
-    updatedAt: item.updatedAt,
+    themeComponentId: item.theme_component_id,
+    previewImageUrl: item.preview_image_url,
+    themeName: item.theme_name,
+    createdAt: item.created_at,
+    updatedAt: item.updated_at,
   };
 }
 

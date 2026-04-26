@@ -9,6 +9,7 @@ import { useCommentActions } from '../../services/hooks/common/useCommentActions
 import { usePrefer } from '../../services/hooks/common/usePrefer';
 import { useBookmark } from '../../services/hooks/common/useBookmark';
 import { useAuthStore } from '../../stores/authStore';
+import { formatDate } from '../../utils/date';
 import ImageSlider from '../common/ImageSlider';
 import CommentModal from './CommentModal';
 import Confirm from '../common/Confirm';
@@ -144,7 +145,7 @@ export default function BoardDetailCard({
           )}
           <div className="flex min-w-0 flex-col">
             <Text variant="BOLD_15" className="truncate">{board.userName}</Text>
-            <Text variant="REGULAR_10" className="text-secondary-400">{board.createdAt}</Text>
+            <Text variant="REGULAR_10" className="text-secondary-400">{formatDate(board.createdAt)}</Text>
           </div>
         </div>
 

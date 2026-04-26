@@ -1,4 +1,5 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useLayoutEffect, useState } from 'react';
+import { useOutletContext } from 'react-router-dom';
 import Text from '../../components/common/Text';
 import { useIntersectionObserver } from '../../services/hooks/common/useIntersectionObserver';
 import {
@@ -9,6 +10,10 @@ import type { IHomeTheme } from '../../types/community/theme';
 import { cn } from '../../utils/cn';
 
 type HomeTabId = 'create' | 'popular' | 'bookmarked';
+
+interface IMobileLayoutOutletContext {
+  scrollToTop: () => void;
+}
 
 const TABS: { id: HomeTabId; label: string }[] = [
   { id: 'create', label: '테마 제작' },
@@ -24,7 +29,7 @@ function HomeTabs({
   onTabChange: (tab: HomeTabId) => void;
 }) {
   return (
-    <div className="grid grid-cols-3 bg-white px-4 pt-5 text-center">
+    <div className="sticky top-0 z-20 grid grid-cols-3 bg-white px-4 pt-5 text-center">
       {TABS.map((tab) => {
         const isActive = activeTab === tab.id;
 
@@ -134,6 +139,11 @@ function PreparingTab() {
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<HomeTabId>('popular');
+  const { scrollToTop } = useOutletContext<IMobileLayoutOutletContext>();
+
+  useLayoutEffect(() => {
+    scrollToTop();
+  }, [activeTab, scrollToTop]);
 
   return (
     <main className="min-h-full bg-white">
