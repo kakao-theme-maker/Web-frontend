@@ -1,28 +1,50 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 
-function findScrollableAncestor(node: HTMLElement | null): HTMLElement | null {
-  let n: HTMLElement | null = node?.parentElement ?? null;
-  while (n) {
-    const style = getComputedStyle(n);
-    if (/(auto|scroll)/.test(style.overflowY) && n.scrollHeight > n.clientHeight) {
-      return n;
-    }
-    n = n.parentElement;
+const SCROLL_EDGE_TOLERANCE = 1;
+
+function getTargetElement(target: EventTarget | null): HTMLElement | null {
+  if (!(target instanceof Node)) return null;
+  if (target instanceof HTMLElement) return target;
+
+  return target.parentElement;
+}
+
+function isScrollableY(node: HTMLElement): boolean {
+  const style = getComputedStyle(node);
+  return /(auto|scroll)/.test(style.overflowY) && node.scrollHeight > node.clientHeight;
+}
+
+function getMaxScrollTop(node: HTMLElement): number {
+  return Math.max(0, node.scrollHeight - node.clientHeight);
+}
+
+function findScrollableAncestorWithin(
+  node: HTMLElement | null,
+  boundary: HTMLElement | null,
+): HTMLElement | null {
+  if (!node || !boundary || !boundary.contains(node)) return null;
+
+  let current: HTMLElement | null = node;
+  while (current) {
+    if (isScrollableY(current)) return current;
+    if (current === boundary) break;
+    current = current.parentElement;
   }
+
   return null;
 }
 
-export function useVerticalSwipe(boardsLength: number, transitionDuration: number) {
+export function useVerticalSwipe(itemsLength: number, transitionDuration: number) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
-  const stateRef = useRef({ currentIndex: 0, isAnimating: false, boardsLength });
+  const stateRef = useRef({ currentIndex: 0, isAnimating: false, itemsLength });
   const touchStartY = useRef(0);
   const touchStartScrollTop = useRef(0);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    stateRef.current.boardsLength = boardsLength;
-  }, [boardsLength]);
+    stateRef.current.itemsLength = itemsLength;
+  }, [itemsLength]);
 
   useEffect(() => {
     return () => {
@@ -33,8 +55,14 @@ export function useVerticalSwipe(boardsLength: number, transitionDuration: numbe
   const goTo = useCallback(
     (idx: number) => {
       if (stateRef.current.isAnimating) return;
-      const next = Math.max(0, Math.min(idx, stateRef.current.boardsLength - 1));
+
+      const next = Math.max(0, Math.min(idx, stateRef.current.itemsLength - 1));
       if (next === stateRef.current.currentIndex) return;
+
+      const nextSlide = containerRef.current?.children.item(next);
+      if (nextSlide instanceof HTMLElement) {
+        nextSlide.scrollTop = 0;
+      }
 
       stateRef.current.isAnimating = true;
       stateRef.current.currentIndex = next;
@@ -50,18 +78,20 @@ export function useVerticalSwipe(boardsLength: number, transitionDuration: numbe
   );
 
   useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
+    const container = containerRef.current;
+    if (!container) return;
 
-    const handler = (e: WheelEvent) => {
-      const scrollEl = findScrollableAncestor(el);
+    const handleWheel = (e: WheelEvent) => {
+      const target = getTargetElement(e.target);
+      const scrollEl = findScrollableAncestorWithin(target, container);
+
       if (scrollEl) {
-        const maxScroll = scrollEl.scrollHeight - scrollEl.clientHeight;
-        const atBottom = scrollEl.scrollTop >= maxScroll - 1;
-        const atTop = scrollEl.scrollTop <= 1;
+        const maxScroll = getMaxScrollTop(scrollEl);
+        const atBottom = scrollEl.scrollTop >= maxScroll - SCROLL_EDGE_TOLERANCE;
+        const atTop = scrollEl.scrollTop <= SCROLL_EDGE_TOLERANCE;
 
         if (e.deltaY > 0 && !atBottom) return;
-        if (e.deltaY < 0 && stateRef.current.currentIndex === 0 && !atTop) return;
+        if (e.deltaY < 0 && !atTop) return;
       }
 
       e.preventDefault();
@@ -69,13 +99,15 @@ export function useVerticalSwipe(boardsLength: number, transitionDuration: numbe
       else goTo(stateRef.current.currentIndex - 1);
     };
 
-    el.addEventListener('wheel', handler, { passive: false });
-    return () => el.removeEventListener('wheel', handler);
+    container.addEventListener('wheel', handleWheel, { passive: false });
+    return () => container.removeEventListener('wheel', handleWheel);
   }, [goTo]);
 
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartY.current = e.touches[0].clientY;
-    const scrollEl = findScrollableAncestor(containerRef.current);
+
+    const target = getTargetElement(e.target);
+    const scrollEl = findScrollableAncestorWithin(target, containerRef.current);
     touchStartScrollTop.current = scrollEl?.scrollTop ?? 0;
   };
 
@@ -83,16 +115,19 @@ export function useVerticalSwipe(boardsLength: number, transitionDuration: numbe
     const delta = touchStartY.current - e.changedTouches[0].clientY;
     if (Math.abs(delta) <= 50) return;
 
-    const scrollEl = findScrollableAncestor(containerRef.current);
+    const target = getTargetElement(e.target);
+    const scrollEl = findScrollableAncestorWithin(target, containerRef.current);
+
     if (scrollEl) {
       const scrollChange = Math.abs(scrollEl.scrollTop - touchStartScrollTop.current);
       if (scrollChange > 10) return;
 
-      const maxScroll = scrollEl.scrollHeight - scrollEl.clientHeight;
-      const atBottom = scrollEl.scrollTop >= maxScroll - 1;
-      const atTop = scrollEl.scrollTop <= 1;
+      const maxScroll = getMaxScrollTop(scrollEl);
+      const atBottom = scrollEl.scrollTop >= maxScroll - SCROLL_EDGE_TOLERANCE;
+      const atTop = scrollEl.scrollTop <= SCROLL_EDGE_TOLERANCE;
+
       if (delta > 0 && !atBottom) return;
-      if (delta < 0 && stateRef.current.currentIndex === 0 && !atTop) return;
+      if (delta < 0 && !atTop) return;
     }
 
     if (delta > 0) goTo(stateRef.current.currentIndex + 1);

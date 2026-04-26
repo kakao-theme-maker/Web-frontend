@@ -27,7 +27,11 @@ export function useBookmark(
         await queryClient.cancelQueries({ queryKey });
         const snapshot = queryClient.getQueryData(queryKey);
         queryClient.setQueryData(queryKey, (old: unknown) =>
-          updateBoardInCache(old, postId, (item) => ({ ...item, isBookmarked: true })),
+          updateBoardInCache(old, postId, (item) => ({
+            ...item,
+            isBookmarked: true,
+            bookmarked: true,
+          })),
         );
         return { snapshot } as IBookmarkSnapshot;
       },
@@ -54,7 +58,11 @@ export function useBookmark(
         queryClient.setQueryData(queryKey, (old: unknown) =>
           removeOnUnbookmark
             ? removeBoardFromCache(old, postId)
-            : updateBoardInCache(old, postId, (item) => ({ ...item, isBookmarked: false })),
+            : updateBoardInCache(old, postId, (item) => ({
+                ...item,
+                isBookmarked: false,
+                bookmarked: false,
+              })),
         );
         return { snapshot } as IBookmarkSnapshot;
       },

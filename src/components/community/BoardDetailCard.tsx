@@ -29,6 +29,7 @@ interface IBoardDetailCardProps {
   portalContainer?: Element | null;
   moreMenuItems?: IMoreMenuItem[];
   removeOnUnbookmark?: boolean;
+  allowBookmarkForMyBoard?: boolean;
 }
 
 export default function BoardDetailCard({
@@ -41,6 +42,7 @@ export default function BoardDetailCard({
   portalContainer,
   moreMenuItems,
   removeOnUnbookmark,
+  allowBookmarkForMyBoard,
 }: IBoardDetailCardProps) {
   const navigate = useNavigate();
   const userEmail = useAuthStore((state) => state.userEmail);
@@ -95,7 +97,7 @@ export default function BoardDetailCard({
   };
 
   const handleBookmark = () => {
-    if (isMyBoard) return;
+    if (isMyBoard && !allowBookmarkForMyBoard) return;
     toggleBookmark();
   };
 
@@ -214,7 +216,7 @@ export default function BoardDetailCard({
           </div>
           <button
             onClick={handleBookmark}
-            disabled={isBookmarkPending || isMyBoard}
+            disabled={isBookmarkPending || (isMyBoard && !allowBookmarkForMyBoard)}
             aria-label="북마크"
           >
             <BookmarkIcon
