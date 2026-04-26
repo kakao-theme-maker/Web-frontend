@@ -14,6 +14,7 @@ export default function MySavedCard({ post }: IMySavedCardProps) {
       imageAlt={isTheme ? '테마 미리보기' : '디자인 미리보기'}
       preferQueryKey={['my-bookmarked-posts']}
       removeOnUnbookmark
+      allowBookmarkForMyBoard
     />
   );
 }

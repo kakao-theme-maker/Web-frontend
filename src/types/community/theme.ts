@@ -66,8 +66,18 @@ export interface IThemeBoard {
 export interface ICommentRaw {
   commentId: number;
   userEmail: string;
+  userName?: string;
   content: string;
   createdAt: string;
+  isLiked?: boolean;
+  liked?: boolean;
+  likes?: number;
+  likeCount?: number;
+  likedCount?: number;
+  likesCount?: number;
+  like_count?: number;
+  liked_count?: number;
+  likes_count?: number;
 }
 
 export type TabId = 'activity' | 'keyword';

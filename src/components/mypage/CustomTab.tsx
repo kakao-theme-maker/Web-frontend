@@ -22,7 +22,7 @@ export default function CustomTab() {
 
   if (isError) {
     return (
-      <div className="flex h-40 items-center justify-center">
+      <div className="flex min-h-[200px] items-center justify-center">
         <Text variant="REGULAR_14" className="text-red-400">
           커스텀 목록을 불러올 수 없습니다.
         </Text>
@@ -32,7 +32,7 @@ export default function CustomTab() {
 
   if (components.length === 0) {
     return (
-      <div className="flex h-40 items-center justify-center">
+      <div className="flex min-h-[200px] items-center justify-center">
         <Text variant="REGULAR_14" className="text-secondary-300">
           커스텀한 테마/디자인이 없습니다.
         </Text>

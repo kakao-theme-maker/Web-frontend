@@ -7,6 +7,11 @@ export function isInfiniteCache(data: unknown): data is IInfiniteCache {
   return !!data && typeof data === 'object' && Array.isArray((data as IInfiniteCache).pages);
 }
 
+function getBoardId(item: Record<string, unknown>): number | undefined {
+  const id = item.boardId ?? item.postId;
+  return typeof id === 'number' ? id : undefined;
+}
+
 export function updateBoardInCache(
   data: unknown,
   boardId: number,
@@ -17,12 +22,12 @@ export function updateBoardInCache(
     return {
       ...data,
       pages: data.pages.map((page) =>
-        page.map((item) => ((item.boardId as number) === boardId ? updater(item) : item)),
+        page.map((item) => (getBoardId(item) === boardId ? updater(item) : item)),
       ),
     };
   }
   const obj = data as Record<string, unknown>;
-  if ((obj.boardId as number) === boardId) return updater(obj);
+  if (getBoardId(obj) === boardId) return updater(obj);
   return data;
 }
 
@@ -32,7 +37,7 @@ export function removeBoardFromCache(data: unknown, boardId: number): unknown {
     return {
       ...data,
       pages: data.pages.map((page) =>
-        page.filter((item) => (item.boardId as number) !== boardId),
+        page.filter((item) => getBoardId(item) !== boardId),
       ),
     };
   }

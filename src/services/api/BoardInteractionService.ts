@@ -32,6 +32,16 @@ export const BoardInteractionService = {
       .put<ICommentRaw>(`/api/posts/comments/${commentId}`, { content })
       .then((res) => res.data),
 
+  likeComment: (commentId: number) =>
+    apiClient
+      .post(`/api/comments/${commentId}/like`)
+      .then((res) => res.data),
+
+  unlikeComment: (commentId: number) =>
+    apiClient
+      .delete(`/api/comments/${commentId}/like`)
+      .then((res) => res.data),
+
   bookmarkPost: (postId: number) =>
     apiClient
       .put(`/api/bookmarks/posts/${postId}`)

@@ -5,12 +5,94 @@ import { useAuthStore } from "../../stores/authStore";
 import { useOutsideClick } from "../../services/hooks/common/useOutsideClick";
 import { useCreateComment } from "../../services/hooks/common/useCreateComment";
 import { useComments } from "../../services/hooks/common/useComments";
+import { useCommentLike } from "../../services/hooks/common/useCommentLike";
 import type { ICommentRaw } from "../../types/community/theme";
 
 interface ICommentModalProps {
   boardId: number;
   onRequestDelete: (commentId: number) => void;
   onRequestEdit: (commentId: number, content: string) => void;
+}
+
+interface ICommentItemProps {
+  boardId: number;
+  comment: ICommentRaw;
+  userEmail?: string | null;
+  editingId: number | null;
+  editText: string;
+  editInputRef: React.RefObject<HTMLDivElement | null>;
+  onEditTextChange: (value: string) => void;
+  onEditKeyDown: (e: React.KeyboardEvent, comment: ICommentRaw) => void;
+  onRequestDelete: (commentId: number) => void;
+  onStartEdit: (comment: ICommentRaw) => void;
+}
+
+function CommentItem({
+  boardId,
+  comment,
+  userEmail,
+  editingId,
+  editText,
+  editInputRef,
+  onEditTextChange,
+  onEditKeyDown,
+  onRequestDelete,
+  onStartEdit,
+}: ICommentItemProps) {
+  const { isLiked, likes, toggleCommentLike, isPending } = useCommentLike(boardId, comment);
+  const isMyComment = userEmail === comment.userEmail;
+
+  return (
+    <div className="flex items-start justify-between">
+      <div className="flex gap-3">
+        <div className="h-10 w-10 rounded-full bg-gray-300 flex-shrink-0" />
+        <div>
+          <Text variant="BOLD_12">{comment.userName ?? comment.userEmail}</Text>
+          <div className="mt-[-5px]">
+            {editingId === comment.commentId ? (
+              <div ref={editInputRef}>
+                <input
+                  autoFocus
+                  type="text"
+                  value={editText}
+                  onChange={(e) => onEditTextChange(e.target.value)}
+                  onKeyDown={(e) => onEditKeyDown(e, comment)}
+                  className="rounded border border-gray-300 px-2 py-1 text-xs outline-none focus:border-blue-400"
+                />
+              </div>
+            ) : (
+              <Text variant="MEDIUM_12">{comment.content}</Text>
+            )}
+          </div>
+          {isMyComment && (
+            <div className="flex gap-2">
+              <button
+                className="text-xs text-secondary-300 hover:underline"
+                onClick={() => onRequestDelete(comment.commentId)}
+              >
+                삭제
+              </button>
+              <button
+                className="text-xs text-secondary-300 hover:underline"
+                onClick={() => onStartEdit(comment)}
+              >
+                수정
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+      <button
+        className="flex min-w-9 flex-col items-center text-secondary-300 disabled:cursor-not-allowed"
+        onClick={toggleCommentLike}
+        disabled={isPending || isMyComment}
+        aria-label={isLiked ? "댓글 좋아요 취소" : "댓글 좋아요"}
+      >
+        <HeartIcon className={`h-5 w-5 ${isLiked ? "text-red-500" : "text-secondary-300"}`} />
+        <span className="mt-1 text-xs text-secondary-300">{likes.toLocaleString()}</span>
+      </button>
+    </div>
+  );
 }
 
 export default function CommentModal({ boardId, onRequestDelete, onRequestEdit }: ICommentModalProps) {
@@ -54,49 +136,22 @@ export default function CommentModal({ boardId, onRequestDelete, onRequestEdit }
       {/* 댓글 리스트 */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {comments.map((comment) => (
-          <div key={comment.commentId} className="flex items-start justify-between">
-            <div className="flex gap-3">
-              <div className="h-10 w-10 rounded-full bg-gray-300 flex-shrink-0" />
-              <div>
-                <Text variant="BOLD_12">{comment.userEmail}</Text>
-                <div className="mt-[-5px]">
-                  {editingId === comment.commentId ? (
-                    <div ref={editInputRef}>
-                      <input
-                        autoFocus
-                        type="text"
-                        value={editText}
-                        onChange={(e) => setEditText(e.target.value)}
-                        onKeyDown={(e) => handleEditKeyDown(e, comment)}
-                        className="rounded border border-gray-300 px-2 py-1 text-xs outline-none focus:border-blue-400"
-                      />
-                    </div>
-                  ) : (
-                    <Text variant="MEDIUM_12">{comment.content}</Text>
-                  )}
-                </div>
-                {userEmail === comment.userEmail && (
-                  <div className="flex gap-2">
-                    <button
-                      className="text-xs text-secondary-300 hover:underline"
-                      onClick={() => onRequestDelete(comment.commentId)}
-                    >
-                      삭제
-                    </button>
-                    <button
-                      className="text-xs text-secondary-300 hover:underline"
-                      onClick={() => { setEditingId(comment.commentId); setEditText(comment.content); }}
-                    >
-                      수정
-                    </button>
-                  </div>
-                )}
-              </div>
-            </div>
-            <button className="text-gray-300">
-              <HeartIcon className="h-5 w-5 fill-currentColor" />
-            </button>
-          </div>
+          <CommentItem
+            key={comment.commentId}
+            boardId={boardId}
+            comment={comment}
+            userEmail={userEmail}
+            editingId={editingId}
+            editText={editText}
+            editInputRef={editInputRef}
+            onEditTextChange={setEditText}
+            onEditKeyDown={handleEditKeyDown}
+            onRequestDelete={onRequestDelete}
+            onStartEdit={(targetComment) => {
+              setEditingId(targetComment.commentId);
+              setEditText(targetComment.content);
+            }}
+          />
         ))}
       </div>
 

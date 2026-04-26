@@ -77,7 +77,9 @@ export default function MyPage() {
       />
 
       {/* 탭 컨텐츠 */}
-      <div className="mt-2">{TAB_CONTENT[activeTab]}</div>
+      <div className="mt-2">
+        {TAB_CONTENT[activeTab]}
+      </div>
     </main>
   );
 }

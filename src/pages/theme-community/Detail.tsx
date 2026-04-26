@@ -51,7 +51,7 @@ export default function Detail() {
         boards.map((p, idx) => (
           <div
             key={p.boardId}
-            className="absolute inset-0 transition-transform ease-in-out"
+            className="scrollbar-hidden absolute inset-0 overflow-y-auto overscroll-contain transition-transform ease-in-out"
             style={{
               transform: `translateY(${(idx - currentIndex) * 100}%)`,
               transitionDuration: `${TRANSITION_DURATION}ms`,
