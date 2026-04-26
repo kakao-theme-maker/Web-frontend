@@ -21,14 +21,6 @@ export const AuthService = {
       .then((res) => res.data),
 
   /**
-   * 토큰 재발급: httpOnly 쿠키의 refreshToken으로 토큰 갱신 (body 불필요)
-   */
-  refresh: () =>
-    apiClient
-      .post<IAuthResponse>('/api/auth/token')
-      .then((res) => res.data),
-
-  /**
    * 로그아웃: 서버에서 httpOnly 쿠키 무효화
    */
   logout: () =>

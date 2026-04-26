@@ -1,8 +1,10 @@
 import { Outlet, useLocation } from "react-router-dom";
+import { useCallback, useMemo, useRef } from "react";
 import BottomTabBar from "./BottomTabBar";
 import MobileHeader from "./MobileHeader";
 
 export default function MobileLayout() {
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
   const { pathname } = useLocation()
   const isHome: boolean = pathname === "/"
   const isCommunity: boolean = pathname.startsWith("/community")
@@ -15,20 +17,27 @@ export default function MobileLayout() {
   const isCommunityDetail: boolean = pathname.split('/').filter(Boolean).length >= 2 && isCommunity && !isBoardWrite && !isBoardEdit
   const isDesignDetail: boolean = pathname.split('/').filter(Boolean).length >= 2 && isDesign && !isDesignBoardWrite && !isDesignBoardEdit
   const hasHeader: boolean = isHome || isCommunity || isDesign || isMyPage
-  const headerTitle: string = isBoardWrite || isDesignBoardWrite ? "글 작성" : isBoardEdit || isDesignBoardEdit ? "글 수정" : isCommunity ? "테마 커뮤니티" : isDesign ? "디자인 커뮤니티" : isMyPage ? "마이페이지" : "고정 헤더"
+  const headerTitle: string = isBoardWrite || isDesignBoardWrite ? "글 작성" : isBoardEdit || isDesignBoardEdit ? "글 수정" : isHome ? "HOME" : isCommunity ? "테마 커뮤니티" : isDesign ? "디자인 커뮤니티" : isMyPage ? "마이페이지" : "고정 헤더"
 
   // 뒤로가기 버튼을 보여주어야 하는 경로인지 판별
   // 현재 기준은 depth가 2이상인 경우 ('/'의 경우 0으로 보고, '/community'의 경우 1로 보고, '/community/6'의 경우 2로 봄)
   // 경로의 끝에 /가 올 경우 정확하게 처리하지 못할 수 있어 filter(Boolean)을 사용하여 빈 문자열을 제거
   const showBackArrow: boolean = pathname.split('/').filter(Boolean).length >= 2;
+  const scrollToTop = useCallback(() => {
+    scrollContainerRef.current?.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }, []);
+  const outletContext = useMemo(() => ({ scrollToTop }), [scrollToTop]);
 
   return (
     <div className="flex min-h-screen items-start justify-center bg-white py-4">
       <div id="phone-root" className="relative flex h-[700px] w-[340px] flex-col overflow-hidden border border-secondary-200">
-        {hasHeader && <MobileHeader title={headerTitle} showBackArrow={showBackArrow} />}
+        {hasHeader && <MobileHeader title={headerTitle} showBackArrow={showBackArrow} showMenuButton={isHome} />}
 
-        <div className={`scrollbar-hidden flex-1 overflow-y-auto ${isCommunityDetail || isDesignDetail ? "" : "pb-16"}`}>
-          <Outlet />
+        <div
+          ref={scrollContainerRef}
+          className={`scrollbar-hidden flex-1 overflow-y-auto ${isCommunityDetail || isDesignDetail ? "" : "pb-16"}`}
+        >
+          <Outlet context={outletContext} />
         </div>
 
         <BottomTabBar isHome={isHome} isCommunity={isCommunity} isDesign={isDesign} isMyPage={pathname.startsWith("/mypage")} />

@@ -112,6 +112,33 @@ export interface IUserTheme {
   images: { designComponentId: number }[];
 }
 
+interface IHomeThemeSnakeRaw {
+  theme_component_id: number;
+  preview_image_url: string;
+  theme_name: string;
+  created_at: string;
+  updated_at: string;
+}
+
+interface IHomeThemeCamelRaw {
+  themeComponentId: number;
+  previewImageUrl: string;
+  themeName: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// GET /api/themes/popular, /api/themes/bookmarked 응답 항목
+export type IHomeThemeRaw = IHomeThemeSnakeRaw | IHomeThemeCamelRaw;
+
+export interface IHomeTheme {
+  themeComponentId: number;
+  previewImageUrl: string;
+  themeName: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 // POST /api/theme-boards 응답 - 서버 원본 형식 (snake_case)
 export interface IBoardCreateResponseRaw {
   title: string;

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 
 /**
  * Intersection Observer를 이용한 요소 가시성 감지 훅
@@ -11,8 +11,8 @@ import { useEffect, useRef } from 'react';
  *   <div ref={sentinelRef} />
  */
 export function useIntersectionObserver(onIntersect: () => void) {
-  const ref = useRef<HTMLDivElement>(null);
   const callbackRef = useRef(onIntersect);
+  const observerRef = useRef<IntersectionObserver | null>(null);
 
   // 렌더링 중 ref.current를 직접 수정하면 React 동시성 렌더링에서
   // 렌더가 중단·재시도될 때 콜백이 불완전한 상태로 적용될 수 있습니다.
@@ -22,17 +22,23 @@ export function useIntersectionObserver(onIntersect: () => void) {
     callbackRef.current = onIntersect;
   });
 
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
+  const sentinelRef = useCallback((node: HTMLDivElement | null) => {
+    observerRef.current?.disconnect();
+    observerRef.current = null;
+
+    if (!node) return;
 
     const observer = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting) callbackRef.current();
     });
 
-    observer.observe(el);
-    return () => observer.disconnect();
+    observer.observe(node);
+    observerRef.current = observer;
   }, []);
 
-  return ref;
+  useEffect(() => {
+    return () => observerRef.current?.disconnect();
+  }, []);
+
+  return sentinelRef;
 }
