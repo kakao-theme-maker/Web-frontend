@@ -1,8 +1,20 @@
 import apiClient from './ApiClient';
-import type { IThemeBoardRaw, IThemeBoardDetailsRaw, IUserThemeRaw, IBoardCreateResponseRaw } from '../../types/community/theme';
+import type {
+  IBoardCreateResponseRaw,
+  IHomeThemeRaw,
+  IThemeBoardDetailsRaw,
+  IThemeBoardRaw,
+  IUserThemeRaw,
+} from '../../types/community/theme';
 
 interface IGetThemeBoardDetailsParams {
   pinnedPostId: number;
+  page: number;
+  size: number;
+  sort?: 'asc' | 'desc';
+}
+
+interface IGetHomeThemesParams {
   page: number;
   size: number;
   sort?: 'asc' | 'desc';
@@ -24,6 +36,16 @@ export const ThemeService = {
   getUserThemes: (userEmail: string, page: number, size: number) =>
     apiClient
       .get<IUserThemeRaw[]>(`/api/themes/user/${userEmail}`, { params: { page, size } })
+      .then((res) => res.data),
+
+  getPopularThemes: ({ page, size, sort = 'desc' }: IGetHomeThemesParams) =>
+    apiClient
+      .get<IHomeThemeRaw[]>('/api/themes/popular', { params: { page, size, sort } })
+      .then((res) => res.data),
+
+  getBookmarkedThemes: ({ page, size, sort = 'desc' }: IGetHomeThemesParams) =>
+    apiClient
+      .get<IHomeThemeRaw[]>('/api/themes/bookmarked', { params: { page, size, sort } })
       .then((res) => res.data),
 
   createThemeBoard: (formData: FormData) =>

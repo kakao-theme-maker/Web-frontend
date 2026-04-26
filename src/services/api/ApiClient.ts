@@ -41,7 +41,7 @@ apiClient.interceptors.response.use(
       try {
         // 순환 참조 방지를 위해 axios raw 인스턴스로 직접 호출합니다.
         // httpOnly 쿠키가 자동으로 전송되므로 body에 토큰 불필요합니다.
-        await axios.post(`${BASE_URL}/api/auth/token`, {}, { withCredentials: true });
+        await axios.post(`${BASE_URL}/api/auth/reissue`, {}, { withCredentials: true });
         useAuthStore.getState().setAuthenticated();
         processQueue(null);
         return apiClient(originalRequest);

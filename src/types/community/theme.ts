@@ -112,6 +112,23 @@ export interface IUserTheme {
   images: { designComponentId: number }[];
 }
 
+// GET /api/themes/popular, /api/themes/bookmarked 응답 항목
+export interface IHomeThemeRaw {
+  themeComponentId: number;
+  previewImageUrl: string;
+  themeName: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface IHomeTheme {
+  themeComponentId: number;
+  previewImageUrl: string;
+  themeName: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 // POST /api/theme-boards 응답 - 서버 원본 형식 (snake_case)
 export interface IBoardCreateResponseRaw {
   title: string;

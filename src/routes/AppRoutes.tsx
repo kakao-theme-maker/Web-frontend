@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import App from "../App.tsx";
+import Home from "../pages/home/Home.tsx";
 import ThemeCommunityList from "../pages/theme-community/List.tsx";
 import ThemeCommunityDetail from "../pages/theme-community/Detail.tsx";
 import DesignCommunityList from "../pages/design-community/List.tsx";
@@ -44,7 +44,7 @@ export default function AppRoutes() {
         <Route path="/auth/kakao/callback" element={<KakaoCallback />} />
         <Route element={<ProtectedRoutes />}>
           <Route element={<MobileLayout />}>
-            <Route path="/" element={<App />} />
+            <Route path="/" element={<Home />} />
             <Route path="/community" element={<ThemeCommunityList />} />
             <Route path="/community/write" element={<BoardThemeSelect />} />
             <Route path="/community/write/post" element={<BoardWrite />} />
