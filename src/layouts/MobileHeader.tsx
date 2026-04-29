@@ -6,22 +6,22 @@ import { cn } from "../utils/cn";
 
 interface IMobileHeaderProps {
   title: string;
-  showBackArrow?: boolean;
-  showMenuButton?: boolean;
+  hasBackArrow?: boolean;
+  hasMenuButton?: boolean;
   className?: string;
 }
 
-export default function MobileHeader({ title, showBackArrow, showMenuButton, className }: IMobileHeaderProps) {
+export default function MobileHeader({ title, hasBackArrow, hasMenuButton, className }: IMobileHeaderProps) {
   const navigate = useNavigate();
   return (
     <header className={cn("relative flex shrink-0 items-center justify-center bg-white px-4 pt-10", className)}>
       <div className="absolute left-4 flex h-6 w-6 items-center justify-center">
-        {showBackArrow && (
+        {hasBackArrow && (
           <button type="button" onClick={() => navigate(-1)} className="p-1" aria-label="뒤로가기">
             <BackArrowIcon />
           </button>
         )}
-        {showMenuButton && !showBackArrow && (
+        {hasMenuButton && !hasBackArrow && (
           <button type="button" className="flex h-6 w-6 flex-col justify-center gap-[5px]" aria-label="메뉴 열기">
             <span className="h-[2px] w-[18px] rounded-full bg-black" />
             <span className="h-[2px] w-[18px] rounded-full bg-black" />

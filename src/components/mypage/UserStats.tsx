@@ -1,10 +1,10 @@
-import Text from "../../components/common/Text";
-import type { IUserProfile } from "../../types/mypage/types";
+import type { IUserProfile } from '../../types/mypage/types';
+import Text from '../common/Text';
 
 interface IUserStatsProps {
-  uploads: IUserProfile["uploads"];
-  following: IUserProfile["following"];
-  followers: IUserProfile["followers"];
+  uploads: IUserProfile['uploads'];
+  following: IUserProfile['following'];
+  followers: IUserProfile['followers'];
 }
 
 export default function UserStats({ uploads, following, followers }: IUserStatsProps) {

@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { ThemeService } from '../../api/ThemeService';
 import type { IThemeBoard, IThemeBoardRaw } from '../../../types/community/theme';
+import { QUERY_KEYS } from '../../../constants/queryKeys';
 
 const PAGE_SIZE = 20;
 
@@ -26,7 +27,7 @@ export function useThemeBoards() {
     hasNextPage,
     isFetchingNextPage,
   } = useInfiniteQuery({
-    queryKey: ['theme-boards'],
+    queryKey: QUERY_KEYS.themeBoards(),
     queryFn: ({ pageParam }) =>
       ThemeService.getThemeBoards(pageParam, PAGE_SIZE),
     initialPageParam: 0,

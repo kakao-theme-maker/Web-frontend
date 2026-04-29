@@ -2,6 +2,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useDeleteMutation, usePostMutation } from '../../api/useApi';
 import { BoardInteractionService } from '../../api/BoardInteractionService';
 import type { ICommentRaw } from '../../../types/community/theme';
+import { QUERY_KEYS } from '../../../constants/queryKeys';
 
 type ICommentLikeSnapshot = { snapshot: ICommentRaw[] | undefined };
 
@@ -47,7 +48,7 @@ function updateCommentLikeState(comment: ICommentRaw, commentId: number, isLiked
 
 export function useCommentLike(boardId: number, comment: ICommentRaw) {
   const queryClient = useQueryClient();
-  const queryKey = ['comments', boardId];
+  const queryKey = QUERY_KEYS.comments(boardId);
   const isLiked = getCommentIsLiked(comment);
   const likes = getCommentLikeCount(comment);
 

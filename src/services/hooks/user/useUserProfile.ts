@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { UserService } from '../../api/UserService';
 import { useAuthStore } from '../../../stores/authStore';
 import type { IUserProfile, IUserProfileRaw } from '../../../types/mypage/types';
+import { QUERY_KEYS } from '../../../constants/queryKeys';
 
 function mapProfile(raw: IUserProfileRaw): IUserProfile {
   return {
@@ -20,7 +21,7 @@ export function useUserProfile() {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ['userProfile'],
+    queryKey: QUERY_KEYS.userProfile(),
     queryFn: () => UserService.getMe().then(mapProfile),
     enabled: isAuthenticated,
   });

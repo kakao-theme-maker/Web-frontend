@@ -2,6 +2,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { usePatchMutation } from '../../api/useApi';
 import { UserService } from '../../api/UserService';
 import type { IUserProfileRaw } from '../../../types/mypage/types';
+import { QUERY_KEYS } from '../../../constants/queryKeys';
 
 export function useProfileEdit() {
   const queryClient = useQueryClient();
@@ -11,7 +12,7 @@ export function useProfileEdit() {
       (file) => UserService.updateProfileImage(file),
       {
         onSuccess: () => {
-          queryClient.invalidateQueries({ queryKey: ['userProfile'] });
+          queryClient.invalidateQueries({ queryKey: QUERY_KEYS.userProfile() });
         },
       },
     );
@@ -21,7 +22,7 @@ export function useProfileEdit() {
       (name) => UserService.updateName(name),
       {
         onSuccess: () => {
-          queryClient.invalidateQueries({ queryKey: ['userProfile'] });
+          queryClient.invalidateQueries({ queryKey: QUERY_KEYS.userProfile() });
         },
       },
     );

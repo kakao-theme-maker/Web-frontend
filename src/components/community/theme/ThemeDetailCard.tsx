@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import type { IThemeBoardDetail } from '../../../types/community/theme';
 import { useDeleteThemeBoard } from '../../../services/hooks/theme/useDeleteThemeBoard';
+import { QUERY_KEYS } from '../../../constants/queryKeys';
 import BoardDetailCard from '../BoardDetailCard';
 
 interface IThemeDetailCardProps {
@@ -18,7 +19,7 @@ export default function ThemeDetailCard({ board, pinnedPostId }: IThemeDetailCar
       downloadLabel="테마 다운로드"
       imageAlt="테마 미리보기"
       editPath={`/community/edit/${board.boardId}`}
-      preferQueryKey={['theme-board-details', pinnedPostId]}
+      preferQueryKey={QUERY_KEYS.themeBoardDetails(pinnedPostId)}
       deleteBoard={deleteBoard}
     />
   );

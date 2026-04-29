@@ -5,6 +5,7 @@ import { ThemeService } from '../../api/ThemeService';
 import { useBoardWriteForm } from '../common/useBoardWriteForm';
 import type { IBoardCreateResponseRaw } from '../../../types/community/theme';
 import type { IThemeBoardDetail } from '../../../types/community/theme';
+import { QUERY_KEYS } from '../../../constants/queryKeys';
 
 export function useThemeBoardEdit(board: IThemeBoardDetail) {
   const navigate = useNavigate();
@@ -22,8 +23,8 @@ export function useThemeBoardEdit(board: IThemeBoardDetail) {
     (formData) => ThemeService.updateThemeBoard(board.boardId, formData),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ['theme-board-details'] });
-        queryClient.invalidateQueries({ queryKey: ['my-upload-posts'] });
+        queryClient.invalidateQueries({ queryKey: QUERY_KEYS.themeBoardDetails() });
+        queryClient.invalidateQueries({ queryKey: QUERY_KEYS.myUploadPosts() });
         navigate(`/community/${board.boardId}`, { replace: true });
       },
     },

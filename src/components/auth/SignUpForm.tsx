@@ -10,9 +10,9 @@ const PW_PATTERN =
   /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+[\]{};':"\\|,.<>/?])[a-zA-Z\d!@#$%^&*()\-_=+[\]{};':"\\|,.<>/?]{8,20}$/;
 
 const CHECKBOXES = [
-  { key: 'age' as const, label: '만 14세 이상입니다.' },
-  { key: 'terms' as const, label: '서비스 이용약관에 동의' },
-  { key: 'privacy' as const, label: '개인정보 수집 이용에 동의' },
+  { key: 'hasAgeConsent' as const, label: '만 14세 이상입니다.' },
+  { key: 'hasTermsConsent' as const, label: '서비스 이용약관에 동의' },
+  { key: 'hasPrivacyConsent' as const, label: '개인정보 수집 이용에 동의' },
 ];
 
 interface ISignUpFormProps {
@@ -122,7 +122,7 @@ export default function SignUpForm({ register, watch, onSubmit, errors, isSubmit
           )}
 
           {/* 제출 버튼 */}
-          <Button type="submit" fullWidth disabled={!isSubmittable || isSubmitting} className="mt-4">
+          <Button type="submit" isFullWidth disabled={!isSubmittable || isSubmitting} className="mt-4">
             {isSubmitting ? '처리 중...' : '다음'}
           </Button>
         </form>

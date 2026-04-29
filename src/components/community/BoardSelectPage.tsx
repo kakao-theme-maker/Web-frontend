@@ -74,7 +74,7 @@ export default function BoardSelectPage<T>({
       )}
 
       <div className="mt-6">
-        <Button fullWidth disabled={selectedId === null} onClick={handleConfirm}>
+        <Button isFullWidth disabled={selectedId === null} onClick={handleConfirm}>
           선택완료
         </Button>
       </div>

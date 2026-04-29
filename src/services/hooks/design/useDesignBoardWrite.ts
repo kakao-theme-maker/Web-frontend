@@ -4,6 +4,7 @@ import { usePostMutation } from '../../api/useApi';
 import { DesignService } from '../../api/DesignService';
 import { useBoardWriteForm } from '../common/useBoardWriteForm';
 import type { IDesignBoardCreateResponseRaw, IUserDesignComponentRaw } from '../../../types/community/design';
+import { QUERY_KEYS } from '../../../constants/queryKeys';
 
 export function useDesignBoardWrite(selectedComponent: IUserDesignComponentRaw) {
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ export function useDesignBoardWrite(selectedComponent: IUserDesignComponentRaw) 
     (formData) => DesignService.createDesignBoard(formData),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ['userProfile'] });
+        queryClient.invalidateQueries({ queryKey: QUERY_KEYS.userProfile() });
         navigate('/design');
       },
     },

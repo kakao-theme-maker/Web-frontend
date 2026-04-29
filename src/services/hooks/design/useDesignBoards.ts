@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { DesignService } from '../../api/DesignService';
 import type { IDesignBoard, IDesignBoardRaw } from '../../../types/community/design';
+import { QUERY_KEYS } from '../../../constants/queryKeys';
 
 const PAGE_SIZE = 20;
 
@@ -26,7 +27,7 @@ export function useDesignBoards() {
     hasNextPage,
     isFetchingNextPage,
   } = useInfiniteQuery({
-    queryKey: ['design-boards'],
+    queryKey: QUERY_KEYS.designBoards(),
     queryFn: ({ pageParam }) =>
       DesignService.getDesignBoards(pageParam, PAGE_SIZE),
     initialPageParam: 0,

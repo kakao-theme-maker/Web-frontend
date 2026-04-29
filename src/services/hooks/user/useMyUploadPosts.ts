@@ -3,6 +3,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { UserService } from '../../api/UserService';
 import { useAuthStore } from '../../../stores/authStore';
 import type { IMyUploadPost, IMyUploadPostRaw } from '../../../types/mypage/types';
+import { QUERY_KEYS } from '../../../constants/queryKeys';
 
 const PAGE_SIZE = 10;
 
@@ -37,7 +38,7 @@ export function useMyUploadPosts() {
     hasNextPage,
     isFetchingNextPage,
   } = useInfiniteQuery({
-    queryKey: ['my-upload-posts'],
+    queryKey: QUERY_KEYS.myUploadPosts(),
     queryFn: ({ pageParam }) =>
       UserService.getMyUploadPosts({ page: pageParam, size: PAGE_SIZE }),
     initialPageParam: 0,

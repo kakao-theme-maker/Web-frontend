@@ -3,7 +3,7 @@ import { cn } from "../../utils/cn";
 interface IButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "primary";
   size?: "md" | "sm";
-  fullWidth?: boolean;
+  isFullWidth?: boolean;
 }
 
 const VARIANT_CLASS: Record<NonNullable<IButtonProps["variant"]>, string> = {
@@ -19,7 +19,7 @@ export default function Button({
   children,
   variant = "primary",
   size = "md",
-  fullWidth = false,
+  isFullWidth = false,
   disabled,
   className,
   ...props
@@ -31,7 +31,7 @@ export default function Button({
         "transition-colors",
         VARIANT_CLASS[variant],
         SIZE_CLASS[size],
-        fullWidth && "w-full",
+        isFullWidth && "w-full",
         disabled ? "cursor-not-allowed bg-secondary-300" : "",
         className,
       )}

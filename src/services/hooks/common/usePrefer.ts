@@ -10,7 +10,7 @@ export function usePrefer(
   boardId: number,
   initialPrefers: number,
   initialIsPreferred: boolean = false,
-  queryKey?: unknown[],
+  queryKey?: readonly unknown[],
 ) {
   const queryClient = useQueryClient();
   const [isPreferred, setIsPreferred] = useState(initialIsPreferred);
