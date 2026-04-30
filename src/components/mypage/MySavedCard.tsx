@@ -1,5 +1,6 @@
 import BoardDetailCard from '../community/BoardDetailCard';
 import type { IMyUploadPost } from '../../types/mypage/types';
+import { QUERY_KEYS } from '../../constants/queryKeys';
 
 interface IMySavedCardProps {
   post: IMyUploadPost;
@@ -12,9 +13,9 @@ export default function MySavedCard({ post }: IMySavedCardProps) {
     <BoardDetailCard
       board={post}
       imageAlt={isTheme ? '테마 미리보기' : '디자인 미리보기'}
-      preferQueryKey={['my-bookmarked-posts']}
-      removeOnUnbookmark
-      allowBookmarkForMyBoard
+      preferQueryKey={QUERY_KEYS.myBookmarkedPosts()}
+      hasUnbookmarkRemoval
+      hasOwnBoardBookmarkPermission
     />
   );
 }

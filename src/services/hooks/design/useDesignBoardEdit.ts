@@ -5,6 +5,7 @@ import { DesignService } from '../../api/DesignService';
 import { useBoardWriteForm } from '../common/useBoardWriteForm';
 import type { IDesignBoardCreateResponseRaw } from '../../../types/community/design';
 import type { IDesignBoardDetail } from '../../../types/community/design';
+import { QUERY_KEYS } from '../../../constants/queryKeys';
 
 export function useDesignBoardEdit(board: IDesignBoardDetail) {
   const navigate = useNavigate();
@@ -22,8 +23,8 @@ export function useDesignBoardEdit(board: IDesignBoardDetail) {
     (formData) => DesignService.updateDesignBoard(board.boardId, formData),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ['design-board-details'] });
-        queryClient.invalidateQueries({ queryKey: ['my-upload-posts'] });
+        queryClient.invalidateQueries({ queryKey: QUERY_KEYS.designBoardDetails() });
+        queryClient.invalidateQueries({ queryKey: QUERY_KEYS.myUploadPosts() });
         navigate(`/design/${board.boardId}`, { replace: true });
       },
     },

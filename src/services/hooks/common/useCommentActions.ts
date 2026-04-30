@@ -3,6 +3,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useDeleteMutation, usePutMutation } from '../../api/useApi';
 import { BoardInteractionService } from '../../api/BoardInteractionService';
 import type { ICommentRaw } from '../../../types/community/theme';
+import { QUERY_KEYS } from '../../../constants/queryKeys';
 
 export function useCommentActions(boardId: number) {
   const queryClient = useQueryClient();
@@ -18,7 +19,7 @@ export function useCommentActions(boardId: number) {
     (commentId) => BoardInteractionService.deleteComment(commentId),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ['comments', boardId] });
+        queryClient.invalidateQueries({ queryKey: QUERY_KEYS.comments(boardId) });
         setIsDeleteConfirmOpen(false);
         setIsDeleteAlertOpen(true);
       },
@@ -29,7 +30,7 @@ export function useCommentActions(boardId: number) {
     ({ commentId, content }) => BoardInteractionService.updateComment(commentId, content),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ['comments', boardId] });
+        queryClient.invalidateQueries({ queryKey: QUERY_KEYS.comments(boardId) });
         setIsEditConfirmOpen(false);
         setIsEditAlertOpen(true);
       },

@@ -7,6 +7,7 @@ import { useDeleteThemeBoard } from '../../services/hooks/theme/useDeleteThemeBo
 import { useDeleteDesignBoard } from '../../services/hooks/design/useDeleteDesignBoard';
 import type { IMyUploadPost } from '../../types/mypage/types';
 import type { IMoreMenuItem } from '../../types/community/common';
+import { QUERY_KEYS } from '../../constants/queryKeys';
 
 interface IMyActivityCardProps {
   post: IMyUploadPost;
@@ -18,7 +19,7 @@ export default function MyActivityCard({ post }: IMyActivityCardProps) {
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
 
   const onDeleteSuccess = () => {
-    queryClient.invalidateQueries({ queryKey: ['my-upload-posts'] });
+    queryClient.invalidateQueries({ queryKey: QUERY_KEYS.myUploadPosts() });
   };
 
   const { deleteBoard: deleteThemeBoard } = useDeleteThemeBoard(onDeleteSuccess);
@@ -53,7 +54,7 @@ export default function MyActivityCard({ post }: IMyActivityCardProps) {
       <BoardDetailCard
         board={post}
         imageAlt={isTheme ? '테마 미리보기' : '디자인 미리보기'}
-        preferQueryKey={['my-upload-posts']}
+        preferQueryKey={QUERY_KEYS.myUploadPosts()}
         moreMenuItems={moreMenuItems}
       />
       {isDeleteConfirmOpen && (

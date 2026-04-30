@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { UserService } from '../../api/UserService';
 import type { ICustomComponent, ICustomComponentRaw } from '../../../types/mypage/types';
+import { QUERY_KEYS } from '../../../constants/queryKeys';
 
 const PAGE_SIZE = 20;
 
@@ -23,7 +24,7 @@ export function useMyCustomComponents() {
     hasNextPage,
     isFetchingNextPage,
   } = useInfiniteQuery({
-    queryKey: ['my-custom-components'],
+    queryKey: QUERY_KEYS.myCustomComponents(),
     queryFn: ({ pageParam }) =>
       UserService.getCustomComponents({ page: pageParam, size: PAGE_SIZE }),
     initialPageParam: 0,

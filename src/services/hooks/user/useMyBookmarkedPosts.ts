@@ -3,6 +3,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { UserService } from '../../api/UserService';
 import { useAuthStore } from '../../../stores/authStore';
 import type { IMyUploadPost, IMyUploadPostRaw } from '../../../types/mypage/types';
+import { QUERY_KEYS } from '../../../constants/queryKeys';
 
 const PAGE_SIZE = 10;
 
@@ -37,7 +38,7 @@ export function useMyBookmarkedPosts() {
     hasNextPage,
     isFetchingNextPage,
   } = useInfiniteQuery({
-    queryKey: ['my-bookmarked-posts'],
+    queryKey: QUERY_KEYS.myBookmarkedPosts(),
     queryFn: ({ pageParam }) =>
       UserService.getBookmarkedPosts({ page: pageParam, size: PAGE_SIZE }),
     initialPageParam: 0,

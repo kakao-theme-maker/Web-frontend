@@ -51,7 +51,7 @@ export default function LoginForm({ register, onSubmit, errors, isSubmitting, on
         {errors.root && (
           <p className="text-center text-[12px] text-red-500">{errors.root.message}</p>
         )}
-        <Button type="submit" fullWidth disabled={isSubmitting} className="mt-1 shadow-sm">
+        <Button type="submit" isFullWidth disabled={isSubmitting} className="mt-1 shadow-sm">
           {isSubmitting ? '로그인 중...' : '로그인'}
         </Button>
         <p className="text-center text-[13px] text-gray-400">

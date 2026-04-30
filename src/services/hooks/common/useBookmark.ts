@@ -9,8 +9,8 @@ type IBookmarkSnapshot = { snapshot: unknown };
 export function useBookmark(
   postId: number,
   initialIsBookmarked: boolean = false,
-  queryKey?: unknown[],
-  removeOnUnbookmark: boolean = false,
+  queryKey?: readonly unknown[],
+  hasUnbookmarkRemoval: boolean = false,
 ) {
   const queryClient = useQueryClient();
   const [isBookmarked, setIsBookmarked] = useState(initialIsBookmarked);
@@ -56,7 +56,7 @@ export function useBookmark(
         await queryClient.cancelQueries({ queryKey });
         const snapshot = queryClient.getQueryData(queryKey);
         queryClient.setQueryData(queryKey, (old: unknown) =>
-          removeOnUnbookmark
+          hasUnbookmarkRemoval
             ? removeBoardFromCache(old, postId)
             : updateBoardInCache(old, postId, (item) => ({
                 ...item,

@@ -4,6 +4,7 @@ import { usePostMutation } from '../../api/useApi';
 import { ThemeService } from '../../api/ThemeService';
 import { useBoardWriteForm } from '../common/useBoardWriteForm';
 import type { IBoardCreateResponseRaw, IUserTheme } from '../../../types/community/theme';
+import { QUERY_KEYS } from '../../../constants/queryKeys';
 
 export function useBoardWrite(selectedTheme: IUserTheme) {
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ export function useBoardWrite(selectedTheme: IUserTheme) {
     (formData) => ThemeService.createThemeBoard(formData),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ['userProfile'] });
+        queryClient.invalidateQueries({ queryKey: QUERY_KEYS.userProfile() });
         navigate('/community');
       },
     },

@@ -8,9 +8,9 @@ export interface ISignUpFormData {
   email: string;
   password: string;
   passwordConfirm: string;
-  age: boolean;
-  terms: boolean;
-  privacy: boolean;
+  hasAgeConsent: boolean;
+  hasTermsConsent: boolean;
+  hasPrivacyConsent: boolean;
 }
 
 export interface IAuthResponse {
