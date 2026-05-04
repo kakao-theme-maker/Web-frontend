@@ -6,23 +6,26 @@ import MobileHeader from "./MobileHeader";
 export default function MobileLayout() {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const { pathname } = useLocation()
+  const pathSegments = pathname.split('/').filter(Boolean);
   const isHome: boolean = pathname === "/"
   const isCommunity: boolean = pathname.startsWith("/community")
+  const isCommunityList: boolean = pathname === "/community/theme" || pathname === "/community/design"
   const isDesign: boolean = pathname.startsWith("/design")
+  const isNotification: boolean = pathname === "/notify"
   const isMyPage: boolean = pathname.startsWith("/mypage")
   const isBoardWrite: boolean = pathname.startsWith("/community/write")
-  const isDesignBoardWrite: boolean = pathname.startsWith("/design/write")
+  const isDesignBoardWrite: boolean = pathname.startsWith("/design/write") || pathname.startsWith("/community/design/write")
   const isBoardEdit: boolean = pathname.startsWith("/community/edit")
-  const isDesignBoardEdit: boolean = pathname.startsWith("/design/edit")
-  const isCommunityDetail: boolean = pathname.split('/').filter(Boolean).length >= 2 && isCommunity && !isBoardWrite && !isBoardEdit
-  const isDesignDetail: boolean = pathname.split('/').filter(Boolean).length >= 2 && isDesign && !isDesignBoardWrite && !isDesignBoardEdit
-  const hasHeader: boolean = isHome || isCommunity || isDesign || isMyPage
-  const headerTitle: string = isBoardWrite || isDesignBoardWrite ? "글 작성" : isBoardEdit || isDesignBoardEdit ? "글 수정" : isHome ? "HOME" : isCommunity ? "커뮤니티" : isDesign ? "디자인 커뮤니티" : isMyPage ? "마이페이지" : "고정 헤더"
+  const isDesignBoardEdit: boolean = pathname.startsWith("/design/edit") || pathname.startsWith("/community/design/edit")
+  const isCommunityDetail: boolean = pathSegments.length >= 2 && isCommunity && !isCommunityList && !isBoardWrite && !isBoardEdit && !isDesignBoardWrite && !isDesignBoardEdit
+  const isDesignDetail: boolean = pathSegments.length >= 2 && isDesign && !isDesignBoardWrite && !isDesignBoardEdit
+  const hasHeader: boolean = isHome || isCommunity || isDesign || isNotification || isMyPage
+  const headerTitle: string = isBoardWrite || isDesignBoardWrite ? "글 작성" : isBoardEdit || isDesignBoardEdit ? "글 수정" : isHome ? "HOME" : isCommunity ? "커뮤니티" : isNotification ? "알림" : isDesign ? "커뮤니티" : isMyPage ? "마이페이지" : "고정 헤더"
 
   // 뒤로가기 버튼을 보여주어야 하는 경로인지 판별
   // 현재 기준은 depth가 2이상인 경우 ('/'의 경우 0으로 보고, '/community'의 경우 1로 보고, '/community/6'의 경우 2로 봄)
   // 경로의 끝에 /가 올 경우 정확하게 처리하지 못할 수 있어 filter(Boolean)을 사용하여 빈 문자열을 제거
-  const hasBackArrow: boolean = pathname.split('/').filter(Boolean).length >= 2;
+  const hasBackArrow: boolean = pathSegments.length >= 2 && !isCommunityList;
   const scrollToTop = useCallback(() => {
     scrollContainerRef.current?.scrollTo({ top: 0, left: 0, behavior: "auto" });
   }, []);
@@ -40,7 +43,7 @@ export default function MobileLayout() {
           <Outlet context={outletContext} />
         </div>
 
-        <BottomTabBar isHome={isHome} isCommunity={isCommunity} isDesign={isDesign} isMyPage={pathname.startsWith("/mypage")} />
+        <BottomTabBar isHome={isHome} isCommunity={isCommunity} isNotification={isNotification} isMyPage={pathname.startsWith("/mypage")} />
       </div>
     </div>
   )

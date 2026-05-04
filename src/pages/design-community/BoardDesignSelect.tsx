@@ -20,7 +20,7 @@ export default function BoardDesignSelect() {
       renderItem={(component, isSelected, onSelect) => (
         <DesignSelectItem component={component} isSelected={isSelected} onSelect={onSelect} />
       )}
-      onConfirm={(component) => navigate('/design/write/post', { state: { selectedComponent: component } })}
+      onConfirm={(component) => navigate('/community/design/write/post', { state: { selectedComponent: component } })}
     />
   );
 }

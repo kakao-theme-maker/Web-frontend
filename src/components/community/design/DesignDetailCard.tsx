@@ -18,7 +18,7 @@ export default function DesignDetailCard({ board, pinnedPostId }: IDesignDetailC
       board={board}
       downloadLabel="디자인 다운로드"
       imageAlt="디자인 미리보기"
-      editPath={`/design/edit/${board.boardId}`}
+      editPath={`/community/design/edit/${board.boardId}`}
       preferQueryKey={QUERY_KEYS.designBoardDetails(pinnedPostId)}
       deleteBoard={deleteBoard}
     />

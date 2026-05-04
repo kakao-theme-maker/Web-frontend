@@ -14,9 +14,10 @@ export function useDesignBoardWrite(selectedComponent: IUserDesignComponentRaw) 
   const { mutate, isPending } = usePostMutation<IDesignBoardCreateResponseRaw, FormData>(
     (formData) => DesignService.createDesignBoard(formData),
     {
-      onSuccess: () => {
+      onSuccess: (board) => {
         queryClient.invalidateQueries({ queryKey: QUERY_KEYS.userProfile() });
-        navigate('/design');
+        queryClient.invalidateQueries({ queryKey: QUERY_KEYS.designBoards() });
+        navigate(`/community/design/${board.post_id}`);
       },
     },
   );

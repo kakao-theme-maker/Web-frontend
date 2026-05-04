@@ -1,8 +1,7 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import Home from "../pages/home/Home.tsx";
 import ThemeCommunityList from "../pages/theme-community/List.tsx";
 import ThemeCommunityDetail from "../pages/theme-community/Detail.tsx";
-import DesignCommunityList from "../pages/design-community/List.tsx";
 import DesignCommunityDetail from "../pages/design-community/Detail.tsx";
 import BoardThemeSelect from "../pages/theme-community/BoardThemeSelect.tsx";
 import BoardWrite from "../pages/theme-community/BoardWrite.tsx";
@@ -10,6 +9,7 @@ import BoardDesignSelect from "../pages/design-community/BoardDesignSelect.tsx";
 import BoardDesignWrite from "../pages/design-community/BoardDesignWrite.tsx";
 import BoardThemeEdit from "../pages/theme-community/BoardThemeEdit.tsx";
 import BoardDesignEdit from "../pages/design-community/BoardDesignEdit.tsx";
+import Notification from "../pages/notification/Notification.tsx";
 import MyPage from "../pages/mypage/MyPage.tsx";
 import MobileLayout from "../layouts/MobileLayout.tsx";
 import AuthLayout from "../layouts/AuthLayout.tsx";
@@ -45,12 +45,18 @@ export default function AppRoutes() {
         <Route element={<ProtectedRoutes />}>
           <Route element={<MobileLayout />}>
             <Route path="/" element={<Home />} />
-            <Route path="/community" element={<ThemeCommunityList />} />
+            <Route path="/community" element={<Navigate to="/community/theme" replace />} />
+            <Route path="/community/theme" element={<ThemeCommunityList />} />
+            <Route path="/community/design" element={<ThemeCommunityList />} />
             <Route path="/community/write" element={<BoardThemeSelect />} />
             <Route path="/community/write/post" element={<BoardWrite />} />
             <Route path="/community/edit/:boardId" element={<BoardThemeEdit />} />
+            <Route path="/community/design/write" element={<BoardDesignSelect />} />
+            <Route path="/community/design/write/post" element={<BoardDesignWrite />} />
+            <Route path="/community/design/edit/:boardId" element={<BoardDesignEdit />} />
+            <Route path="/community/design/:boardId" element={<DesignCommunityDetail />} />
             <Route path="/community/:boardId" element={<ThemeCommunityDetail />} />
-            <Route path="/design" element={<DesignCommunityList />} />
+            <Route path="/notify" element={<Notification />} />
             <Route path="/design/write" element={<BoardDesignSelect />} />
             <Route path="/design/write/post" element={<BoardDesignWrite />} />
             <Route path="/design/edit/:boardId" element={<BoardDesignEdit />} />
