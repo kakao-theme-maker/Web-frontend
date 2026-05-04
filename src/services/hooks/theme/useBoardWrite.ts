@@ -16,7 +16,7 @@ export function useBoardWrite(selectedTheme: IUserTheme) {
     {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: QUERY_KEYS.userProfile() });
-        navigate('/community');
+        navigate('/community/theme');
       },
     },
   );

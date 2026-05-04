@@ -48,19 +48,15 @@ export default function AppRoutes() {
             <Route path="/community" element={<Navigate to="/community/theme" replace />} />
             <Route path="/community/theme" element={<ThemeCommunityList />} />
             <Route path="/community/design" element={<ThemeCommunityList />} />
-            <Route path="/community/write" element={<BoardThemeSelect />} />
-            <Route path="/community/write/post" element={<BoardWrite />} />
-            <Route path="/community/edit/:boardId" element={<BoardThemeEdit />} />
-            <Route path="/community/design/write" element={<BoardDesignSelect />} />
-            <Route path="/community/design/write/post" element={<BoardDesignWrite />} />
+            <Route path="/community/theme/write/select" element={<BoardThemeSelect />} />
+            <Route path="/community/theme/write" element={<BoardWrite />} />
+            <Route path="/community/theme/edit/:boardId" element={<BoardThemeEdit />} />
+            <Route path="/community/theme/:boardId" element={<ThemeCommunityDetail />} />
+            <Route path="/community/design/write/select" element={<BoardDesignSelect />} />
+            <Route path="/community/design/write" element={<BoardDesignWrite />} />
             <Route path="/community/design/edit/:boardId" element={<BoardDesignEdit />} />
             <Route path="/community/design/:boardId" element={<DesignCommunityDetail />} />
-            <Route path="/community/:boardId" element={<ThemeCommunityDetail />} />
             <Route path="/notify" element={<Notification />} />
-            <Route path="/design/write" element={<BoardDesignSelect />} />
-            <Route path="/design/write/post" element={<BoardDesignWrite />} />
-            <Route path="/design/edit/:boardId" element={<BoardDesignEdit />} />
-            <Route path="/design/:boardId" element={<DesignCommunityDetail />} />
             <Route path="/mypage" element={<MyPage />} />
           </Route>
         </Route>

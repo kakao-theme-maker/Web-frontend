@@ -60,7 +60,7 @@ export default function DesignActivityTab({
         )}
       </main>
       <button
-        onClick={() => navigate('/community/design/write')}
+        onClick={() => navigate('/community/design/write/select')}
         className="absolute bottom-16 right-4 flex h-9 items-center rounded-full bg-primary px-4 text-white shadow-sm"
       >
         <span className="mr-1 text-base leading-none">+</span>
