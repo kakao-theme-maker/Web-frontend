@@ -60,7 +60,7 @@ export default function MobileLayout() {
           <Outlet context={outletContext} />
         </div>
 
-        <BottomTabBar isHome={isHome} isCommunity={isCommunity} isNotification={isNotification} isMyPage={pathname.startsWith("/mypage")} />
+        <BottomTabBar isHome={isHome} isCommunity={isCommunity} isNotification={isNotification} isMyPage={isMyPage} />
       </div>
     </div>
   )

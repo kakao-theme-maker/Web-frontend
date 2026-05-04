@@ -442,6 +442,7 @@ QUERY_KEYS.userDesignComponents(userEmail)
 주요 파일:
 
 - 목록: `src/pages/theme-community/List.tsx`
+- 공통 탭: `src/components/community/CommunityTabs.tsx`
 - 상세: `src/pages/theme-community/Detail.tsx`
 - 선택: `src/pages/theme-community/BoardThemeSelect.tsx`
 - 작성: `src/pages/theme-community/BoardWrite.tsx`
@@ -477,7 +478,8 @@ QUERY_KEYS.userDesignComponents(userEmail)
 
 주요 파일:
 
-- 목록 컨테이너: `src/pages/theme-community/List.tsx`
+- 목록: `src/pages/design-community/List.tsx`
+- 공통 탭: `src/components/community/CommunityTabs.tsx`
 - 목록 UI: `src/components/community/design/tab/DesignActivityTab.tsx`
 - 상세: `src/pages/design-community/Detail.tsx`
 - 선택: `src/pages/design-community/BoardDesignSelect.tsx`
@@ -702,7 +704,7 @@ npm run build
 4. `src/services/api/ApiClient.ts`: Axios와 refresh 흐름 확인
 5. `src/stores/authStore.ts`: 인증 상태 모델 확인
 6. `src/constants/queryKeys.ts`: 캐시 key 규칙 확인
-7. `src/pages/theme-community/List.tsx`: 커뮤니티 탭 URL(`/community/theme`, `/community/design`) 확인
+7. `src/pages/theme-community/List.tsx`, `src/pages/design-community/List.tsx`: 커뮤니티 탭 URL(`/community/theme`, `/community/design`) 확인
 8. `src/pages/theme-community/*`: 테마 상세/작성/수정 흐름 확인
 9. `src/pages/design-community/*`: 디자인 에셋 상세/작성/수정 흐름 확인
 10. `src/pages/mypage/MyPage.tsx`: 프로필과 탭 구조 확인
@@ -723,7 +725,9 @@ npm run build
 | API client | `src/services/api/ApiClient.ts` |
 | Query key | `src/constants/queryKeys.ts` |
 | 인증 store | `src/stores/authStore.ts` |
-| 커뮤니티 탭 목록 | `src/pages/theme-community/List.tsx` |
+| 커뮤니티 공통 탭 | `src/components/community/CommunityTabs.tsx` |
+| 테마 탭 목록 | `src/pages/theme-community/List.tsx` |
+| 디자인 에셋 탭 목록 | `src/pages/design-community/List.tsx` |
 | 테마 목록 hook | `src/services/hooks/theme/useThemeBoards.ts` |
 | 테마 상세 hook | `src/services/hooks/theme/useThemeBoardDetails.ts` |
 | 디자인 에셋 목록 hook | `src/services/hooks/design/useDesignBoards.ts` |

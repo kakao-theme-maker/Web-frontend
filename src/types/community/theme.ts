@@ -80,12 +80,6 @@ export interface ICommentRaw {
   likes_count?: number;
 }
 
-export type TabId = 'activity' | 'keyword';
-export interface ITab {
-  id: TabId
-  label: string;
-}
-
 // GET /api/themes/user/{userEmail} 응답 항목 - 서버 원본 형식 (snake_case)
 export interface IUserThemeRaw {
   themeComponentId: number;

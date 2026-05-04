@@ -2,6 +2,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import Home from "../pages/home/Home.tsx";
 import ThemeCommunityList from "../pages/theme-community/List.tsx";
 import ThemeCommunityDetail from "../pages/theme-community/Detail.tsx";
+import DesignCommunityList from "../pages/design-community/List.tsx";
 import DesignCommunityDetail from "../pages/design-community/Detail.tsx";
 import BoardThemeSelect from "../pages/theme-community/BoardThemeSelect.tsx";
 import BoardWrite from "../pages/theme-community/BoardWrite.tsx";
@@ -47,7 +48,7 @@ export default function AppRoutes() {
             <Route path="/" element={<Home />} />
             <Route path="/community" element={<Navigate to="/community/theme" replace />} />
             <Route path="/community/theme" element={<ThemeCommunityList />} />
-            <Route path="/community/design" element={<ThemeCommunityList />} />
+            <Route path="/community/design" element={<DesignCommunityList />} />
             <Route path="/community/theme/write/select" element={<BoardThemeSelect />} />
             <Route path="/community/theme/write" element={<BoardWrite />} />
             <Route path="/community/theme/edit/:boardId" element={<BoardThemeEdit />} />
