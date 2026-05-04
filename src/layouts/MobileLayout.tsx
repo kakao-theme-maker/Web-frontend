@@ -3,22 +3,41 @@ import { useCallback, useMemo, useRef } from "react";
 import BottomTabBar from "./BottomTabBar";
 import MobileHeader from "./MobileHeader";
 
+const COMMUNITY_LIST_PATHS = ["/community/theme", "/community/design"];
+const COMMUNITY_WRITE_PATH_PATTERN = /^\/community\/(theme|design)\/write(\/select)?$/;
+const COMMUNITY_EDIT_PATH_PATTERN = /^\/community\/(theme|design)\/edit\/[^/]+$/;
+const COMMUNITY_DETAIL_PATH_PATTERN = /^\/community\/(theme|design)\/\d+$/;
+
+function isCommunityListPath(pathname: string) {
+  return COMMUNITY_LIST_PATHS.includes(pathname);
+}
+
+function isCommunityWritePath(pathname: string) {
+  return COMMUNITY_WRITE_PATH_PATTERN.test(pathname);
+}
+
+function isCommunityEditPath(pathname: string) {
+  return COMMUNITY_EDIT_PATH_PATTERN.test(pathname);
+}
+
+function isCommunityDetailPath(pathname: string) {
+  return COMMUNITY_DETAIL_PATH_PATTERN.test(pathname);
+}
+
 export default function MobileLayout() {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const { pathname } = useLocation()
   const pathSegments = pathname.split('/').filter(Boolean);
   const isHome: boolean = pathname === "/"
   const isCommunity: boolean = pathname.startsWith("/community")
-  const isCommunityList: boolean = pathname === "/community/theme" || pathname === "/community/design"
+  const isCommunityList: boolean = isCommunityListPath(pathname)
   const isNotification: boolean = pathname === "/notify"
   const isMyPage: boolean = pathname.startsWith("/mypage")
-  const isBoardWrite: boolean = pathname.startsWith("/community/theme/write")
-  const isDesignBoardWrite: boolean = pathname.startsWith("/community/design/write")
-  const isBoardEdit: boolean = pathname.startsWith("/community/theme/edit")
-  const isDesignBoardEdit: boolean = pathname.startsWith("/community/design/edit")
-  const isCommunityDetail: boolean = pathSegments.length >= 2 && isCommunity && !isCommunityList && !isBoardWrite && !isBoardEdit && !isDesignBoardWrite && !isDesignBoardEdit
+  const isCommunityWrite: boolean = isCommunityWritePath(pathname)
+  const isCommunityEdit: boolean = isCommunityEditPath(pathname)
+  const isCommunityDetail: boolean = isCommunityDetailPath(pathname)
   const hasHeader: boolean = isHome || isCommunity || isNotification || isMyPage
-  const headerTitle: string = isBoardWrite || isDesignBoardWrite ? "글 작성" : isBoardEdit || isDesignBoardEdit ? "글 수정" : isHome ? "HOME" : isCommunity ? "커뮤니티" : isNotification ? "알림" : isMyPage ? "마이페이지" : "고정 헤더"
+  const headerTitle: string = isCommunityWrite ? "글 작성" : isCommunityEdit ? "글 수정" : isHome ? "HOME" : isCommunity ? "커뮤니티" : isNotification ? "알림" : isMyPage ? "마이페이지" : "고정 헤더"
 
   // 뒤로가기 버튼을 보여주어야 하는 경로인지 판별
   // 현재 기준은 depth가 2이상인 경우 ('/'의 경우 0으로 보고, '/community'의 경우 1로 보고, '/community/theme/6'의 경우 3으로 봄)

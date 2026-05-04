@@ -165,7 +165,7 @@ createRoot(document.getElementById("root")!).render(
 `MobileLayout` 주의점:
 
 - `id="phone-root"`가 프레임 루트입니다. 댓글 포털 등에서 기준으로 사용할 수 있습니다.
-- header title, bottom tab active, detail page 여부가 pathname 조건으로 계산됩니다.
+- header title, bottom tab active, detail page 여부가 `MobileLayout.tsx`의 route helper로 계산됩니다.
 - `/community/theme`, `/community/design`은 커뮤니티 탭 목록 경로라 뒤로가기 버튼을 숨깁니다.
 - 새 route를 추가하면 `MobileLayout`의 route flag도 같이 확인해야 합니다.
 
@@ -675,7 +675,7 @@ npm run build
 우선순위 높은 주의점:
 
 - 일부 한글 문자열/주석이 깨져 보입니다. 특히 `MobileLayout.tsx`, `BottomTabBar.tsx`, `MyPage.tsx`, `ApiClient.ts`, `DesignService.ts`, `index.css`를 확인해야 합니다.
-- `MobileLayout`의 route 판별은 pathname 조건 기반입니다. route 추가 시 같이 수정해야 합니다.
+- `MobileLayout`의 route 판별은 route helper 기반입니다. route 추가 시 helper 조건도 같이 확인해야 합니다.
 - `DesignService.ts`에는 API endpoint 확인 필요 주석이 남아 있습니다.
 - `HomeThemeGrid`가 직접 data fetching을 합니다. 원칙상 Screen으로 올릴 수 있지만 현재 구조도 기능상 문제는 없습니다.
 - `useBoardWriteForm`의 blob URL unmount cleanup은 아직 없습니다.
