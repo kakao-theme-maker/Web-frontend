@@ -5,8 +5,8 @@ import type { TabId } from "../../types/community/theme";
 import { useThemeBoards } from "../../services/hooks/theme/useThemeBoards";
 
 const TABS: { id: TabId; label: string }[] = [
-  { id: 'activity', label: '활동' },
-  { id: 'keyword', label: '키워드' },
+  { id: 'activity', label: '테마' },
+  { id: 'keyword', label: '디자인 에셋' },
 ];
 
 export default function List() {
