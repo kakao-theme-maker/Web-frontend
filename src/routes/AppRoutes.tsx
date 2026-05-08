@@ -18,6 +18,8 @@ import SignUp from "../pages/auth/SignUp.tsx";
 import KakaoCallback from "../pages/auth/KakaoCallback.tsx";
 import ProtectedRoutes from "./ProtectedRoutes.tsx";
 import { useAuthInit } from "../services/hooks/auth/useAuthInit.ts";
+import CustomMain from "../pages/custom/CustomMainPage.tsx";
+import CustomLayout from "../layouts/CustomLayout.tsx";
 
 function AuthInitializer({ children }: { children: React.ReactNode }) {
   const isInitialized = useAuthInit();
@@ -57,6 +59,9 @@ export default function AppRoutes() {
             <Route path="/design/:boardId" element={<DesignCommunityDetail />} />
             <Route path="/mypage" element={<MyPage />} />
           </Route>
+        </Route>
+        <Route element={<CustomLayout />}>
+          <Route path="/custom" element={<CustomMain />} />
         </Route>
       </Routes>
     </AuthInitializer>
