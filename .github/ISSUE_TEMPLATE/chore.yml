@@ -1,0 +1,42 @@
+name: Chore
+description: 설정, 빌드, 패키지, 기타 유지보수 작업을 등록합니다.
+title: "[Chore] "
+labels: ["chore"]
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: 작업 내용
+      description: 해야 할 작업을 설명해주세요.
+      placeholder: 예) ESLint 설정을 프로젝트 규칙에 맞게 조정합니다.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reason
+    attributes:
+      label: 작업 이유
+      description: 이 작업이 필요한 이유를 작성해주세요.
+    validations:
+      required: true
+
+  - type: textarea
+    id: todo
+    attributes:
+      label: TODO
+      description: 작업 항목을 체크리스트로 작성해주세요.
+      placeholder: |
+        - [ ] 설정 파일 수정
+        - [ ] 불필요한 의존성 정리
+        - [ ] 빌드 확인
+    validations:
+      required: true
+
+  - type: textarea
+    id: verification
+    attributes:
+      label: 검증 방법
+      description: 작업 후 어떻게 검증할지 작성해주세요.
+      placeholder: 예) npm run lint와 npm run build를 실행합니다.
+    validations:
+      required: false

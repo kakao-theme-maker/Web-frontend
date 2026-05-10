@@ -1,0 +1,54 @@
+name: Refactor
+description: 리팩토링 또는 버그 해결 작업을 등록합니다.
+title: "[Refactor] "
+labels: ["refactor"]
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: 작업 설명
+      description: 리팩토링하거나 해결하려는 문제를 설명해주세요.
+      placeholder: 예) 테마 목록 필터링 로직을 커스텀 훅으로 분리합니다.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reason
+    attributes:
+      label: 작업 이유
+      description: 이 작업이 필요한 이유를 작성해주세요.
+      placeholder: 예) 컴포넌트가 상태 관리와 렌더링을 함께 담당하고 있어 유지보수가 어렵습니다.
+    validations:
+      required: true
+
+  - type: textarea
+    id: scope
+    attributes:
+      label: 변경 범위
+      description: 수정할 파일, 컴포넌트, 로직 범위를 작성해주세요.
+      placeholder: |
+        - src/pages/theme-community/List.tsx
+        - src/services/...
+    validations:
+      required: true
+
+  - type: textarea
+    id: todo
+    attributes:
+      label: TODO
+      description: 작업 항목을 체크리스트로 작성해주세요.
+      placeholder: |
+        - [ ] 중복 로직 정리
+        - [ ] 버그 원인 수정
+        - [ ] 기존 동작 유지 확인
+    validations:
+      required: true
+
+  - type: textarea
+    id: verification
+    attributes:
+      label: 검증 방법
+      description: 작업 후 어떻게 검증할지 작성해주세요.
+      placeholder: 예) npm run build 실행 후 관련 화면에서 기존 동작과 버그 해결 여부를 확인합니다.
+    validations:
+      required: false

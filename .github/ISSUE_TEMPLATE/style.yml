@@ -1,0 +1,51 @@
+name: Style
+description: CSS 또는 스타일만 변경하는 작업을 등록합니다.
+title: "[Style] "
+labels: ["style"]
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: 스타일 변경 내용
+      description: 변경하려는 스타일을 설명해주세요.
+      placeholder: 예) 전역 버튼 포커스 스타일을 디자인 시스템 기준에 맞게 조정합니다.
+    validations:
+      required: true
+
+  - type: textarea
+    id: target
+    attributes:
+      label: 변경 대상
+      description: 스타일을 변경할 화면, 컴포넌트, 전역 스타일 범위를 작성해주세요.
+      placeholder: |
+        - 전역 스타일
+        - 공통 버튼 컴포넌트
+        - 테마 목록 페이지
+    validations:
+      required: true
+
+  - type: textarea
+    id: reason
+    attributes:
+      label: 변경 이유
+      description: 스타일 변경이 필요한 이유를 작성해주세요.
+    validations:
+      required: true
+
+  - type: textarea
+    id: constraints
+    attributes:
+      label: 제한 사항
+      description: 기능 로직 변경 없이 스타일만 변경해야 하는 등 주의할 점을 작성해주세요.
+      placeholder: 예) API 호출, 상태 관리, 라우팅 로직은 변경하지 않습니다.
+    validations:
+      required: false
+
+  - type: textarea
+    id: verification
+    attributes:
+      label: 확인 방법
+      description: 스타일 변경 후 확인할 화면이나 뷰포트를 작성해주세요.
+      placeholder: 예) 모바일/데스크톱에서 버튼 포커스 스타일과 레이아웃 깨짐 여부를 확인합니다.
+    validations:
+      required: true
