@@ -20,7 +20,7 @@ export default function BoardThemeSelect() {
       renderItem={(theme, isSelected, onSelect) => (
         <ThemeSelectItem theme={theme} isSelected={isSelected} onSelect={onSelect} />
       )}
-      onConfirm={(theme) => navigate('/community/write/post', { state: { selectedTheme: theme } })}
+      onConfirm={(theme) => navigate('/community/theme/write', { state: { selectedTheme: theme } })}
     />
   );
 }

@@ -18,7 +18,7 @@ export default function ThemeDetailCard({ board, pinnedPostId }: IThemeDetailCar
       board={board}
       downloadLabel="테마 다운로드"
       imageAlt="테마 미리보기"
-      editPath={`/community/edit/${board.boardId}`}
+      editPath={`/community/theme/edit/${board.boardId}`}
       preferQueryKey={QUERY_KEYS.themeBoardDetails(pinnedPostId)}
       deleteBoard={deleteBoard}
     />

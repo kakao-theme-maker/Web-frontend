@@ -25,7 +25,7 @@ export function useThemeBoardEdit(board: IThemeBoardDetail) {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: QUERY_KEYS.themeBoardDetails() });
         queryClient.invalidateQueries({ queryKey: QUERY_KEYS.myUploadPosts() });
-        navigate(`/community/${board.boardId}`, { replace: true });
+        navigate(`/community/theme/${board.boardId}`, { replace: true });
       },
     },
   );

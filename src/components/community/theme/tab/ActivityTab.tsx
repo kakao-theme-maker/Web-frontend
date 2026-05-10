@@ -59,7 +59,7 @@ export default function ActivityTab({
         )}
       </main>
       <button
-        onClick={() => navigate('/community/write')}
+        onClick={() => navigate('/community/theme/write/select')}
         className="absolute bottom-16 right-4 flex h-9 items-center rounded-full bg-primary px-4 text-white shadow-sm"
       >
         <span className="mr-1 text-base leading-none">+</span>

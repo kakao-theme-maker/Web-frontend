@@ -8,7 +8,7 @@ interface IDesignBoardGridItemProps {
 export default function DesignBoardGridItem({ item }: IDesignBoardGridItemProps) {
   return (
     <Link
-      to={`/design/${item.boardId}`}
+      to={`/community/design/${item.boardId}`}
       className="block h-[120px] overflow-hidden rounded-[2px] bg-secondary-100"
       aria-label={`${item.title} 상세 페이지로 이동`}
     >

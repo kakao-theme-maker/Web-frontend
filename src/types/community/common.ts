@@ -13,6 +13,8 @@ export interface ITag {
   tag_name: string;
 }
 
+export type CommunityTabId = 'theme' | 'design';
+
 // DesignDetailCard / ThemeDetailCard 공통 필드
 export interface IBoardDetailBase {
   boardId: number;

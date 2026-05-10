@@ -8,7 +8,7 @@ interface IThemeBoardGridItemProps {
 export default function ThemeBoardGridItem({ item }: IThemeBoardGridItemProps) {
   return (
     <Link
-      to={`/community/${item.boardId}`}
+      to={`/community/theme/${item.boardId}`}
       className="block h-[120px] overflow-hidden rounded-[2px] bg-secondary-100"
       aria-label={`${item.title} 상세 페이지로 이동`}
     >

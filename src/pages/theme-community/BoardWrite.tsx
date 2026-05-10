@@ -16,7 +16,7 @@ export default function BoardWrite() {
 
   useEffect(() => {
     if (!state?.selectedTheme) {
-      navigate('/community/write', { replace: true });
+      navigate('/community/theme/write/select', { replace: true });
     }
   }, [state, navigate]);
 

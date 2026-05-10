@@ -16,7 +16,7 @@ export default function BoardDesignWrite() {
 
   useEffect(() => {
     if (!state?.selectedComponent) {
-      navigate('/design/write', { replace: true });
+      navigate('/community/design/write/select', { replace: true });
     }
   }, [state, navigate]);
 

@@ -27,8 +27,8 @@ export default function MyActivityCard({ post }: IMyActivityCardProps) {
 
   const isTheme = post.postType === 'THEME_BOARD';
   const editPath = isTheme
-    ? `/community/edit/${post.boardId}`
-    : `/design/edit/${post.boardId}`;
+    ? `/community/theme/edit/${post.boardId}`
+    : `/community/design/edit/${post.boardId}`;
   const deleteBoard = isTheme ? deleteThemeBoard : deleteDesignBoard;
 
   const moreMenuItems: IMoreMenuItem[] = [

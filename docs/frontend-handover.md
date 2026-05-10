@@ -35,7 +35,7 @@
 4. `src/main.tsx` -> `src/routes/AppRoutes.tsx` -> `src/layouts/MobileLayout.tsx` 순서로 앱 뼈대를 봅니다.
 5. `src/services/api/ApiClient.ts`에서 인증/refresh 흐름을 확인합니다.
 6. `src/constants/queryKeys.ts`와 `src/services/hooks`에서 서버 상태 관리 방식을 봅니다.
-7. 테마 커뮤니티 흐름을 목록 -> 상세 -> 작성 -> 수정 순서로 따라갑니다. 디자인 커뮤니티는 같은 패턴의 변형입니다.
+7. 커뮤니티 흐름을 `/community/theme` 테마 탭과 `/community/design` 디자인 에셋 탭 기준으로 따라갑니다.
 
 <a id="overview"></a>
 
@@ -47,7 +47,8 @@
 
 - 로그인, 회원가입, 카카오 로그인
 - 홈에서 인기 테마와 저장 테마 확인
-- 테마/디자인 커뮤니티 목록, 상세, 작성, 수정, 삭제
+- 커뮤니티의 테마/디자인 에셋 게시글 목록, 상세, 작성, 수정, 삭제
+- 알림 탭
 - 게시글 좋아요, 북마크, 댓글, 댓글 좋아요
 - 마이페이지 프로필 수정, 내가 올린 글, 저장한 글, 커스텀 컴포넌트 확인
 
@@ -138,16 +139,18 @@ createRoot(document.getElementById("root")!).render(
 | `/signup` | `AuthLayout` | 공개 | 회원가입 |
 | `/auth/kakao/callback` | 없음 | 공개 | 카카오 콜백 |
 | `/` | `MobileLayout` | 보호 | 홈 |
-| `/community` | `MobileLayout` | 보호 | 테마 목록 |
-| `/community/write` | `MobileLayout` | 보호 | 테마 선택 |
-| `/community/write/post` | `MobileLayout` | 보호 | 테마 글 작성 |
-| `/community/edit/:boardId` | `MobileLayout` | 보호 | 테마 글 수정 |
-| `/community/:boardId` | `MobileLayout` | 보호 | 테마 상세 |
-| `/design` | `MobileLayout` | 보호 | 디자인 목록 |
-| `/design/write` | `MobileLayout` | 보호 | 디자인 선택 |
-| `/design/write/post` | `MobileLayout` | 보호 | 디자인 글 작성 |
-| `/design/edit/:boardId` | `MobileLayout` | 보호 | 디자인 글 수정 |
-| `/design/:boardId` | `MobileLayout` | 보호 | 디자인 상세 |
+| `/community` | `MobileLayout` | 보호 | `/community/theme`로 redirect |
+| `/community/theme` | `MobileLayout` | 보호 | 커뮤니티 테마 탭 |
+| `/community/design` | `MobileLayout` | 보호 | 커뮤니티 디자인 에셋 탭 |
+| `/community/theme/write/select` | `MobileLayout` | 보호 | 테마 선택 |
+| `/community/theme/write` | `MobileLayout` | 보호 | 테마 글 작성 |
+| `/community/theme/edit/:boardId` | `MobileLayout` | 보호 | 테마 글 수정 |
+| `/community/theme/:boardId` | `MobileLayout` | 보호 | 테마 상세 |
+| `/community/design/write/select` | `MobileLayout` | 보호 | 디자인 에셋 선택 |
+| `/community/design/write` | `MobileLayout` | 보호 | 디자인 에셋 글 작성 |
+| `/community/design/edit/:boardId` | `MobileLayout` | 보호 | 디자인 에셋 글 수정 |
+| `/community/design/:boardId` | `MobileLayout` | 보호 | 디자인 에셋 상세 |
+| `/notify` | `MobileLayout` | 보호 | 알림 |
 | `/mypage` | `MobileLayout` | 보호 | 마이페이지 |
 
 `ProtectedRoutes`는 `useAuthStore(state => state.isAuthenticated)`만 보고 접근을 허용합니다. 실패하면 `/login`으로 redirect합니다.
@@ -156,13 +159,14 @@ createRoot(document.getElementById("root")!).render(
 
 - `AuthLayout`: 로그인/회원가입용 모바일 프레임
 - `MobileLayout`: 인증 후 앱 프레임, header, scroll container, bottom tab 담당
-- `BottomTabBar`: Home, 게시글, 디자인, 마이 탭
+- `BottomTabBar`: Home, 게시글, 알림, 마이 탭
 - `MobileHeader`: 로고, 제목, 뒤로가기, 메뉴 버튼
 
 `MobileLayout` 주의점:
 
 - `id="phone-root"`가 프레임 루트입니다. 댓글 포털 등에서 기준으로 사용할 수 있습니다.
-- header title, bottom tab active, detail page 여부가 pathname 조건으로 계산됩니다.
+- header title, bottom tab active, detail page 여부가 `MobileLayout.tsx`의 route helper로 계산됩니다.
+- `/community/theme`, `/community/design`은 커뮤니티 탭 목록 경로라 뒤로가기 버튼을 숨깁니다.
 - 새 route를 추가하면 `MobileLayout`의 route flag도 같이 확인해야 합니다.
 
 <a id="structure-convention"></a>
@@ -190,9 +194,9 @@ src/
 
 - `auth`: 로그인/회원가입 폼
 - `common`: Button, Text, TabMenu, Alert, Confirm, ImageSlider, MoreMenu
-- `community`: 테마/디자인 커뮤니티 공통 UI
+- `community`: 커뮤니티 공통 UI
 - `community/theme`: 테마 전용 카드, 프리뷰, 탭
-- `community/design`: 디자인 전용 카드, 프리뷰, 탭
+- `community/design`: 디자인 에셋 전용 카드, 프리뷰, 탭
 - `home`: 홈 탭/그리드/준비중 UI
 - `icons`: SVG 아이콘
 - `mypage`: 프로필, 마이페이지 탭/카드
@@ -378,7 +382,7 @@ API service:
 | `AuthService` | 로그인, 회원가입, 로그아웃, 카카오 URL, dev auth |
 | `UserService` | 내 정보, 내가 올린 글, 북마크 글, 커스텀 컴포넌트, 프로필 수정 |
 | `ThemeService` | 테마 목록/상세/유저 테마/인기/저장/작성/수정/삭제 |
-| `DesignService` | 디자인 목록/상세/유저 디자인/작성/수정/삭제 |
+| `DesignService` | 디자인 에셋 목록/상세/유저 디자인/작성/수정/삭제 |
 | `BoardInteractionService` | 좋아요, 북마크, 댓글 CRUD, 댓글 좋아요 |
 
 Query key는 `src/constants/queryKeys.ts`의 `QUERY_KEYS`를 사용합니다.
@@ -433,11 +437,12 @@ QUERY_KEYS.userDesignComponents(userEmail)
 
 ## 9. 주요 도메인 흐름
 
-### 테마 커뮤니티
+### 커뮤니티 - 테마 탭
 
 주요 파일:
 
 - 목록: `src/pages/theme-community/List.tsx`
+- 공통 탭: `src/components/community/CommunityTabs.tsx`
 - 상세: `src/pages/theme-community/Detail.tsx`
 - 선택: `src/pages/theme-community/BoardThemeSelect.tsx`
 - 작성: `src/pages/theme-community/BoardWrite.tsx`
@@ -454,9 +459,10 @@ QUERY_KEYS.userDesignComponents(userEmail)
 
 흐름:
 
-- 목록은 `useThemeBoards()`와 `ActivityTab`을 사용합니다. page size는 20입니다.
-- 상세는 URL의 `boardId`를 `pinned_post_id`로 사용하고 `BoardSwipeDetailView`가 세로 스와이프를 담당합니다.
-- 작성은 `/community/write`에서 테마 선택 후 router state로 `/community/write/post`에 전달합니다.
+- `/community`는 `/community/theme`로 redirect됩니다.
+- 테마 탭 목록은 `/community/theme`에서 `useThemeBoards()`와 `ActivityTab`을 사용합니다. page size는 20입니다.
+- 상세는 `/community/theme/:boardId`에서 URL의 `boardId`를 `pinned_post_id`로 사용하고 `BoardSwipeDetailView`가 세로 스와이프를 담당합니다.
+- 작성은 `/community/theme/write/select`에서 테마 선택 후 router state로 `/community/theme/write`에 전달합니다.
 - 작성 submit은 `FormData`에 `board_info` JSON blob과 선택된 `preview_image`를 넣습니다.
 - 수정은 router state의 `board`로 form을 초기화합니다. state가 없으면 `navigate(-1)`합니다.
 
@@ -468,11 +474,13 @@ QUERY_KEYS.userDesignComponents(userEmail)
 - `publicFlag`
 - `post_tags`
 
-### 디자인 커뮤니티
+### 커뮤니티 - 디자인 에셋 탭
 
 주요 파일:
 
 - 목록: `src/pages/design-community/List.tsx`
+- 공통 탭: `src/components/community/CommunityTabs.tsx`
+- 목록 UI: `src/components/community/design/tab/DesignActivityTab.tsx`
 - 상세: `src/pages/design-community/Detail.tsx`
 - 선택: `src/pages/design-community/BoardDesignSelect.tsx`
 - 작성: `src/pages/design-community/BoardDesignWrite.tsx`
@@ -487,7 +495,24 @@ QUERY_KEYS.userDesignComponents(userEmail)
 - `useDesignBoardEdit`
 - `useDeleteDesignBoard`
 
-테마 커뮤니티와 구조가 거의 같습니다. 차이는 선택 대상이 디자인 컴포넌트이고, 작성 payload에는 `designComponentId`가 들어가며, 수정 API는 `PATCH /api/design-boards/{postId}`입니다. 테마 수정은 `PUT /api/theme-boards/{postId}`입니다.
+디자인 에셋 탭은 `/community/design`에서 렌더링됩니다. 탭 클릭은 URL을 바꾸므로 새로고침해도 선택 탭이 유지됩니다. 작성/상세/수정 경로는 `/community/design/write/select`, `/community/design/write`, `/community/design/:boardId`, `/community/design/edit/:boardId`입니다.
+
+테마 탭과 구조가 거의 같습니다. 차이는 선택 대상이 디자인 컴포넌트이고, 작성 payload에는 `designComponentId`가 들어가며, 수정 API는 `PATCH /api/design-boards/{postId}`입니다. 테마 수정은 `PUT /api/theme-boards/{postId}`입니다.
+
+디자인 에셋 UI 진입은 `/community/design` 하위 경로만 사용합니다.
+
+### 알림
+
+주요 파일:
+
+- 화면: `src/pages/notification/Notification.tsx`
+- 하단 탭: `src/layouts/BottomTabBar.tsx`
+- 헤더/활성 상태: `src/layouts/MobileLayout.tsx`
+
+흐름:
+
+- 하단 알림 탭은 `/notify`로 이동합니다.
+- 현재 알림 API 연결은 없고, 빈 상태 문구를 보여줍니다.
 
 ### 공통 상세 카드와 작성 폼
 
@@ -637,9 +662,10 @@ npm run build
 
 - 로그인/회원가입/카카오 콜백
 - 홈 탭 전환, 인기/저장 테마 무한 스크롤
-- 테마 목록, 상세, 세로 스와이프, 좋아요, 북마크, 댓글
+- 커뮤니티 테마 탭(`/community/theme`) 목록, 상세, 세로 스와이프, 좋아요, 북마크, 댓글
 - 테마 글 작성, 수정, 삭제
-- 디자인 목록, 상세, 작성, 수정, 삭제
+- 커뮤니티 디자인 에셋 탭(`/community/design`) 목록, 상세, 작성, 수정, 삭제
+- 알림 탭(`/notify`) 진입과 하단 탭 활성 상태
 - 마이페이지 프로필 이미지/이름 수정
 - 내가 올린 글, 저장한 글, 커스텀 컴포넌트 탭
 - 저장글에서 북마크 해제 시 목록 제거
@@ -651,7 +677,7 @@ npm run build
 우선순위 높은 주의점:
 
 - 일부 한글 문자열/주석이 깨져 보입니다. 특히 `MobileLayout.tsx`, `BottomTabBar.tsx`, `MyPage.tsx`, `ApiClient.ts`, `DesignService.ts`, `index.css`를 확인해야 합니다.
-- `MobileLayout`의 route 판별은 pathname 조건 기반입니다. route 추가 시 같이 수정해야 합니다.
+- `MobileLayout`의 route 판별은 route helper 기반입니다. route 추가 시 helper 조건도 같이 확인해야 합니다.
 - `DesignService.ts`에는 API endpoint 확인 필요 주석이 남아 있습니다.
 - `HomeThemeGrid`가 직접 data fetching을 합니다. 원칙상 Screen으로 올릴 수 있지만 현재 구조도 기능상 문제는 없습니다.
 - `useBoardWriteForm`의 blob URL unmount cleanup은 아직 없습니다.
@@ -678,10 +704,11 @@ npm run build
 4. `src/services/api/ApiClient.ts`: Axios와 refresh 흐름 확인
 5. `src/stores/authStore.ts`: 인증 상태 모델 확인
 6. `src/constants/queryKeys.ts`: 캐시 key 규칙 확인
-7. `src/pages/theme-community/*`: 테마 목록/상세/작성/수정 흐름 확인
-8. `src/pages/design-community/*`: 테마와의 차이 확인
-9. `src/pages/mypage/MyPage.tsx`: 프로필과 탭 구조 확인
-10. `src/components/community/*`: 공통 상세/작성 컴포넌트 확인
+7. `src/pages/theme-community/List.tsx`, `src/pages/design-community/List.tsx`: 커뮤니티 탭 URL(`/community/theme`, `/community/design`) 확인
+8. `src/pages/theme-community/*`: 테마 상세/작성/수정 흐름 확인
+9. `src/pages/design-community/*`: 디자인 에셋 상세/작성/수정 흐름 확인
+10. `src/pages/mypage/MyPage.tsx`: 프로필과 탭 구조 확인
+11. `src/components/community/*`: 공통 상세/작성 컴포넌트 확인
 
 <a id="file-map"></a>
 
@@ -694,13 +721,17 @@ npm run build
 | 보호 라우트 | `src/routes/ProtectedRoutes.tsx` |
 | 모바일 레이아웃 | `src/layouts/MobileLayout.tsx` |
 | 하단 탭 | `src/layouts/BottomTabBar.tsx` |
+| 알림 화면 | `src/pages/notification/Notification.tsx` |
 | API client | `src/services/api/ApiClient.ts` |
 | Query key | `src/constants/queryKeys.ts` |
 | 인증 store | `src/stores/authStore.ts` |
+| 커뮤니티 공통 탭 | `src/components/community/CommunityTabs.tsx` |
+| 테마 탭 목록 | `src/pages/theme-community/List.tsx` |
+| 디자인 에셋 탭 목록 | `src/pages/design-community/List.tsx` |
 | 테마 목록 hook | `src/services/hooks/theme/useThemeBoards.ts` |
 | 테마 상세 hook | `src/services/hooks/theme/useThemeBoardDetails.ts` |
-| 디자인 목록 hook | `src/services/hooks/design/useDesignBoards.ts` |
-| 디자인 상세 hook | `src/services/hooks/design/useDesignBoardDetails.ts` |
+| 디자인 에셋 목록 hook | `src/services/hooks/design/useDesignBoards.ts` |
+| 디자인 에셋 상세 hook | `src/services/hooks/design/useDesignBoardDetails.ts` |
 | 공통 상세 카드 | `src/components/community/BoardDetailCard.tsx` |
 | 공통 작성 폼 | `src/components/community/BoardWriteForm.tsx` |
 | 세로 스와이프 상세 | `src/components/community/BoardSwipeDetailView.tsx` |

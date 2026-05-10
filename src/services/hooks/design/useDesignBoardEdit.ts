@@ -25,7 +25,7 @@ export function useDesignBoardEdit(board: IDesignBoardDetail) {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: QUERY_KEYS.designBoardDetails() });
         queryClient.invalidateQueries({ queryKey: QUERY_KEYS.myUploadPosts() });
-        navigate(`/design/${board.boardId}`, { replace: true });
+        navigate(`/community/design/${board.boardId}`, { replace: true });
       },
     },
   );
