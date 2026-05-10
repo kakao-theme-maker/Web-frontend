@@ -1,0 +1,50 @@
+name: Feature
+description: 새로운 기능을 등록합니다.
+title: "[Feature] "
+labels: ["feature"]
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: 기능 설명
+      description: 추가하려는 기능을 간단히 설명해주세요.
+      placeholder: 예) 사용자가 테마를 좋아요 순으로 정렬할 수 있게 합니다.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reason
+    attributes:
+      label: 필요한 이유
+      description: 이 기능이 왜 필요한지 설명해주세요.
+    validations:
+      required: true
+
+  - type: textarea
+    id: requirements
+    attributes:
+      label: 요구사항
+      description: 구현되어야 하는 내용을 체크리스트로 작성해주세요.
+      placeholder: |
+        - [ ] 요구사항 1
+        - [ ] 요구사항 2
+        - [ ] 요구사항 3
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: 완료 기준
+      description: 이 이슈가 완료되었다고 판단할 수 있는 기준을 작성해주세요.
+      placeholder: 예) 사용자가 테마 목록에서 정렬 옵션을 선택할 수 있다.
+    validations:
+      required: true
+
+  - type: textarea
+    id: references
+    attributes:
+      label: 참고 자료
+      description: 참고 이미지, 링크, 디자인 등이 있다면 첨부해주세요.
+    validations:
+      required: false
