@@ -13,18 +13,6 @@ body:
       required: true
 
   - type: textarea
-    id: target
-    attributes:
-      label: 변경 대상
-      description: 스타일을 변경할 화면, 컴포넌트, 전역 스타일 범위를 작성해주세요.
-      placeholder: |
-        - 전역 스타일
-        - 공통 버튼 컴포넌트
-        - 테마 목록 페이지
-    validations:
-      required: true
-
-  - type: textarea
     id: reason
     attributes:
       label: 변경 이유

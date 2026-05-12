@@ -5,6 +5,9 @@ import LoginForm from '../../components/auth/LoginForm';
 export default function Login() {
   const { register, onSubmit, errors, isSubmitting } = useLogin();
   const { handleKakaoLogin } = useKakaoLogin();
+  const localLoginEnv = import.meta.env.VITE_ENABLE_LOCAL_LOGIN;
+  const isLocalLoginEnabled =
+    localLoginEnv === 'true' || (localLoginEnv !== 'false' && import.meta.env.DEV);
 
   return (
     <LoginForm
@@ -13,6 +16,7 @@ export default function Login() {
       errors={errors}
       isSubmitting={isSubmitting}
       onKakaoLogin={handleKakaoLogin}
+      isLocalLoginEnabled={isLocalLoginEnabled}
     />
   );
 }

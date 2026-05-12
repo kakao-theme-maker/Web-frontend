@@ -22,17 +22,6 @@ body:
       required: true
 
   - type: textarea
-    id: scope
-    attributes:
-      label: 변경 범위
-      description: 수정할 파일, 컴포넌트, 로직 범위를 작성해주세요.
-      placeholder: |
-        - src/pages/theme-community/List.tsx
-        - src/services/...
-    validations:
-      required: true
-
-  - type: textarea
     id: todo
     attributes:
       label: TODO
