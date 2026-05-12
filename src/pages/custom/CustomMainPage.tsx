@@ -7,6 +7,7 @@ import ProfileIcon from "@/components/icons/custom/profile.svg?react";
 import TabsIcon from "@/components/icons/custom/tab.svg?react";
 import TextIcon from "@/components/icons/custom/text.svg?react";
 import PreviewFriends from "@/components/preview/PreviewFriends";
+import PreviewPasscode from "@/components/preview/PreviewPasscode";
 
 
 const tabs: ICategoryTab[] = [
@@ -20,7 +21,8 @@ const tabs: ICategoryTab[] = [
 export default function CustomMainPage() {
   return (
     <div className="flex items-center justify-center py-5">
-      <PreviewFriends />
+      {/* <PreviewFriends /> */}
+      <PreviewPasscode />
       <div className="grid grid-cols-5 absolute bottom-0 w-full">
         {tabs.map(tab => (
           <CustomCategoryTab key={tab.id} icon={tab.icon} label={tab.label} href={tab.href} />
