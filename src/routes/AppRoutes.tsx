@@ -19,6 +19,9 @@ import SignUp from "../pages/auth/SignUp.tsx";
 import KakaoCallback from "../pages/auth/KakaoCallback.tsx";
 import ProtectedRoutes from "./ProtectedRoutes.tsx";
 import { useAuthInit } from "../services/hooks/auth/useAuthInit.ts";
+import CustomLayout from "../layouts/CustomLayout.tsx";
+import CustomBackgroundPage from "@/pages/custom/CustomBackgroundPage.tsx";
+import CustomMainPage from "../pages/custom/CustomMainPage.tsx";
 
 function AuthInitializer({ children }: { children: React.ReactNode }) {
   const isInitialized = useAuthInit();
@@ -60,6 +63,10 @@ export default function AppRoutes() {
             <Route path="/notify" element={<Notification />} />
             <Route path="/mypage" element={<MyPage />} />
           </Route>
+        </Route>
+        <Route element={<CustomLayout />}>
+          <Route path="/custom" element={<CustomMainPage />} />
+          <Route path="/custom/background" element={<CustomBackgroundPage />} />
         </Route>
       </Routes>
     </AuthInitializer>
