@@ -13,7 +13,7 @@ import ProfileIcon from  '../components/icons/bottom-tab-menu/bottom-profile.svg
 import PlusIcon from '../components/icons/bottom-tab-menu/plus.svg?react';
 
 const ACTION_MENU_ITEMS = [
-  { id: "theme-create", label: "테마 만들기" },
+  { id: "theme-create", label: "테마 만들기", href: "/themes/list" },
   { id: "theme-share", label: "테마 공유" },
   { id: "design-share", label: "디자인 공유" },
 ] as const;
@@ -128,22 +128,43 @@ export default function BottomTabBar({ isHome, isCommunity, isNotification, isMy
   return (
     <nav ref={containerRef} className="absolute bottom-0 left-0 right-0 z-20 border-t border-secondary-200 bg-white px-2 py-2">
       <div id="bottom-action-menu" className="absolute left-0 right-0 top-0">
-        {ACTION_MENU_ITEMS.map((item, index) => (
-          <button
-            key={item.id}
-            type="button"
-            onClick={closeActionMenu}
-            style={{ transform: getActionMenuTransform(index, ACTION_MENU_ITEMS.length, isActionMenuOpen) }}
-            className={cn(
-              "absolute left-1/2 top-0 z-10 flex h-9 min-w-[84px] items-center justify-center whitespace-nowrap rounded-full border border-secondary-200 bg-white px-2.5 text-primary shadow-md transition-all duration-200 ease-out",
-              isActionMenuOpen
-                ? "pointer-events-auto opacity-100"
-                : "pointer-events-none opacity-0",
-            )}
-          >
-            <Text variant="MEDIUM_12">{item.label}</Text>
-          </button>
-        ))}
+        {ACTION_MENU_ITEMS.map((item, index) => {
+          const actionMenuItemClassName = cn(
+            "absolute left-1/2 top-0 z-10 flex h-9 min-w-[84px] items-center justify-center whitespace-nowrap rounded-full border border-secondary-200 bg-white px-2.5 text-primary shadow-md transition-all duration-200 ease-out",
+            isActionMenuOpen
+              ? "pointer-events-auto opacity-100"
+              : "pointer-events-none opacity-0",
+          );
+          const actionMenuItemStyle = {
+            transform: getActionMenuTransform(index, ACTION_MENU_ITEMS.length, isActionMenuOpen),
+          };
+
+          if ("href" in item) {
+            return (
+              <Link
+                key={item.id}
+                to={item.href}
+                onClick={closeActionMenu}
+                style={actionMenuItemStyle}
+                className={actionMenuItemClassName}
+              >
+                <Text variant="MEDIUM_12">{item.label}</Text>
+              </Link>
+            );
+          }
+
+          return (
+            <button
+              key={item.id}
+              type="button"
+              onClick={closeActionMenu}
+              style={actionMenuItemStyle}
+              className={actionMenuItemClassName}
+            >
+              <Text variant="MEDIUM_12">{item.label}</Text>
+            </button>
+          );
+        })}
       </div>
 
       <button

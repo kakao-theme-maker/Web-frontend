@@ -12,6 +12,7 @@ import BoardThemeEdit from "../pages/theme-community/BoardThemeEdit.tsx";
 import BoardDesignEdit from "../pages/design-community/BoardDesignEdit.tsx";
 import Notification from "../pages/notification/Notification.tsx";
 import MyPage from "../pages/mypage/MyPage.tsx";
+import ThemeList from "../pages/themes/List.tsx";
 import MobileLayout from "../layouts/MobileLayout.tsx";
 import AuthLayout from "../layouts/AuthLayout.tsx";
 import Login from "../pages/auth/Login.tsx";
@@ -57,6 +58,7 @@ export default function AppRoutes() {
             <Route path="/community/design/write" element={<BoardDesignWrite />} />
             <Route path="/community/design/edit/:boardId" element={<BoardDesignEdit />} />
             <Route path="/community/design/:boardId" element={<DesignCommunityDetail />} />
+            <Route path="/themes/list" element={<ThemeList />} />
             <Route path="/notify" element={<Notification />} />
             <Route path="/mypage" element={<MyPage />} />
           </Route>
