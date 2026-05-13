@@ -14,8 +14,8 @@ import PlusIcon from '../components/icons/bottom-tab-menu/plus.svg?react';
 
 const ACTION_MENU_ITEMS = [
   { id: "theme-create", label: "테마 만들기", href: "/themes/list" },
-  { id: "theme-share", label: "테마 공유" },
-  { id: "design-share", label: "디자인 공유" },
+  { id: "theme-share", label: "테마 공유", href: "/community/theme/write/select" },
+  { id: "design-share", label: "디자인 공유", href: "/community/design/write/select" },
 ] as const;
 
 const ACTION_MENU_ITEM_GAP = 104;
@@ -139,30 +139,16 @@ export default function BottomTabBar({ isHome, isCommunity, isNotification, isMy
             transform: getActionMenuTransform(index, ACTION_MENU_ITEMS.length, isActionMenuOpen),
           };
 
-          if ("href" in item) {
-            return (
-              <Link
-                key={item.id}
-                to={item.href}
-                onClick={closeActionMenu}
-                style={actionMenuItemStyle}
-                className={actionMenuItemClassName}
-              >
-                <Text variant="MEDIUM_12">{item.label}</Text>
-              </Link>
-            );
-          }
-
           return (
-            <button
+            <Link
               key={item.id}
-              type="button"
+              to={item.href}
               onClick={closeActionMenu}
               style={actionMenuItemStyle}
               className={actionMenuItemClassName}
             >
               <Text variant="MEDIUM_12">{item.label}</Text>
-            </button>
+            </Link>
           );
         })}
       </div>
