@@ -1,5 +1,6 @@
 import ButtonPreview from "./ButtonPreview"
 import FriendChip from "./FriendChip"
+import NavPreview from "./NavPreview"
 
 export default function PreviewFriends() {
   return (
@@ -55,15 +56,7 @@ export default function PreviewFriends() {
         {/* 새로운 친구 */}
         <section>새로운 친구 1</section>
         {/* 네비게이션 */}
-        <div className="absolute bottom-0 left-0 right-0 flex flex-col ">
-          <nav className="h-8 grid grid-cols-5 items-center text-center text-gray-900 bg-gray-500 rounded-b-2xl">
-            <span>friends</span>
-            <span>chats</span>
-            <span>openchats</span>
-            <span>shopping</span>
-            <span>more</span>
-          </nav>
-        </div>
+        <NavPreview />
       </div>
     </div>
   )

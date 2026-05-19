@@ -21,8 +21,8 @@ const tabs: ICategoryTab[] = [
 export default function CustomMainPage() {
   return (
     <div className="flex items-center justify-center py-5">
-      {/* <PreviewFriends /> */}
-      <PreviewPasscode />
+      <PreviewFriends />
+      {/* <PreviewPasscode /> */}
       <div className="grid grid-cols-5 absolute bottom-0 w-full">
         {tabs.map(tab => (
           <CustomCategoryTab key={tab.id} icon={tab.icon} label={tab.label} href={tab.href} />
