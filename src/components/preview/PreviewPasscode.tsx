@@ -1,7 +1,7 @@
 import Bullet from "./Bullet";
 import KeypadNumber from "./KeypadNumber";
 
-const keys = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "", "0", "delete"];
+const KEYS = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "", "0", "delete"];
 
 export default function PreviewPasscode() {
 
@@ -27,7 +27,7 @@ export default function PreviewPasscode() {
         <section>
           <div className="flex w-full items-center justify-center p-4">
             <div className="grid grid-cols-3 gap-x-8">
-              {keys.map((key, i) => (
+              {KEYS.map((key, i) => (
                 <KeypadNumber key={i} value={key} />
               ))}
             </div>
