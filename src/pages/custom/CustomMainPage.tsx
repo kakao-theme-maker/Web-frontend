@@ -9,6 +9,7 @@ import TextIcon from "@/components/icons/custom/text.svg?react";
 import PreviewFriends from "@/components/preview/PreviewFriends";
 import PreviewPasscode from "@/components/preview/PreviewPasscode";
 import PreviewChatRoom from "@/components/preview/PreviewChatRoom";
+import PreviewChatRoomList from "@/components/preview/PreviewChatRoomList";
 
 
 const tabs: ICategoryTab[] = [
@@ -24,7 +25,8 @@ export default function CustomMainPage() {
     <div className="flex items-center justify-center py-5">
       {/* <PreviewFriends /> */}
       {/* <PreviewPasscode /> */}
-      <PreviewChatRoom />
+      {/* <PreviewChatRoom /> */}
+      <PreviewChatRoomList />
       <div className="grid grid-cols-5 absolute bottom-0 w-full">
         {tabs.map(tab => (
           <CustomCategoryTab key={tab.id} icon={tab.icon} label={tab.label} href={tab.href} />
