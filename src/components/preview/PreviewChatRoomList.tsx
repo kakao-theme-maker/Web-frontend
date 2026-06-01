@@ -1,15 +1,21 @@
-import React from 'react'
 import NavPreview from './NavPreview'
 import ButtonPreview from './ButtonPreview'
-import { DEFAULT_IMAGES } from '@/constants/defaultImages'
 import { Menu, MessageCirclePlusIcon, Search, Settings } from 'lucide-react'
 import ChatRoomListItem from './ChatRoomListItem'
+import { useMainViewStyleStore } from '@/stores/mainViewStyleStore'
 
 export default function PreviewChatRoomList() {
+  const primary = useMainViewStyleStore(
+    (state) => state.primary
+  )
+
   return (
     <div className="w-[90%] max-w-[330px] aspect-[390/700] 
         border border-gray-300 rounded-2xl p-1 text-xs">
-      <div className="relative w-full h-full rounded-2xl bg-[#ffe0e0] p-2">
+      <div className="relative w-full h-full rounded-2xl p-2"
+        style={{
+          backgroundColor: primary.backgroundColor,
+        }}>
         {/* 헤더 */}
         <header className="flex gap-2 items-center p-2">
           <span className='text-lg'>채팅</span>
