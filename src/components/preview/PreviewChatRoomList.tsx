@@ -26,15 +26,15 @@ export default function PreviewChatRoomList() {
           </div>
         </header>
         {/* 친구, 소식 버튼 */}
-        <section className="flex gap-1 p-2">
-          <ButtonPreview label="전체" />
-          <ButtonPreview label="안읽음" />
-          <ButtonPreview label="친구" />
+        <section className="flex gap-1 py-2">
+          <ButtonPreview label="전체" textColor={primary.textColor} bgColor={primary.backgroundColor} />
+          <ButtonPreview label="안읽음" textColor={primary.textColor} bgColor={primary.backgroundColor} />
+          <ButtonPreview label="친구" textColor={primary.textColor} bgColor={primary.backgroundColor} isSelected />
           <Menu size={16} className='w-6 h-6 border rounded-full border-gray-700 p-1' />
         </section>
         {/* 광고 */}
-        <section>
-          <div className="relative flex w-full h-16 bg-gray-100 rounded-lg p-4 my-4">
+        <section className='p-1'>
+          <div className="relative flex w-full h-16 bg-gray-100 rounded-lg p-4 mb-4">
             <p className="absolute">광고</p>
           </div>
         </section>
