@@ -1,14 +1,21 @@
 
 interface IButtonPreviewProps {
   label: string;
+  textColor?: string;
+  bgColor?: string;
   icon?: React.ReactNode;
   isSelected?: boolean;
 };
 
 export default function ButtonPreview({
-  label, icon, isSelected }: IButtonPreviewProps) {
+  label, textColor, bgColor, icon, isSelected }: IButtonPreviewProps) {
   return (
-    <button className="h-6 border border-black rounded-3xl px-2 py-0.5">
+    <button className="h-7 border  border-black rounded-3xl px-3 py-1"
+      style={{
+        color: isSelected ? bgColor : textColor,
+        backgroundColor: isSelected ? textColor : bgColor,
+        borderColor: `${textColor}30`,
+      }}>
       {label}
     </button>
   )

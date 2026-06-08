@@ -3,6 +3,7 @@ import CustomSubCategoryTab from "@/components/custom/CustomSubCategoryTab";
 import type { ISubCategoryTab } from "@/types/custom/types";
 import { useNavigate } from "react-router-dom";
 import BackArrowIcon from "@/components/icons/header/back-arrow.svg?react";
+import PreviewChatRoom from "@/components/preview/PreviewChatRoom";
 
 const tabs: ISubCategoryTab[] = [
   { id: "background", label: "배경" },
@@ -21,17 +22,20 @@ export default function CustomBackgroundPage() {
           <BackArrowIcon />
         </button>
       </header>
+      <div className="flex items-center justify-center scale-75 origin-top">
+        <PreviewChatRoom />
+      </div>
 
+
+      {/* 에셋 선택 */}
       <div className="absolute bottom-0 w-full flex flex-col">
-
         <div className="grid grid-cols-5 bg-blue-400">
           {tabs.map(tab => (
             <CustomSubCategoryTab key={tab.id} label={tab.label} />
           ))}
-
         </div>
         {/* 예시용 */}
-        <div className="w-full h-48 bg-blue-400 p-4 grid grid-cols-4 gap-4 overflow-y-auto">
+        <div className="w-full h-24 bg-blue-400 p-4 grid grid-cols-4 gap-4 overflow-y-auto">
           <CustomAsset />
           <CustomAsset />
           <CustomAsset />
