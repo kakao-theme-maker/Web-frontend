@@ -47,7 +47,7 @@ export interface MainViewStyleState {
   setSectionTitleStyle: (style: Partial<ISectionTitleStyle>) => void
 
   resetAll: () => void
-  resetIHeaderStyle: () => void
+  resetHeaderStyle: () => void
   resetPrimary: () => void
   resetSecondary: () => void
   resetSectionTitleStyle: () => void
