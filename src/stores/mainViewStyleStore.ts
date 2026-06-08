@@ -121,7 +121,7 @@ export const useMainViewStyleStore = create<MainViewStyleState>()(
           sectionTitleStyle: { ...DEFAULT_SECTION_TITLE_STYLE },
         }),
 
-      resetIHeaderStyle: () => set({ headerStyle: { ...DEFAULT_HEADER_STYLE } }),
+      resetHeaderStyle: () => set({ headerStyle: { ...DEFAULT_HEADER_STYLE } }),
       resetPrimary: () => set({ primary: { ...DEFAULT_PRIMARY } }),
       resetSecondary: () => set({ secondary: { ...DEFAULT_SECONDARY } }),
       resetSectionTitleStyle: () =>
