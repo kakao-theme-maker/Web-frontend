@@ -1,5 +1,20 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
+import maintabBgImage from '@/assets/images/maintabBgImage.png';
+import maintabIcoFriends from '@/assets/images/maintabIcoFriends.png';
+import maintabIcoFriendsSelected from '@/assets/images/maintabIcoFriendsSelected.png';
+import maintabIcoChats from '@/assets/images/maintabIcoChats.png';
+import maintabIcoChatsSelected from '@/assets/images/maintabIcoChatsSelected.png';
+import maintabIcoNow from '@/assets/images/maintabIcoNow.png';
+import maintabIcoNowSelected from '@/assets/images/maintabIcoNowSelected.png';
+// import maintabIcoPiccoma from '@/assets/images/maintabIcoPiccoma.png';
+// import maintabIcoPiccomaSelected from '@/assets/images/maintabIcoPiccomaSelected.png';
+import maintabIcoShopping from '@/assets/images/maintabIcoShopping.png';
+import maintabIcoShoppingSelected from '@/assets/images/maintabIcoShoppingSelected.png';
+import maintabIcoCall from '@/assets/images/maintabIcoCall.png';
+import maintabIcoCallSelected from '@/assets/images/maintabIcoCallSelected.png';
+import maintabIcoMore from '@/assets/images/maintabIcoMore.png';
+import maintabIcoMoreSelected from '@/assets/images/maintabIcoMoreSelected.png';
 
 interface ITabBarStyleMain {
   backgroundColor: string
@@ -14,8 +29,8 @@ interface ITabBarStyleMain {
   nowNormalIconImage: string                       // -ios-now-normal-icon-image
   nowSelectedIconImage: string                     // -ios-now-selected-icon-image
   // 만화탭 (일본)
-  piccomaNormalIconImage: string                   // -ios-piccoma-normal-icon-image
-  piccomaSelectedIconImage: string                 // -ios-piccoma-selected-icon-image
+  // piccomaNormalIconImage: string                   // -ios-piccoma-normal-icon-image
+  // piccomaSelectedIconImage: string                 // -ios-piccoma-selected-icon-image
   // 쇼핑탭
   shoppingNormalIconImage: string                  // -ios-shopping-normal-icon-image
   shoppingSelectedIconImage: string                // -ios-shopping-selected-icon-image
@@ -39,23 +54,23 @@ export interface TabBarStyleState {
 
 const DEFAULT_TAB_BAR_STYLE_MAIN: ITabBarStyleMain = {
   backgroundColor: '',
-  backgroundImage: 'maintabBgImage.png',
-  friendsNormalIconImage: 'maintabIcoFriends.png',
-  friendsSelectedIconImage: 'maintabIcoFriendsSelected.png',
-  chatsNormalIconImage: 'maintabIcoChats.png',
-  chatsSelectedIconImage: 'maintabIcoChatsSelected.png',
-  nowNormalIconImage: 'maintabIcoNow.png',
-  nowSelectedIconImage: 'maintabIcoNowSelected.png',
-  piccomaNormalIconImage: 'maintabIcoPiccoma.png',
-  piccomaSelectedIconImage: 'maintabIcoPiccomaSelected.png',
-  shoppingNormalIconImage: 'maintabIcoShopping.png',
-  shoppingSelectedIconImage: 'maintabIcoShoppingSelected.png',
-  callNormalIconImage: 'maintabIcoCall.png',
-  callSelectedIconImage: 'maintabIcoCallSelected.png',
-  moreNormalIconImage: 'maintabIcoMore.png',
-  moreSelectedIconImage: 'maintabIcoMoreSelected.png',
-  openChatsNormalIconImage: 'maintabIcoNow.png',
-  openChatsSelectedIconImage: 'maintabIcoNowSelected.png',
+  backgroundImage: maintabBgImage,
+  friendsNormalIconImage: maintabIcoFriends,
+  friendsSelectedIconImage: maintabIcoFriendsSelected,
+  chatsNormalIconImage: maintabIcoChats,
+  chatsSelectedIconImage: maintabIcoChatsSelected,
+  nowNormalIconImage: maintabIcoNow,
+  nowSelectedIconImage: maintabIcoNowSelected,
+  // piccomaNormalIconImage: maintabIcoPiccoma,
+  // piccomaSelectedIconImage: maintabIcoPiccomaSelected,
+  shoppingNormalIconImage: maintabIcoShopping,
+  shoppingSelectedIconImage: maintabIcoShoppingSelected,
+  callNormalIconImage: maintabIcoCall,
+  callSelectedIconImage: maintabIcoCallSelected,
+  moreNormalIconImage: maintabIcoMore,
+  moreSelectedIconImage: maintabIcoMoreSelected,
+  openChatsNormalIconImage: maintabIcoNow,
+  openChatsSelectedIconImage: maintabIcoNowSelected
 }
 
 export const useTabBarStyleStore = create<TabBarStyleState>()(

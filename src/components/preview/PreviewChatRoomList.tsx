@@ -45,7 +45,7 @@ export default function PreviewChatRoomList() {
           <ChatRoomListItem />
         </section>
         {/* 네비게이션 */}
-        <NavPreview />
+        <NavPreview selectedTab='chats' />
       </div>
     </div>
   )
