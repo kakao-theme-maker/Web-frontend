@@ -18,7 +18,7 @@ export default function CustomCategoryTab({
   return (
     <Link
       to={href}
-      className={`flex flex-col items-center cursor-pointer bg-blue-400
+      className={`w-16 flex-shrink-0 flex flex-col items-center cursor-pointer bg-blue-400
           py-4 gap-1
         ${isSelected ? "text-blue-500" : "text-gray-500"}`}
       onClick={onClick}
