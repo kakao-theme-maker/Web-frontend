@@ -1,6 +1,9 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
+import findBtnAddFriend from '@/assets/images/findBtnAddFriend.png'
+import profileImg01 from '@/assets/images/profileImg01.png'
+
 /* FeatureStyle-Primary : 버튼 텍스트 */
 interface IFeatureStylePrimary {
   textColor: string                                // -ios-text-color
@@ -36,11 +39,11 @@ const DEFAULT_FEATURE_PRIMARY: IFeatureStylePrimary = {
 }
 
 const DEFAULT_BUTTON_ADD_FRIEND: IButtonStyleAddFriend = {
-  image: 'findBtnAddFriend.png',
+  image: findBtnAddFriend,
 }
 
 const DEFAULT_DEFAULT_PROFILE: IDefaultProfileStyle = {
-  profileImages: 'profileImg01.png',
+  profileImages: profileImg01,
 }
 
 export const useFeatureStyleStore = create<FeatureStyleState>()(

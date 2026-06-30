@@ -78,9 +78,9 @@ export default function AppRoutes() {
           <Route path="/custom" element={<CustomMainPage />} />
           <Route path="/custom/chat-room" element={<PreviewChatRoom />} />
           <Route path="/custom/chat-room-list" element={<PreviewChatRoomList />} />
-          <Route path="/custom/feed" element={<PreviewFeed />} />
+          {/* <Route path="/custom/feed" element={<PreviewFeed />} /> */}
           <Route path="/custom/friends" element={<PreviewFriends />} />
-          <Route path="/custom/header" element={<PreviewHeader />} />
+          {/* <Route path="/custom/header" element={<PreviewHeader />} /> */}
           <Route path="/custom/notice" element={<PreviewNotice />} />
           <Route path="/custom/passcode" element={<PreviewPasscode />} />
           <Route path="/custom/tab-bar" element={<PreviewTabBar />} />

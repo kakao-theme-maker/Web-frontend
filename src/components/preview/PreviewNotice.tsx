@@ -1,7 +1,11 @@
-import React from 'react'
+import PreviewChatRoomList from './PreviewChatRoomList'
 
 export default function PreviewNotice() {
+
   return (
-    <div>PreviewNotice</div>
+    <div className="relative">
+      <PreviewChatRoomList />
+      <div className="absolute bottom-0">qosj</div>
+    </div>
   )
 }
