@@ -23,6 +23,14 @@ import { useAuthInit } from "../services/hooks/auth/useAuthInit.ts";
 import CustomLayout from "../layouts/CustomLayout.tsx";
 import CustomBackgroundPage from "@/pages/custom/CustomBackgroundPage.tsx";
 import CustomMainPage from "../pages/custom/CustomMainPage.tsx";
+import PreviewChatRoom from "@/components/preview/PreviewChatRoom.tsx";
+import PreviewChatRoomList from "@/components/preview/PreviewChatRoomList.tsx";
+import PreviewFeed from "@/components/preview/PreviewFeed.tsx";
+import PreviewFriends from "@/components/preview/PreviewFriends.tsx";
+import PreviewHeader from "@/components/preview/PreviewHeader.tsx";
+import PreviewNotice from "@/components/preview/PreviewNotice.tsx";
+import PreviewPasscode from "@/components/preview/PreviewPasscode.tsx";
+import PreviewTabBar from "@/components/preview/PreviewTabBar.tsx";
 
 function AuthInitializer({ children }: { children: React.ReactNode }) {
   const isInitialized = useAuthInit();
@@ -68,7 +76,14 @@ export default function AppRoutes() {
         </Route>
         <Route element={<CustomLayout />}>
           <Route path="/custom" element={<CustomMainPage />} />
-          <Route path="/custom/background" element={<CustomBackgroundPage />} />
+          <Route path="/custom/chat-room" element={<PreviewChatRoom />} />
+          <Route path="/custom/chat-room-list" element={<PreviewChatRoomList />} />
+          {/* <Route path="/custom/feed" element={<PreviewFeed />} /> */}
+          <Route path="/custom/friends" element={<PreviewFriends />} />
+          {/* <Route path="/custom/header" element={<PreviewHeader />} /> */}
+          <Route path="/custom/notice" element={<PreviewNotice />} />
+          <Route path="/custom/passcode" element={<PreviewPasscode />} />
+          <Route path="/custom/tab-bar" element={<PreviewTabBar />} />
         </Route>
       </Routes>
     </AuthInitializer>

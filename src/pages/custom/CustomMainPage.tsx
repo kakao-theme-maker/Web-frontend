@@ -13,11 +13,14 @@ import PreviewChatRoomList from "@/components/preview/PreviewChatRoomList";
 
 
 const tabs: ICategoryTab[] = [
-  { id: "background", icon: <BackgroundIcon />, label: "배경", href: "/custom/background" },
-  { id: "profile", icon: <ProfileIcon />, label: "프로필", href: "/custom/profile" },
-  { id: "tabs", icon: <TabsIcon />, label: "탭", href: "/custom/tabs" },
-  { id: "chat", icon: <ChatIcon />, label: "채팅방", href: "/custom/chat" },
-  { id: "text", icon: <TextIcon />, label: "텍스트", href: "/custom/text" },
+  { id: "chatRoom", icon: <TabsIcon />, label: "채팅", href: "/custom/chat-room" },
+  { id: "chatRoomList", icon: <TabsIcon />, label: "채팅 목록", href: "/custom/chat-room-list" },
+  { id: "feed", icon: <TabsIcon />, label: "소식", href: "/custom/feed" },
+  { id: "friends", icon: <TabsIcon />, label: "친구", href: "/custom/friends" },
+  { id: "header", icon: <TabsIcon />, label: "헤더", href: "/custom/header" },
+  { id: "notice", icon: <TabsIcon />, label: "알림", href: "/custom/notice" },
+  { id: "passcode", icon: <TabsIcon />, label: "잠금화면", href: "/custom/passcode" },
+  { id: "tabBar", icon: <TabsIcon />, label: "탭", href: "/custom/tab-bar" },
 ];
 
 export default function CustomMainPage() {
@@ -27,7 +30,7 @@ export default function CustomMainPage() {
       {/* <PreviewPasscode /> */}
       {/* <PreviewChatRoom /> */}
       <PreviewChatRoomList />
-      <div className="grid grid-cols-5 absolute bottom-0 w-full">
+      <div className="flex overflow-x-auto absolute bottom-0 w-full">
         {tabs.map(tab => (
           <CustomCategoryTab key={tab.id} icon={tab.icon} label={tab.label} href={tab.href} />
         ))}
