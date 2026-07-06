@@ -1,6 +1,17 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
+import chatroomBgImage from '@/assets/images/chatroomBgImage.png'
+import chatroomBubbleSend01 from '@/assets/images/chatroomBubbleSend01.png'
+import chatroomBubbleSend01Selected from '@/assets/images/chatroomBubbleSend01Selected.png'
+import chatroomBubbleSend02 from '@/assets/images/chatroomBubbleSend02.png'
+import chatroomBubbleSend02Selected from '@/assets/images/chatroomBubbleSend02Selected.png'
+import chatroomBubbleReceive01 from '@/assets/images/chatroomBubbleReceive01.png'
+import chatroomBubbleReceive01Selected from '@/assets/images/chatroomBubbleReceive01Selected.png'
+import chatroomBubbleReceive02 from '@/assets/images/chatroomBubbleReceive02.png'
+import chatroomBubbleReceive02Selected from '@/assets/images/chatroomBubbleReceive02Selected.png'
+
+
 /* BackgroundStyle-ChatRoom */
 interface IChatRoomBackgroundStyle {
   backgroundColor: string                              // background-color
@@ -74,7 +85,7 @@ export interface ChatRoomStyleState {
 
 const DEFAULT_CHATROOM_BACKGROUND: IChatRoomBackgroundStyle = {
   backgroundColor: '#FFDEDE',
-  backgroundImage: 'chatroomBgImage.png',
+  backgroundImage: chatroomBgImage,
 }
 
 const DEFAULT_INPUT_BAR: IInputBarStyleChat = {
@@ -91,10 +102,10 @@ const DEFAULT_INPUT_BAR: IInputBarStyleChat = {
 }
 
 const DEFAULT_MESSAGE_SEND: IMessageCellStyleSend = {
-  backgroundImage: 'chatroomBubbleSend01.png 17px 17px',
-  selectedBackgroundImage: 'chatroomBubbleSend01Selected.png 17px 17px',
-  groupBackgroundImage: 'chatroomBubbleSend02.png 17px 17px',
-  groupSelectedBackgroundImage: 'chatroomBubbleSend02Selected.png 17px 17px',
+  backgroundImage: `${chatroomBubbleSend01} 17px 17px`,
+  selectedBackgroundImage: `${chatroomBubbleSend01Selected} 17px 17px`,
+  groupBackgroundImage: `${chatroomBubbleSend02} 17px 17px`,
+  groupSelectedBackgroundImage: `${chatroomBubbleSend02Selected} 17px 17px`,
   titleEdgeInsets: '10px 11px 7px 17px',
   groupTitleEdgeInsets: '10px 11px 7px 17px',
   textColor: '#FFFFFF',
@@ -103,10 +114,10 @@ const DEFAULT_MESSAGE_SEND: IMessageCellStyleSend = {
 }
 
 const DEFAULT_MESSAGE_RECEIVE: IMessageCellStyleReceive = {
-  backgroundImage: 'chatroomBubbleReceive01.png 22px 17px',
-  selectedBackgroundImage: 'chatroomBubbleReceive01Selected.png 22px 17px',
-  groupBackgroundImage: 'chatroomBubbleReceive02.png 22px 17px',
-  groupSelectedBackgroundImage: 'chatroomBubbleReceive02Selected.png 22px 17px',
+  backgroundImage: `${chatroomBubbleReceive01} 22px 17px`,
+  selectedBackgroundImage: `${chatroomBubbleReceive01Selected} 22px 17px`,
+  groupBackgroundImage: `${chatroomBubbleReceive02} 22px 17px`,
+  groupSelectedBackgroundImage: `${chatroomBubbleReceive02Selected} 22px 17px`,
   titleEdgeInsets: '10px 17px 7px 11px',
   groupTitleEdgeInsets: '10px 17px 7px 11px',
   textColor: '#4D4D4D',

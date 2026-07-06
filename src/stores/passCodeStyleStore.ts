@@ -1,6 +1,16 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
+import passcodeBgImage from '@/assets/images/passcodeBgImage.png';
+import passcodeImgCode01 from '@/assets/images/passcodeImgCode01.png'
+import passcodeImgCode02 from '@/assets/images/passcodeImgCode02.png'
+import passcodeImgCode03 from '@/assets/images/passcodeImgCode03.png'
+import passcodeImgCode04 from '@/assets/images/passcodeImgCode04.png'
+import passcodeImgCode01Selected from '@/assets/images/passcodeImgCode01Selected.png'
+import passcodeImgCode02Selected from '@/assets/images/passcodeImgCode02Selected.png'
+import passcodeImgCode03Selected from '@/assets/images/passcodeImgCode03Selected.png'
+import passcodeImgCode04Selected from '@/assets/images/passcodeImgCode04Selected.png'
+import passcodeKeypadPressed from '@/assets/images/passcodeKeypadPressed.png'
 /* BackgroundStyle-Passcode */
 interface IPasscodeBackgroundStyle {
   backgroundColor: string                          // background-color
@@ -46,8 +56,8 @@ export interface PasscodeStyleState {
 }
 
 const DEFAULT_PASSCODE_BACKGROUND: IPasscodeBackgroundStyle = {
-  backgroundColor: '#FFDEDE',
-  backgroundImage: 'passcodeBgImage.png',
+  backgroundColor: '#FCC5C5',
+  backgroundImage: passcodeBgImage,
 }
 
 const DEFAULT_PASSCODE_TITLE_LABEL: IPasscodeTitleLabelStyle = {
@@ -55,17 +65,19 @@ const DEFAULT_PASSCODE_TITLE_LABEL: IPasscodeTitleLabelStyle = {
 }
 
 const DEFAULT_PASSCODE: IPasscodeStyle = {
-  bulletFirstImage: 'passcodeImgCode01.png',
-  bulletSecondImage: 'passcodeImgCode02.png',
-  bulletThirdImage: 'passcodeImgCode03.png',
-  bulletFourthImage: 'passcodeImgCode04.png',
-  bulletSelectedFirstImage: 'passcodeImgCode01Selected.png',
-  bulletSelectedSecondImage: 'passcodeImgCode02Selected.png',
-  bulletSelectedThirdImage: 'passcodeImgCode03Selected.png',
-  bulletSelectedFourthImage: 'passcodeImgCode04Selected.png',
+  bulletFirstImage: passcodeImgCode01,
+  bulletSecondImage: passcodeImgCode02,
+  bulletThirdImage: passcodeImgCode03,
+  bulletFourthImage: passcodeImgCode04,
+
+  bulletSelectedFirstImage: passcodeImgCode01Selected,
+  bulletSelectedSecondImage: passcodeImgCode02Selected,
+  bulletSelectedThirdImage: passcodeImgCode03Selected,
+  bulletSelectedFourthImage: passcodeImgCode04Selected,
+
   keypadBackgroundColor: '#FFF2F2',
   keypadTextNormalColor: '#664242',
-  keypadNumberHighlightedImage: 'passcodeKeypadPressed.png',
+  keypadNumberHighlightedImage: passcodeKeypadPressed,
 }
 
 export const usePasscodeStyleStore = create<PasscodeStyleState>()(
