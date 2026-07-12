@@ -18,13 +18,13 @@ export default function CustomCategoryTab({
   return (
     <Link
       to={href}
-      className={`w-16 flex-shrink-0 flex flex-col items-center cursor-pointer bg-blue-400
-          py-4 gap-1
-        ${isSelected ? "text-blue-500" : "text-gray-500"}`}
+      className={`w-16 flex-shrink-0 flex flex-col items-center cursor-pointer
+          py-4 gap-2
+        ${isSelected ? "text-blue-500" : "text-white"}`}
       onClick={onClick}
     >
       <span className="flex h-8 w-8 items-center justify-center">{icon}</span>
-      <span className="text-white">{label}</span>
+      <span>{label}</span>
     </Link>
   );
 }
