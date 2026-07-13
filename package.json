@@ -16,6 +16,7 @@
     "framer-motion": "^12.42.2",
     "lucide-react": "^1.17.0",
     "react": "^19.2.0",
+    "react-colorful": "^5.7.0",
     "react-dom": "^19.2.0",
     "react-hook-form": "^7.66.0",
     "react-router-dom": "^7.9.6",
